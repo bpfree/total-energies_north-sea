@@ -82,28 +82,6 @@ cursor <- table$select(filter = bbox)
 df <- cursor$dataframe()
 View(df)
 
-# cursor2 <- table$select(filter = bbox)
-# df2 <- cursor2$dataframe()
-# View(df2)
-
-# # convert to sf feature to be able to filter by geometry
-# data <- df %>%
-#   sf::st_as_sf(x = .,
-#                # set the WKT to the correct geometry column
-#                wkt = "wkt_point",
-#                # set as the correct reference system (WGS84: https://epsg.io/4326)
-#                crs = 4326)
-
-##############
-
-# # limit data to only the area of interest
-# study_area <- sf::st_read(dsn = "data/b_intermediate_data/study_area.parquet")
-# 
-# # make sure the data are within the study area
-# data_aoi <- data %>%
-#   rmapshaper::ms_clip(target = .,
-#                       clip = study_area)
-
 ##############
 
 # get list of Aphia IDs
@@ -112,8 +90,8 @@ worms_ids
 
 list <- data.frame(worms_id = unlist(worms_ids)) %>%
   # get the taxonomic convention
-  dplyr::mutate(species_name = worrms::wm_id2name_(id = worms_ids)) %>%
-  arrange(worms_ids)
+  ## need to set as character as otherwise data will not get exported correctly
+  dplyr::mutate(species_name = as.character(worrms::wm_id2name_(id = worms_ids)))
 View(list)
 
 ##############
@@ -162,4 +140,5 @@ sf::st_write(obj = genus,
              dsn = file.path(output_dir,
                              "ices_genus.parquet"),
              # the driver to use
-             driver = "Parquet")
+             driver = "Parquet",
+             append = F)

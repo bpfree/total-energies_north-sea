@@ -128,12 +128,23 @@ genus_species <- df %>%
 species <- genus_species %>%
   # detect full taxonomic names
   dplyr::filter(stringr::str_detect(string = species_name,
-                                    pattern = " "))
+                                    pattern = " ")) %>%
+  sf::st_as_sf(x = .,
+               wkt = "wkt_point",
+               crs = 4326)
+  # # get the common name convention
+  # dplyr::mutate(common_name = worrms::wm_common_id_(id = worms_ids))
 species
 
 genus <- genus_species %>%
   # return the WoRMS IDs that do not contain species level information
-  dplyr::filter(!worms_id %in% species$worms_id)
+  dplyr::filter(!worms_id %in% species$worms_id) %>%
+  # convert to sf to export
+  sf::st_as_sf(x = .,
+               # set the WKT to the correct geometry column
+               wkt = "wkt_point",
+               # set as the correct reference system (WGS84: https://epsg.io/4326)
+               crs = 4326)
 genus
 
 ##############

@@ -112,21 +112,17 @@ species <- genus_species %>%
   # detect full taxonomic names
   dplyr::filter(stringr::str_detect(string = species_name,
                                     pattern = " ")) %>%
-  # set as simple feature in WGS84
+  # to have geometries, set as simple feature in WGS84
   sf::st_as_sf(x = .,
                wkt = "wkt_point",
                crs = 4326)
   # # get the common name convention
   # dplyr::mutate(common_name = worrms::wm_common_id_(id = worms_ids))
-species <- genus_species %>%
-  # detect full taxonomic names
-  dplyr::filter(stringr::str_detect(string = species_name,
-                                    pattern = " "))
 
 genus <- genus_species %>%
   # return the WoRMS IDs that do not contain species level information
   dplyr::filter(!worms_id %in% species$worms_id) %>%
-  # convert to sf to export
+  # to have geometries, set as simple feature in WGS84
   sf::st_as_sf(x = .,
                # set the WKT to the correct geometry column
                wkt = "wkt_point",

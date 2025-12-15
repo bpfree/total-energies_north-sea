@@ -41,6 +41,7 @@ pacman::p_load(dplyr,
 ### will need to define the geometry field (e.g., wkt_point)
 ### boundary box for the study region
 bbox <- 'wkt_point within "POLYGON((-4.4454 50.9954, 12.0059 50.9954, 12.0059 61.0170, -4.4454 61.0170, -4.4454 50.9954))"'
+odp_data <- "71ca7b80-a2e0-4721-be6f-cbe820b3c3ef"
 
 #####################################
 #####################################
@@ -68,7 +69,7 @@ client <- odp::odp_client(api_key = odp_api_key)
 #####################################
 
 # load in dataset (see https://app.hubocean.earth/) -- ICES cetaceans surveys
-dataset <- client$dataset("71ca7b80-a2e0-4721-be6f-cbe820b3c3ef")
+dataset <- client$dataset(odp_data)
 
 # generate table (defaults to the first table in the dataset)
 table <- dataset$table
@@ -88,6 +89,7 @@ View(df)
 worms_ids <- unique(df$AphiaID)
 worms_ids
 
+# fetch the genus and genus species names for each WoRMS code
 list <- data.frame(worms_id = unlist(worms_ids)) %>%
   # get the taxonomic convention
   ## need to set as character as otherwise data will not get exported correctly
@@ -96,23 +98,30 @@ View(list)
 
 ##############
 
+# add the genus species names back to the full dataset
 genus_species <- df %>%
+  # rename the code column
   dplyr::rename("worms_id" = "AphiaID") %>%
+  # join with the new genus species names
   dplyr::inner_join(x = .,
                     y = list,
                     by = "worms_id")
 
-
+# subset for data that have complete taxonomic names
 species <- genus_species %>%
   # detect full taxonomic names
   dplyr::filter(stringr::str_detect(string = species_name,
                                     pattern = " ")) %>%
+  # set as simple feature in WGS84
   sf::st_as_sf(x = .,
                wkt = "wkt_point",
                crs = 4326)
   # # get the common name convention
   # dplyr::mutate(common_name = worrms::wm_common_id_(id = worms_ids))
-species
+species <- genus_species %>%
+  # detect full taxonomic names
+  dplyr::filter(stringr::str_detect(string = species_name,
+                                    pattern = " "))
 
 genus <- genus_species %>%
   # return the WoRMS IDs that do not contain species level information
@@ -123,7 +132,6 @@ genus <- genus_species %>%
                wkt = "wkt_point",
                # set as the correct reference system (WGS84: https://epsg.io/4326)
                crs = 4326)
-genus
 
 ##############
 
@@ -140,5 +148,4 @@ sf::st_write(obj = genus,
              dsn = file.path(output_dir,
                              "ices_genus.parquet"),
              # the driver to use
-             driver = "Parquet",
-             append = F)
+             driver = "Parquet")

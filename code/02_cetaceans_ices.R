@@ -81,31 +81,87 @@ cursor <- table$select(filter = bbox)
 
 # fetch table into a dataframe that you can use for analysis
 df <- cursor$dataframe()
+
+dim(df)
+names(df)
 View(df)
+str(df)
+
+df2 <- df %>%
+  # filter for only non-duplicated sightings and definite identifications
+  # duplication sighting status: http://vocab.ices.dk/?ref=1721
+  # identification confidence codes: http://vocab.ices.dk/?ref=1700
+  dplyr::filter(DuplicateSightingStatus == "N",
+                IdentificationConfidence == "D")
+View(df2)
 
 ##############
 
 # get list of Aphia IDs
 worms_ids <- unique(df$AphiaID)
 worms_ids
+length(worms_ids)
 
 # fetch the genus and genus species names for each WoRMS code
 list <- data.frame(worms_id = unlist(worms_ids)) %>%
   # get the taxonomic convention
   ## need to set as character as otherwise data will not get exported correctly
   dplyr::mutate(species_name = as.character(worrms::wm_id2name_(id = worms_ids)))
-View(list)
+print(sort(list$worms_id))
 
 ##############
 
 # add the genus species names back to the full dataset
-genus_species <- df %>%
+genus_species <- df2 %>%
   # rename the code column
   dplyr::rename("worms_id" = "AphiaID") %>%
   # join with the new genus species names
   dplyr::inner_join(x = .,
                     y = list,
                     by = "worms_id")
+
+table <- df2 %>%
+  dplyr::select(AphiaID,
+                Latitude, Longitude) %>%
+  # rename the code column
+  dplyr::rename("worms_id" = "AphiaID",
+                "lat" = "Latitude",
+                "lon" = "Longitude") %>%
+  # join with the new genus species names
+  dplyr::inner_join(x = .,
+                    y = list,
+                    by = "worms_id") %>%
+  # dplyr::slice(1, 3:5) %>%
+  dplyr::mutate(common_name = dplyr::recode(worms_id,
+                                            "2688" = "Cetacea",
+                                            # "127405" = "Ocean sunfish",
+                                            # "136980" = "Delphinidae", # ocean dolphins
+                                            # "136986" = "Ziphiidae", # beaked whales
+                                            # "137020" = "Lagenorhynchus",
+                                            "137080" = "Grey whale",
+                                            "137084" = "Harbor seal",
+                                            "137087" = "Minke whale",
+                                            "137091" = "Fin whale",
+                                            "137094" = "Short-beaked common dolphin",
+                                            "137098" = "Risso's dolphin",
+                                            "137100" = "Atlantic white-sided dolphin",
+                                            "137101" = "White-beaked dolphin",
+                                            "137102" = "Orca",
+                                            "137111" = "Common bottlenose dolphim",
+                                            "137117" = "Harbour porpoise",
+                                            # "137121" = "Sowerby's beaked whale",
+                                            # "148724" = "Mysticeti", # baleen whales
+                                            "148736" = "Pinnipedia", # seals
+                                            "343898" = "Burmeister's porpoise",
+                                            # "343899" = "Northern bottlenose dolphin",
+                                            "368408" = "Selachii")) %>% # sharks
+  dplyr::relocate(c(lat, lon),
+                  .after = common_name)
+View(table)
+
+test <- table %>%
+  dplyr::select(worms_id, species_name, common_name)
+distinct(test)
 
 # subset for data that have complete taxonomic names
 species <- genus_species %>%
@@ -115,9 +171,9 @@ species <- genus_species %>%
   # to have geometries, set as simple feature in WGS84
   sf::st_as_sf(x = .,
                wkt = "wkt_point",
-               crs = 4326)
-  # # get the common name convention
-  # dplyr::mutate(common_name = worrms::wm_common_id_(id = worms_ids))
+               crs = 4326) %>%
+  # get the common name convention
+  dplyr::mutate(common_name = worrms::wm_common_id_(id = worms_ids))
 
 genus <- genus_species %>%
   # return the WoRMS IDs that do not contain species level information

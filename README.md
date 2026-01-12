@@ -6,7 +6,7 @@ Habitat sensitivity assessment in North Sea
 * **Ocean Data Platform:** [Max Romagnoli](mailto:max.romagnoli@oceandata.earth)
 * **Project:** [Laurence Janssens](mailto:laurence.janssens@oceandata.earth)
 
-* **Total Advisor:** [Phil Wemyss](mailto:phil.wemyss@external.totalenergies.com)
+* **Total Adviser:** [Phil Wemyss](mailto:phil.wemyss@external.totalenergies.com)
 * **Total GIS Analyst:** [Katrina Povidisa-Delefosse](katrina.povidisa-delefosse@totalenergies.com)
 * **Total GIS Analyst:** [Ilaria Valentini](ilaria.valentini@totalenergies.com)
 

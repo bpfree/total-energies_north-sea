@@ -12,6 +12,19 @@ Habitat sensitivity assessment in North Sea
 
 ### **Repository Structure**
 
+```text
+.
+├── src
+│   ├── modules
+│   │   ├── data-access
+│   │   └── storage
+│   └── main.ts
+├── data
+│   ├── raw-data.csv
+│   └── processed
+└── README.md
+```
+
 -   **data**
     -   **raw_data:** the raw data integrated in the analysis (**Note:** original data name and structure were kept except when either name was not descriptive or similar data were put in same directory to simplify input directories)
     -   **intermediate_data:** disaggregated processed data

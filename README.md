@@ -17,10 +17,6 @@ Habitat sensitivity assessment in North Sea
 ├── LICENSE                 : Repository license
 ├── north-sea-analysi.Rproj : RStudio project file
 ├── .gitignore              : Files and directories to be ignored by git
-├── requirements.R          : Project requirements
-├── check.R                 : Check project structure
-├── sdm_conf.yml            : Configuration file for the models
-├── datasets_citation.json  : Datasets from OBIS/GBIF used in the project
 │
 ├── data
 │   ├── raw                 : Source data obtained from repositories (e.g. OBIS, GBIF)

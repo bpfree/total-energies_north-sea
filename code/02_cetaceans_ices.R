@@ -120,6 +120,8 @@ genus_species <- df2 %>%
                     y = list,
                     by = "worms_id")
 
+
+
 table <- df2 %>%
   dplyr::select(AphiaID,
                 Latitude, Longitude) %>%
@@ -131,7 +133,6 @@ table <- df2 %>%
   dplyr::inner_join(x = .,
                     y = list,
                     by = "worms_id") %>%
-  # dplyr::slice(1, 3:5) %>%
   dplyr::mutate(common_name = dplyr::recode(worms_id,
                                             "2688" = "Cetacea",
                                             # "127405" = "Ocean sunfish",
@@ -159,9 +160,26 @@ table <- df2 %>%
                   .after = common_name)
 View(table)
 
-test <- table %>%
-  dplyr::select(worms_id, species_name, common_name)
-distinct(test)
+# inspect data to determine how often species have been observed
+inspection <- table %>%
+  dplyr::select(worms_id, species_name, common_name) %>%
+  janitor::tabyl(worms_id)
+View(inspection)
+
+# get species that have fewer than 5 reports
+few_sightings <- inspection %>%
+  dplyr::filter(n <= 4)
+View(few_sightings)
+
+# further inspection on particular species (e.g., 137111, 148736, and 343989) -- how old are they? where are they?
+particular_species <- df2 %>%
+  dplyr::filter(AphiaID %in% c("137111", "148736", "343898"))
+View(particular_species)
+
+#### *** note: the surveys for these species are spread between surveys that are from 1994, 1995, and 2009
+#### 2009 HiDef UK Wide Marine Mammals: https://cetaceans.ices.dk/Inventory / https://www.marinedataexchange.co.uk/details/TCE-2372/2009-hidef-wind-enabling-actions-survey-of-seabirds-and-mammals-moray-firth-hastings-west-isle-of-wight-and-bristol-channel
+#### SCANS 1994: https://gis.ices.dk/geonetwork/srv/eng/catalog.search#/metadata/c1ca41ec-430b-41f1-96d9-42265ceec31c
+#### SCANSII Double platform: https://gis.ices.dk/geonetwork/srv/eng/catalog.search#/metadata/04cdd959-d36b-4f6e-b3e7-622268d719b1
 
 # subset for data that have complete taxonomic names
 species <- genus_species %>%
@@ -175,15 +193,6 @@ species <- genus_species %>%
   # get the common name convention
   dplyr::mutate(common_name = worrms::wm_common_id_(id = worms_ids))
 
-genus <- genus_species %>%
-  # return the WoRMS IDs that do not contain species level information
-  dplyr::filter(!worms_id %in% species$worms_id) %>%
-  # to have geometries, set as simple feature in WGS84
-  sf::st_as_sf(x = .,
-               # set the WKT to the correct geometry column
-               wkt = "wkt_point",
-               # set as the correct reference system (WGS84: https://epsg.io/4326)
-               crs = 4326)
 
 ##############
 
@@ -192,12 +201,5 @@ sf::st_write(obj = species,
              # destination as a parquet file
              dsn = file.path(output_dir,
                              "ices_species.parquet"),
-             # the driver to use
-             driver = "Parquet")
-
-sf::st_write(obj = genus,
-             # destination as a parquet file
-             dsn = file.path(output_dir,
-                             "ices_genus.parquet"),
              # the driver to use
              driver = "Parquet")

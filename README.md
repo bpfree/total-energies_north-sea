@@ -19,10 +19,11 @@ Habitat sensitivity assessment in North Sea
 ├── .gitignore              : Files and directories to be ignored by git
 │
 ├── data
-│   ├── raw                 : Source data obtained from repositories (e.g. OBIS, GBIF)
-│   ├── intermediate        : Distances with barriers, used for QC steps
+│   ├── raw                 : Source data obtained from repositories and authors
+│   ├── intermediate        : Transformed data
+│   ├── model               : Final model data
 │
-├── codes                   : All codes
+├── codes                   : Scripts for cleaning, processing, and analyzing data
 │
 ├── figures                 : All figures
 │
@@ -34,17 +35,13 @@ Habitat sensitivity assessment in North Sea
 -   **data**
     -   **raw_data:** the raw data integrated in the analysis (**Note:** original data name and structure were kept except when either name was not descriptive or similar data were put in same directory to simplify input directories)
     -   **intermediate_data:** disaggregated processed data
--   **code:** scripts for cleaning, processing, and analyzing data
--   **figures:** figures generated to visualize analysis
--   **methodology:** detailed methods for the data and analysis
--   **literature:** helpful literature for the project
 
 ***Note for PC users:*** The code was written on a Mac so to run the scripts replace "/" in the pathnames for directories with two "\\".
 
 Please contact Brian Free ([brian.free@oceandata.earth](mailto:brian.free@oceandata.earth)) with any questions regarding the code.
 
 ### **Study region**
-
+Greater North Sea -- boundary box of bbox <- 'geometry within "POLYGON((-4.4454 50.9954, 12.0059 50.9954, 12.0059 61.0170, -4.4454 61.0170, -4.4454 50.9954))"'
 
 ### **Data sources**
 #### *Generic Data*

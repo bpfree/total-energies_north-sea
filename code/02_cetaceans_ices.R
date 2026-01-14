@@ -98,7 +98,7 @@ View(df2)
 ##############
 
 # get list of Aphia IDs
-worms_ids <- unique(df$AphiaID)
+worms_ids <- unique(df2$AphiaID)
 worms_ids
 length(worms_ids)
 
@@ -166,14 +166,30 @@ inspection <- table %>%
   janitor::tabyl(worms_id)
 View(inspection)
 
+test <- table %>%
+  dplyr::select(worms_id, species_name, common_name) %>%
+  janitor::tabyl(species_name)
+  
+
 # get species that have fewer than 5 reports
 few_sightings <- inspection %>%
   dplyr::filter(n <= 4)
 View(few_sightings)
 
 # further inspection on particular species (e.g., 137111, 148736, and 343989) -- how old are they? where are they?
-particular_species <- df2 %>%
-  dplyr::filter(AphiaID %in% c("137111", "148736", "343898"))
+low_observation_species <- df2 %>%
+  dplyr::filter(AphiaID %in% c("137091", "137094", "137098", "137102", "368408"))
+View(low_observation_species)
+
+#### *** note: the surveys for these species are spread between surveys that are from 1994, 1995, and 2009
+#### 2009 HiDef UK Wide Marine Mammals: https://cetaceans.ices.dk/Inventory / https://www.marinedataexchange.co.uk/details/TCE-2372/2009-hidef-wind-enabling-actions-survey-of-seabirds-and-mammals-moray-firth-hastings-west-isle-of-wight-and-bristol-channel
+#### SCANS 1994: https://gis.ices.dk/geonetwork/srv/eng/catalog.search#/metadata/c1ca41ec-430b-41f1-96d9-42265ceec31c
+#### SCANSII Double platform: https://gis.ices.dk/geonetwork/srv/eng/catalog.search#/metadata/04cdd959-d36b-4f6e-b3e7-622268d719b1
+
+
+# further inspection on particular species (e.g., 137111, 148736, and 343989) -- how old are they? where are they?
+middle_observation_species <- df2 %>%
+  dplyr::filter(AphiaID %in% c("13711", "148736", "343989"))
 View(particular_species)
 
 #### *** note: the surveys for these species are spread between surveys that are from 1994, 1995, and 2009
@@ -181,17 +197,17 @@ View(particular_species)
 #### SCANS 1994: https://gis.ices.dk/geonetwork/srv/eng/catalog.search#/metadata/c1ca41ec-430b-41f1-96d9-42265ceec31c
 #### SCANSII Double platform: https://gis.ices.dk/geonetwork/srv/eng/catalog.search#/metadata/04cdd959-d36b-4f6e-b3e7-622268d719b1
 
-# subset for data that have complete taxonomic names
-species <- genus_species %>%
-  # detect full taxonomic names
-  dplyr::filter(stringr::str_detect(string = species_name,
-                                    pattern = " ")) %>%
-  # to have geometries, set as simple feature in WGS84
-  sf::st_as_sf(x = .,
-               wkt = "wkt_point",
-               crs = 4326) %>%
-  # get the common name convention
-  dplyr::mutate(common_name = worrms::wm_common_id_(id = worms_ids))
+# # subset for data that have complete taxonomic names
+# species <- genus_species %>%
+#   # detect full taxonomic names
+#   dplyr::filter(stringr::str_detect(string = species_name,
+#                                     pattern = " ")) %>%
+#   # to have geometries, set as simple feature in WGS84
+#   sf::st_as_sf(x = .,
+#                wkt = "wkt_point",
+#                crs = 4326) %>%
+#   # get the common name convention
+#   dplyr::mutate(common_name = worrms::wm_common_id_(id = worms_ids))
 
 
 ##############

@@ -48,8 +48,7 @@ output_dir <- "data/b_intermediate_data"
 study_area <- rbind(c("point", -4.4454, 50.9954),
                     c("point", 12.0059, 50.9954),
                     c("point", 12.0059, 61.0170),
-                    c("point", -4.4454, 61.0170),
-                    c("point", -4.4454, 50.9954)) %>%
+                    c("point", -4.4454, 61.0170)) %>%
   # convert to data frame
   as.data.frame() %>%
   # rename column names
@@ -72,14 +71,25 @@ study_area <- rbind(c("point", -4.4454, 50.9954),
   # convert to polygon simple feature
   sf::st_cast("POLYGON") %>%
   # convert back to sf
-  sf::st_as_sf()
+  sf::st_as_sf() %>%
+  sf::st_make_valid()
 
 #####################################
 
 # export the data
+# sf::st_write(obj = study_area,
+#              # destination as a parquet file
+#              dsn = file.path(output_dir,
+#                              "study_area.gpkg"),
+#              layer = "north_sea",
+#              # the driver to use
+#              driver = "Parquet",
+#              append = F)
+
 sf::st_write(obj = study_area,
-             # destination as a parquet file
              dsn = file.path(output_dir,
-                             "study_area.parquet"),
-             # the driver to use
-             driver = "Parquet")
+                             "study_area.gpkg"),
+             layer = "north_sea",
+             append = F)
+
+sf::st_layers(dsn = file.path(output_dir, "study_area.gpkg"))

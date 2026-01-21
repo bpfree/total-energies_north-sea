@@ -8,3 +8,8 @@ data/
 
 # ignore miscellaneous Mac files
 .DS_Store
+
+# ignore miscellaneous code
+code/mapping.R
+code/XX_miscellaneous_cetaceans.R
+code/XX_whale_hotspots.R

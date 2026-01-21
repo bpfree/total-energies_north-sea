@@ -148,7 +148,7 @@ table <- df2 %>%
                                             "137100" = "Atlantic white-sided dolphin",
                                             "137101" = "White-beaked dolphin",
                                             "137102" = "Orca",
-                                            "137111" = "Common bottlenose dolphim",
+                                            "137111" = "Common bottlenose dolphin",
                                             "137117" = "Harbour porpoise",
                                             # "137121" = "Sowerby's beaked whale",
                                             # "148724" = "Mysticeti", # baleen whales
@@ -169,7 +169,7 @@ View(inspection)
 test <- table %>%
   dplyr::select(worms_id, species_name, common_name) %>%
   janitor::tabyl(species_name)
-  
+View(test)
 
 # get species that have fewer than 5 reports
 few_sightings <- inspection %>%

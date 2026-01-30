@@ -1,6 +1,6 @@
-##########################
+####################
 ### XX. seagrass ###
-##########################
+####################
 
 # Clear environment
 rm(list = ls())
@@ -68,7 +68,7 @@ client <- odp::odp_client(api_key = odp_api_key)
 #####################################
 #####################################
 
-# load in dataset (see https://app.hubocean.earth/) -- ICES cetaceans surveys
+# load in dataset (see https://app.hubocean.earth/) -- seagrass
 dataset <- client$dataset(odp_data)
 
 # generate table (defaults to the first table in the dataset)
@@ -89,11 +89,36 @@ str(df)
 
 ##############
 
+# test <- sf::st_read(dsn = "data/a_raw_data/wcmc_seagrass/01_Data/WCMC013_014_Seagrasses_Py_v7_1.shp")
+# test2 <- sf::st_read(dsn = "data/a_raw_data/7199f9bc-96ae-49d1-a814-df8c4bcc7552.parquet")
 
+data <- df %>%
+  janitor::clean_names() %>%
+  # convert the WKB geometry field to a more user friendly geomtry field
+  dplyr::mutate(geometry = sf::st_as_sfc(structure(as.list(geometry), class = "WKB"))) %>%
+  sf::st_as_sf()
+
+View(data)
+class(data)
+
+
+region_data <- df %>%
+  # obtain only seagrass in the study area
+  rmapshaper::ms_clip(target = .,
+                      clip = region) %>%
+  # create field called "layer" and fill with "seagrass" for summary
+  dplyr::mutate(layer = "seagrass")
 
 ##############
 
-
+# seagrass hex grids
+region_data_hex <- hex_grid[region_data, ] %>%
+  # spatially join seagrass values to North Sea hex cells
+  sf::st_join(x = .,
+              y = region_data,
+              join = st_intersects) %>%
+  # select fields of importance
+  dplyr::select(index, layer)
 
 ##############
 

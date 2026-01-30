@@ -1,12 +1,19 @@
-coords <- h3::road_safety_greater_manchester[1:2, ]
+data <- h3::road_safety_greater_manchester
+View(data)
+
+coords <- h3::road_safety_greater_manchester[1:5, ]
+coords
 
 # Binning
-h3_index <- h3::geo_to_h3(h3::road_safety_greater_manchester)
+h3_index <- h3::geo_to_h3(h3::road_safety_greater_manchester, res = 12)
+h3_index
 tbl <- table(h3_index) %>%
   tibble::as_tibble()
 hexagons <- h3::h3_to_geo_boundary_sf(tbl$h3_index) %>%
   dplyr::mutate(index = tbl$h3_index, accidents = tbl$n)
 head(hexagons)
+
+plot(hexagons$geometry)
 
 library(leaflet)
 

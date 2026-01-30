@@ -96,20 +96,30 @@ data <- df %>%
   janitor::clean_names() %>%
   # convert the WKB geometry field to a more user friendly geomtry field
   dplyr::mutate(geometry = sf::st_as_sfc(structure(as.list(geometry), class = "WKB"))) %>%
-  sf::st_as_sf()
+  sf::st_as_sf(crs = 4326)
 
 View(data)
 class(data)
 
+ns <- mregions2::gaz_search(36317) %>%
+  # return geometry
+  mregions2::gaz_geometry() %>%
+  sf::st_make_valid() %>%
+  sf::st_transform(crs = 4326)
 
-region_data <- df %>%
+region_data <- data %>%
   # obtain only seagrass in the study area
   rmapshaper::ms_clip(target = .,
-                      clip = region) %>%
+                      clip = ns) %>%
   # create field called "layer" and fill with "seagrass" for summary
-  dplyr::mutate(layer = "seagrass")
+  dplyr::mutate(layer = "seagrass") %>%
+  dplyr::select(layer, geometry) %>%
+  sf::st_make_valid()
 
 ##############
+
+hex_dir <- "data/b_intermediate_data/study_area.gpkg"
+hex_grid <- sf::st_read(dsn = hex_dir, layer = "ns_hexes_full")
 
 # seagrass hex grids
 region_data_hex <- hex_grid[region_data, ] %>%
@@ -118,9 +128,9 @@ region_data_hex <- hex_grid[region_data, ] %>%
               y = region_data,
               join = st_intersects) %>%
   # select fields of importance
-  dplyr::select(index, layer)
+  dplyr::select(h3_index, layer)
 
 ##############
 
 # export data
-
+sf::st_write(obj = region_data_hex, dsn = "data/c_hex_data/data_ns_hex.gpkg")

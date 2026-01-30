@@ -9,7 +9,7 @@
 
 ## The North Sea data is obtained from:
 # https://github.com/AquaAuma/FishGlob_data/blob/main/outputs/Cleaned_data/NS-IBTS_clean.RData
-load(file = file.path("data/a_raw_data/fisheries", "NS-IBTS_clean.RData")); norsea = data; rm(data)
+load(file = fs::path("data/a_raw_data/fisheries", "NS-IBTS_clean.RData")); norsea = data; rm(data)
 
 table(norsea$month)
 

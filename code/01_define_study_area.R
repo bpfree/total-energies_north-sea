@@ -79,7 +79,7 @@ study_area <- rbind(c("point", -4.4454, 50.9954),
 # export the data
 # sf::st_write(obj = study_area,
 #              # destination as a parquet file
-#              dsn = file.path(output_dir,
+#              dsn = fs::path(output_dir,
 #                              "study_area.gpkg"),
 #              layer = "north_sea",
 #              # the driver to use
@@ -87,9 +87,9 @@ study_area <- rbind(c("point", -4.4454, 50.9954),
 #              append = F)
 
 sf::st_write(obj = study_area,
-             dsn = file.path(output_dir,
-                             "study_area.gpkg"),
-             layer = "north_sea",
+             dsn = fs::path(output_dir,
+                            "study_area.gpkg"),
+             layer = "ns_boundary",
              append = F)
 
-sf::st_layers(dsn = file.path(output_dir, "study_area.gpkg"))
+sf::st_layers(dsn = fs::path(output_dir, "study_area.gpkg"))

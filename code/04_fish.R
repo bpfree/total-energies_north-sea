@@ -46,12 +46,12 @@ output_dir <- "data/b_intermediate_data"
 
 data <- terra::rast(fs::path(data_dir, "fish_north-sea_richness_present_day", ext = "tiff"))
 
-study_area <- sf::st_read(dsn = file.path(output_dir, "study_area.gpkg"), layer = "north_sea") %>%
+study_area <- sf::st_read(dsn = fs::path(output_dir, "study_area.gpkg"), layer = "north_sea") %>%
   sf::st_transform(x = .,
                    crs = crs(data))
 
 plot(study_area)
-sf::st_layers(dsn = file.path(output_dir, "study_area.gpkg"))
+sf::st_layers(dsn = fs::path(output_dir, "study_area.gpkg"))
 
 #####################################
 #####################################
@@ -67,4 +67,4 @@ plot(ns_fish)
 #####################################
 #####################################
 
-terra::writeRaster(x = ns_fish, filename = file.path(output_dir, "ns_fish.grd"), overwrite = T)
+terra::writeRaster(x = ns_fish, filename = fs::path(output_dir, "ns_fish.grd"), overwrite = T)

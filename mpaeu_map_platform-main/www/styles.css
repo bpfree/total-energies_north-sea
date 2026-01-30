@@ -1,0 +1,564 @@
+/* css styles */
+
+/* Grid style */
+.colordiv {
+  background-color: #f6f6f6;
+  position: relative;
+}
+
+.gridalt {
+ gap: 0;
+}
+.gridaltsm {
+ gap: 0.05;
+}
+
+/* Tabs */
+.nav-tabs {
+    border-bottom: 0px solid #ec279b;
+    background: #168aad;
+}
+
+.nav-tabs .nav-item {
+    margin-top: 0;
+    border: 0px;
+    border-radius: 0;
+}
+
+a#tabset-1-1-tab {
+    background: #184e77;
+}
+a#tabset-1-2-tab {
+    background: #1e6091;
+}
+a#tabset-1-3-tab {
+    background: #1a759f;
+}
+a#tabset-1-4-tab {
+    background: #168aad;
+}
+
+.nav-link {
+    display: block;
+    padding: .5rem 1rem;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: smaller;
+    font-weight: 600;
+    -webkit-text-decoration: none;
+    -moz-text-decoration: none;
+    -ms-text-decoration: none;
+    -o-text-decoration: none;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out
+}
+
+.nav-tabs .nav-link {
+    margin-bottom: 0px;
+    background: none;
+    border: 0px;
+    border-radius: 0;
+}
+
+.nav-tabs .nav-link.active,.nav-tabs .nav-item.show .nav-link {
+    color: #184e77;
+    background-color: #f6f6f6 !important;
+    border: 0px;
+    border-radius: 0;
+}
+
+.nav-link:hover,.nav-link:focus {
+    color: #57D8FF;
+    border: 0px;
+    border-radius: 0;
+}
+
+.tab-content {
+    margin-top: 0px;
+    border-left: #dee2e6 0px solid;
+    border-right: #dee2e6 0px solid;
+    border-bottom: #dee2e6 0px solid;
+    margin-left: 0;
+    padding: 0.2em;
+    margin-bottom: 0.2em
+}
+
+/* Input div classes */
+.itdiv_class .shiny-input-select {
+   font-style: italic;
+}
+
+.scenario_class {
+  font-size: 11px;
+  margin: 0;
+}
+
+.scenario_class .selectize-input {
+  font-size: 11px;
+  margin: 0;
+}
+
+.scenario_class .selectize-dropdown,
+.scenario_class .selectize-input,
+.scenario_class .selectize-input input {
+  font-size: 11px;
+  margin: 0;
+}
+
+.bottom-container {
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 6em;
+  margin-right: 1em;
+}
+
+
+/* Selectize controlers */
+.selectize-control.single .selectize-input:after {
+  border-color: #cccccc transparent transparent transparent;
+}
+.selectize-control.single .selectize-input.dropdown-active:after {
+  border-color: transparent transparent #cccccc transparent;
+}
+.selectize-input {
+    border: 1px solid #cccccc;
+    background-color: #00000000 !important;
+    border-radius: 0.2em;
+}
+
+.form-group.shiny-input-container {
+  margin-bottom: 5px;
+}
+
+.form-label, .shiny-input-container .control-label {
+  margin-bottom: .01rem;
+}
+
+
+/* Others */
+.tabdiv {
+    min-height: 500px;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+    margin-top: 0.5em;
+}
+
+.material-symbols-outlined {
+  display: inline-flex;
+  vertical-align: top;
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
+}
+
+/* Titles and context */
+#species_title {
+  margin-top: 0.3em;
+  color: #184e77;
+  font-size: 25px;
+  font-weight: 600;
+  font-style: italic;
+}
+
+#thermal_species_title {
+  margin-top: 0.3em;
+  color: #1e6091;
+  font-size: 25px;
+  font-weight: 600;
+  font-style: italic;
+}
+
+#habitat_title {
+  margin-top: 0.3em;
+  color: #1a759f;
+  font-size: 25px;
+  font-weight: 600;
+  font-style: italic;
+}
+
+#diversity_title {
+  margin-top: 0.3em;
+  color: #168aad;
+  font-size: 25px;
+  font-weight: 600;
+  font-style: italic;
+}
+
+.context_info {
+  margin-top: 0.3em;
+  color: #545454;
+  font-size: 12px;
+}
+
+.context-icons {
+  color: #545454;
+  font-size: 11px;
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 1em;
+}
+
+.context-icons-box {
+  cursor: pointer;
+  padding: 5px;
+}
+
+
+/* Sections */
+.body-section {
+  margin-right: 2em;
+  margin-left: 2em;
+  margin-top: 2em;
+}
+
+.body-title {
+  margin-top: 0.3em;
+  color: #184e77;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.body-text {
+  margin-top: 0.3em;
+  color: #545454;
+  font-size: 14px;
+}
+
+.methods-div {
+  margin-top: 2em;
+  padding: 2em;
+  padding-top: 1em;
+  color: #545454;
+  background-color: #f6f6f6;
+}
+
+.footer-div {
+  margin-top: 0em;
+  margin-bottom: -2em;
+  font-size: 12px;
+  padding: 2em;
+  padding-top: 1em;
+  color: #ffffff;
+  background-color: #184e77;
+}
+
+#footer-links a {
+  font-size: 12px;
+  color: #B2EDFA;
+  text-decoration: none;
+}
+
+#footer-credits {
+  font-size: 9px;
+}
+
+
+
+/* Leaflet */
+.leaflet-touch .leaflet-bar {
+    border: none;
+    border-bottom: 0px;
+}
+
+.leaflet-touch .leaflet-control-layers {
+  border: none;
+  border-bottom: 0px;
+}
+
+.leaflet-touch .leaflet-bar a:first-child {
+	border-top-left-radius: 6px;
+	border-top-right-radius: 6px;
+}
+.leaflet-touch .leaflet-bar a:last-child {
+	border-bottom-left-radius: 6px;
+	border-bottom-right-radius: 6px;
+}
+	
+.leaflet-bar button:last-of-type {
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    border-bottom: none;
+}
+.leaflet-bar button:first-of-type {
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+
+.leaflet-bar a, .leaflet-bar a:hover {
+  border-bottom: 0px;
+}
+
+a#leafletEasyPrint {
+  border-bottom-left-radius: 6px !important;
+  border-bottom-right-radius: 6px !important;
+  border-top-left-radius: 6px !important;
+	border-top-right-radius: 6px !important;
+  /*background-color: rgb(0,0,0,0);*/
+}
+
+a:hover#leafletEasyPrint {
+  border-bottom-left-radius: 6px !important;
+  border-bottom-right-radius: 6px !important;
+  border-top-left-radius: 6px !important;
+	border-top-right-radius: 6px !important;
+  /*background-color: rgb(0,0,0,0);*/
+}
+
+.easyPrintHolder .easyPrintSizeMode:last-child a {
+  border-bottom-left-radius: 6px !important;
+  border-bottom-right-radius: 6px !important;
+  border-top-left-radius: 6px !important;
+	border-top-right-radius: 6px !important;
+}
+
+
+a.leaflet-buttons-control-button {
+  border-bottom-left-radius: 6px !important;
+  border-bottom-right-radius: 6px !important;
+  border-top-left-radius: 6px !important;
+	border-top-right-radius: 6px !important;
+}
+
+/*
+a.A4Portrait, a.A4Landscape, a.CurrentSize {
+  background-color: rgb(0,0,0,0);
+}
+*/
+
+.graphDiv {
+  display: none;
+  position: absolute;
+  top: 50px;
+  right: 20px;
+  z-index: 1000;
+  background-color: white;
+  padding: 10px;
+  border-radius: 8px;
+  color: grey;
+  font-size: 10px;
+}
+
+.graphDivButton {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  border: none;
+  background-color: transparent;
+  font-size: 18px; 
+  cursor: pointer;
+}
+
+.checkDiv {
+  position: absolute;
+  bottom: 1px;
+  left: 50px;
+  z-index: 900;
+  padding: 1px;
+  border-radius: 8px;
+  color: white;
+  font-size: 12px;
+}
+
+.sideDiv {
+  position: absolute;
+  bottom: 45px;
+  left: 1%;
+  z-index: 1000;
+  padding: 2px;
+  border-radius: 3px;
+  color: #184e77;
+  background-color: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.sideDivRight {
+  position: absolute;
+  bottom: 45px;
+  right: 1%;
+  z-index: 1000;
+  padding: 2px;
+  border-radius: 3px;
+  color: #184e77;
+  background-color: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
+  font-weight: bold;
+}
+
+
+/* Waiting div */
+.busyDiv {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 3000;
+  background-color: white;
+  color: #545454;
+  font-size: 20px;
+}
+
+a {
+  text-decoration: none !important;
+  color: #168aad;
+}
+
+
+/* Buttons */
+.extra-button {
+   display: inline-block;
+   padding: 5px;
+   border: 2px solid #184e77; /* Blue outline */
+   background-color: transparent; /* No background */
+   color: #184e77; /* Text color same as outline */
+   font-weight: bold; /* Bold text */
+   text-align: center; /* Center the text */
+   vertical-align: middle; /* Center the text vertically */
+   transition: all 0.3s ease; /* Fading animation on hover */
+   cursor: pointer; /* Pointer cursor on hover */
+   font-size: 14px;
+}
+
+.extra-button:hover {
+    background-color: transparent; /* Background color on hover */
+    border: 2px solid #168aad; /* Blue outline */
+    color: #168aad; /* Text color on hover */
+}
+
+.download-button {
+   display: inline-block;
+   padding: 5px;
+   border: 2px solid #0F7861; /* Blue outline */
+   background-color: transparent; /* No background */
+   color: #0F7861; /* Text color same as outline */
+   font-weight: bold; /* Bold text */
+   text-align: center; /* Center the text */
+   vertical-align: middle; /* Center the text vertically */
+   transition: all 0.3s ease; /* Fading animation on hover */
+   cursor: pointer; /* Pointer cursor on hover */
+   font-size: 14px;
+}
+
+.download-button:hover {
+    background-color: transparent; /* Background color on hover */
+    border: 2px solid #14BD99; /* Blue outline */
+    color: #14BD99; /* Text color on hover */
+}
+
+.extra-buttons-cont {
+    display: flex;
+    justify-content: center; /* Center the buttons horizontally */
+    gap: 50px; /* Space between buttons */
+}
+
+/* Json visualizer */
+
+.jse-menu.svelte-497ud4 {
+  background: #184e77 !important;
+  border-bottom: 0px !important;
+}
+
+button.jse-button.jse-group-button.jse-selected.svelte-497ud4 {
+  color: #184e77 !important;
+}
+
+/* Extra control species tab */
+.ecsp-controls {
+  display: flex;
+  min-height: 45px;
+  font-size: 14px;
+  justify-content: flex-start;
+  /*justify-content: space-between;*/
+  /* max-width: 400px; */
+  margin: 0 auto;
+  background: #f6f6f6;
+  /* padding: 10px 0; */
+}
+
+.ecsp-controls .form-group.shiny-input-container {
+  display: flex;
+  justify-content: start;
+  margin-right: 2px;
+  margin-left: 25px;
+  /* max-width: 400px; */
+  /* margin: -1px auto; */
+  /* padding-right: 10px; */
+}
+
+.ecsp-controls .shiny-input-container .control-label {
+  margin-bottom: 0px;
+  align-content: space-evenly;
+  margin-right: 10px;
+}
+
+.ecsp-controls .shiny-input-select.selectize-control.single.plugin-selectize-plugin-a11y {
+  padding-top: 4px;
+  min-width: 110%;
+}
+
+.ecsp-controls .form-switch {
+  padding-left: 10px;
+  padding-top: 10px;
+}
+
+.ecsp-controls .form-switch .form-check-input {
+  margin-left: -5px;
+} 
+
+.ecsp-controls .selectize-control.single .selectize-input:not(.no-arrow):after {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 50%;
+  right: 4px;
+  margin-top: -3px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 5px 5px 0 5px;
+  border-color: #333 transparent transparent transparent;
+}
+
+@media (max-width: 830px) {
+  .ecsp-controls {
+    display: block !important;
+  }
+
+  .ecsp-controls .shiny-input-select.selectize-control.single.plugin-selectize-plugin-a11y {
+    padding-top: 4px;
+    min-width: 100%;
+  }
+
+  .ecsp-controls .form-switch .form-check-input {
+    margin-left: -10px;
+  } 
+
+  .ecsp-controls .form-group.shiny-input-container {
+    width: 300px !important;
+  }
+}
+
+.spinner--1 {
+  border-top: 4px solid #8e929a!important;
+  color: #8e929a !important;
+}
+
+.loader {
+  width: 48px;
+  height: 48px;
+  border: 5px solid #1e6091;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+  }
+
+  @keyframes rotation {
+  0% {
+      transform: rotate(0deg);
+  }
+  100% {
+      transform: rotate(360deg);
+  }
+} 

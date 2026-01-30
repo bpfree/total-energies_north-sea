@@ -1,0 +1,89 @@
+::: {.tabdiv}
+
+```{r}
+# Load/set options ----
+
+# Add selectors ----
+spThermSelectLab <- htmltools::div(htmltools::span(
+  "Search species", actionButton("filterThermalSpecies", htmltools::HTML('<span><i class="bi bi-funnel"></i> Filter</span>'), style = "border: 0; font-size: 12px; margin-left: 10px; background: none;")
+))
+
+# Species selector
+tags$div(
+  id = 'italic_div_thermal',
+  class = 'itdiv_class',
+  selectizeInput(
+    inputId = "speciesSelectThermal",
+    label = spThermSelectLab,
+    choices = c("Select one" = ""),
+    multiple = FALSE
+  )
+)
+
+# Add contextual information ----
+tags$div(
+  id = "thermal_species_title",
+  class = "rtitle_class",
+  textOutput("selectedSpeciesThermal")
+)
+
+tags$div(
+  id = "context_info_thermal",
+  class = "context_info",
+  htmlOutput("contextSpeciesThermal")
+)
+```
+
+<div class="bottom-container"> 
+::: {.grid .gridaltsm}
+
+::: {.g-col-6}
+```{r}
+tags$div(
+  id = "scenario_box_thermal",
+  class = "scenario_class",
+      selectInput(
+        inputId = "scenarioSelectThermal",
+        label = "Scenario",
+        choices = scenario_options
+      ))
+```
+
+:::
+
+::: {.g-col-6}
+```{r}
+tags$div(
+  id = "scenario_box_thermal",
+  class = "scenario_class",
+      selectInput(
+        inputId = "periodSelectThermal",
+        label = "Period",
+        choices = period_options
+      ))
+```
+
+:::
+
+:::
+</div>
+
+<div class="context-icons">
+
+```{r}
+button <- htmltools::tags$span(
+  bsicons::bs_icon("download"),
+  "DOWNLOAD THE DATA",
+  style = "color: #545454 !important;"
+)
+htmltools::div(
+  downloadLink("downloadDataThermal", label = button),
+  class = "context-icons-box"
+)
+```
+
+<div class="context-icons-box" onclick="location.href='https://github.com/iobis/mpaeu_sdm/blob/main/codes/model_thermal.R';">{{< fa brands github >}} ACCESS THE CODE</div>
+
+</div>
+
+:::

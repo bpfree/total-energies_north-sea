@@ -1,0 +1,129 @@
+::: {.tabdiv}
+
+```{r}
+# Load/set options ----
+
+# Set model option
+model_options <- c(#"BRT" = "brt", 
+                  "MAXENT" = "maxent", "Random Forest" = "rf_classification_ds", 
+                  "XGBoost" = "xgboost", #"GLM" = "glm",
+                  #  "Elasticnet" = "elasticnet", 
+                  "Ensemble" = "ensemble")
+scenario_options <- c("Current", "SSP1" = "ssp126", "SSP2" = "ssp245",
+                      "SSP3" = "ssp370", "SSP4" = "ssp460", "SSP5" = "ssp585")
+period_options <- c(2050, 2100)
+
+# Add selectors ----
+spSelectLab <- htmltools::div(htmltools::span(
+  "Search species", actionButton("filterSpecies", htmltools::HTML('<span><i class="bi bi-funnel"></i> Filter</span>'), style = "border: 0; font-size: 12px; margin-left: 10px; background: none;")
+))
+
+# Species selector
+tags$div(
+  id = 'italic_div',
+  class = 'itdiv_class',
+  selectizeInput(
+    inputId = "speciesSelect",
+    label = spSelectLab,#"Search species",
+    choices = c("Select one" = ""),
+    multiple = FALSE
+  )
+)
+
+
+
+# Add contextual information ----
+tags$div(
+  id = "species_title",
+  class = "rtitle_class",
+  textOutput("selectedSpecies")
+)
+
+tags$div(
+  id = "context_info",
+  class = "context_info",
+  htmlOutput("contextSpecies")
+)
+```
+
+<div class="bottom-container"> 
+::: {.grid .gridaltsm}
+
+::: {.g-col-5}
+```{r}
+tags$div(
+  id = "scenario_box",
+  class = "scenario_class",
+  selectInput(
+        inputId = "modelSelect",
+        label = "Model",
+        choices = model_options
+      ))
+```
+:::
+
+::: {.g-col-4}
+```{r}
+conditionalPanel("input.speciesSelect != ''",
+                 tags$div(
+                    id = "scenario_box",
+                    class = "scenario_class",
+                     selectInput(
+                       inputId = "scenarioSelect",
+                       label = "Scenario",
+                       choices = scenario_options
+                     )))
+```
+
+:::
+
+::: {.g-col-3}
+```{r}
+conditionalPanel("input.scenarioSelect != 'Current'",
+                 tags$div(
+                     id = "scenario_box",
+                     class = "scenario_class",
+                     selectInput(
+                       inputId = "periodSelect",
+                       label = "Period",
+                       choices = period_options
+      )))
+```
+
+:::
+
+:::
+</div>
+
+<div class="context-icons">
+
+```{r}
+button <- htmltools::tags$span(
+  bsicons::bs_icon("download"),
+  "DOWNLOAD THE DATA",
+  style = "color: #545454 !important;"
+)
+htmltools::div(
+  actionLink("downloadDataSpecies", label = button),
+  class = "context-icons-box"
+)
+```
+
+<div class="context-icons-box" onclick="location.href='https://github.com/iobis/mpaeu_sdm/blob/main/codes/model_fit.R';">{{< fa brands github >}} ACCESS THE CODE</div>
+
+```{r}
+button <- htmltools::tags$span(
+  bsicons::bs_icon("play-fill"),
+  "RUN THE MODEL",
+  style = "color: #545454 !important;"
+)
+htmltools::div(
+  actionLink("runModelSpecies", label = button),
+  class = "context-icons-box"
+)
+```
+
+</div>
+
+
+:::

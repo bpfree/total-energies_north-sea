@@ -1,0 +1,210 @@
+---
+title: "MPA Europe map platform"
+format: 
+  html:
+    page-layout: custom
+    header-includes: |
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+      <style> @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap'); #title-block-header { display: none;} #quarto-content>* {padding-top: 0px;} </style>
+      <link rel="shortcut icon" href="www/favicon.ico"/>
+mainfont: Montserrat
+server: shiny
+---
+
+<!-- Add the top grid (map on the left, tabs on the right) --->
+
+::: {.grid .column-screen .gridalt}
+
+::: {.g-col-md-8 .g-col-12}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+# Load other packages that will be used
+library(shiny)
+library(plotly)
+library(leaflet)
+library(leaflet.extras)
+library(leaflet.extras2)
+library(leaflet.providers)
+
+includeCSS("www/styles.css")
+includeScript("www/addons.js")
+waiter::useWaiter()
+# 
+shiny_busy <- function() {
+  # use &nbsp; for some alignment, if needed
+  HTML(paste0(
+    '<div class = "busyDiv" data-display-if="',
+    '$(&#39;html&#39;).attr(&#39;class&#39;)==&#39;shiny-busy&#39;',
+    '">',"Loading/processing data...",
+    '<i class="fa fa-spinner fa-pulse fa-fw" style="color:#1a759f"></i>',
+    '</div>'
+  ))
+}
+```
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+#| out-width: 100%
+# Create a div to show messages if busy
+#shiny_busy() #try to remove global busy
+
+# Create a sample graph div with a close button
+graph_div <- htmltools::tags$div(
+  id = "graphDiv",
+  class = "graphDiv",
+  htmltools::tags$button(
+    onclick = "hideGraphDiv()",
+    class = "graphDivButton",
+    htmltools::tags$span(class="material-symbols-outlined", "close")),
+    htmltools::tags$div(
+      style = "width: 200px; height: 300px;",
+      htmltools::tags$div(
+        htmlOutput("contextMapText"),
+        plotOutput("contextMap"))
+      )
+  )
+
+check_div <- htmltools::tags$div(
+  id = "checkDiv",
+  class = "checkDiv",
+  conditionalPanel("input.scenarioSelect != 'Current'",
+                 tags$div(
+                     id = "sideside_box",
+                     class = "sideside_class",
+                     checkboxInput(
+                       inputId = "sideSelect",
+                       label = "Split map viewer"
+      )))
+)
+
+side_div <- htmltools::tags$div(
+  id = "sideDiv",
+  class = "sideDiv",
+  conditionalPanel("input.sideSelect == true",
+                 tags$div(
+                     id = "sidetext_box",
+                     class = "sidetext_class",
+                     "Current"))
+)
+
+side_div_right <- htmltools::tags$div(
+  id = "sideDivRight",
+  class = "sideDivRight",
+  conditionalPanel("input.sideSelect == true",
+                 tags$div(
+                     id = "sidetext_box_r",
+                     class = "sidetext_class_r",
+                     "Future"))
+)
+  
+# Combine Leaflet map and graph div
+combined <- htmltools::tags$div(
+  style = "position: relative;",
+  htmltools::browsable(leafletOutput("mainMap", height = 600)),
+  graph_div,
+  check_div,
+  side_div, side_div_right
+)
+
+combined
+```
+:::
+
+::: {.g-col-md-4 .g-col-12 .colordiv}
+::: {.panel-tabset}
+
+## SPECIES
+
+{{< include quarto_components/_species.qmd >}}
+
+
+## THERMAL RANGE
+
+{{< include quarto_components/_thermal.qmd >}}
+
+
+## HABITAT
+
+{{< include quarto_components/_habitat.qmd >}}
+
+
+## DIVERSITY
+
+{{< include quarto_components/_diversity.qmd >}}
+
+
+:::
+:::
+
+:::
+
+
+<!-- HERE STARTS THE SECOND SECTION - GRAPHS, AND ETC -->
+
+{{< include quarto_components/_modelinfo.qmd >}}
+
+<!-- METHODS AND FOOTER SECTION -->
+
+{{< include quarto_components/_footer.qmd >}}
+
+```{r}
+#| context: server-start
+
+# Settings ----
+debug = T # Set here to TRUE to see debugging messages
+
+# Load server start
+source("components/serverstart.R", local = TRUE)
+```
+
+```{r}
+#| context: server
+# This is the code that is executed on the server
+
+### Map renders ----
+source("components/maprenders.R", local = TRUE)
+
+### Tab actions ----
+source("components/tabactions.R", local = TRUE)
+
+### Tab contexts ----
+source("components/tabcontexts.R", local = TRUE)
+
+### Options -----
+source("components/updateoptions.R", local = TRUE)
+
+### User input info ----
+source("components/selectinfo.R", local = TRUE)
+
+### Load accessory data -----
+source("components/dataloaders.R", local = TRUE)
+
+### Map reactive -----
+source("components/mapreactive.R", local = TRUE)
+
+### Map mask ----
+source("components/mapmask.R", local = TRUE)
+
+### Thermal data updater ----
+source("components/thermaldata.R", local = TRUE)
+
+### Diversity data updater ----
+source("components/diversitydata.R", local = TRUE)
+  
+### Contextual info ----
+source("components/contextualinfo.R", local = TRUE)
+
+### Info renders ----
+source("components/renders.R", local = TRUE)
+
+### Downloads ----
+source("components/downloads.R", local = TRUE)
+
+### Extra info ----
+source("components/extrainfo.R", local = TRUE)
+
+### Drawing context info ----
+source("components/extrainfomaps.R", local = TRUE)
+```

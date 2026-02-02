@@ -87,10 +87,34 @@ names(df)
 View(df)
 str(df)
 
-##############
+#####################################
 
-# test <- sf::st_read(dsn = "data/a_raw_data/wcmc_seagrass/01_Data/WCMC013_014_Seagrasses_Py_v7_1.shp")
-# test2 <- sf::st_read(dsn = "data/a_raw_data/7199f9bc-96ae-49d1-a814-df8c4bcc7552.parquet")
+# # load in dataset (see https://app.hubocean.earth/) -- seagrass
+# dataset_full <- client$dataset(odp_data)
+# 
+# # generate table (defaults to the first table in the dataset)
+# table_full <- dataset_full$table
+# schema_full <- table_full$schema()
+# 
+# # query -- by boundary box
+# ## returns a cursor that streams rows lazily
+# cursor_full <- table_full$select()
+# 
+# # fetch table into a dataframe that you can use for analysis
+# df_full <- cursor_full$dataframe()
+# 
+# dim(df_full)
+# names(df_full)
+# View(df_full)
+# str(df_full)
+# 
+# data_full <- df_full %>%
+#   janitor::clean_names() %>%
+#   # convert the WKB geometry field to a more user friendly geomtry field
+#   dplyr::mutate(geometry = sf::st_as_sfc(structure(as.list(geometry), class = "WKB"))) %>%
+#   sf::st_as_sf(crs = 4326)
+
+##############
 
 data <- df %>%
   janitor::clean_names() %>%
@@ -101,11 +125,7 @@ data <- df %>%
 View(data)
 class(data)
 
-ns <- mregions2::gaz_search(36317) %>%
-  # return geometry
-  mregions2::gaz_geometry() %>%
-  sf::st_make_valid() %>%
-  sf::st_transform(crs = 4326)
+ns <- sf::st_read(dsn = fs::path(output_dir, "study_area.gpkg"), layer = "greater_north_sea")
 
 region_data <- data %>%
   # obtain only seagrass in the study area
@@ -133,4 +153,8 @@ region_data_hex <- hex_grid[region_data, ] %>%
 ##############
 
 # export data
-sf::st_write(obj = region_data_hex, dsn = "data/c_hex_data/data_ns_hex.gpkg")
+# sf::st_write(obj = data_full, dsn = "data/b_intermediate_data/habitats.gpkg", layer = "seagrass", append = T)
+sf::st_write(obj = region_data, dsn = "data/b_intermediate_data/habitats.gpkg", layer = "seagrass_ns", append = T)
+sf::st_write(obj = region_data_hex, dsn = "data/c_hex_data/data_ns_hex.gpkg", layer = "seagrass_hex", append = T)
+
+sf::st_layers(dsn = "data/b_intermediate_data/habitats.gpkg")

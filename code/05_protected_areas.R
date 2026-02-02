@@ -42,6 +42,7 @@ pacman::p_load(dplyr,
 ### boundary box for the study region
 bbox <- 'geometry within "POLYGON((-4.4454 50.9954, 12.0059 50.9954, 12.0059 61.0170, -4.4454 61.0170, -4.4454 50.9954))"'
 odp_data <- "6fdd5db8-4866-4634-9011-d7591ae7ddc4"
+layer <- "protected_areas"
 
 #####################################
 #####################################

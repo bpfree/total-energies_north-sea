@@ -82,17 +82,22 @@ sf::st_crs(x = data)
 head(data)
 names(data)
 
+moray <- data |>
+  dplyr::filter(stringr::str_detect(title, "Moray"))
+
+mapview::mapview()
+
 # ggplot(data = data) +
 #   geom_sf()
 
-sr <- sf::st_read(dsn = fs::path(output_dir, "study_area.gpkg"),
+north_sea <- sf::st_read(dsn = fs::path(output_dir, "study_area.gpkg"),
                             layer = "greater_north_sea")
 
-sf::st_crs(x = sr)
+sf::st_crs(x = north_sea)
 
-mapview::mapview(sr)
+mapview::mapview(north_sea)
 
-# ggplot(data = sr) +
+# ggplot(data = north_sea) +
 #   geom_sf()
 
 #####################################
@@ -102,37 +107,39 @@ mapview::mapview(sr)
 ## need to change off spherical geometry for the "clip" to work
 # sf_use_s2(FALSE)
 
-test2 <- data %>%
+data_region <- data %>%
   rmapshaper::ms_clip(target = .,
-                      clip = sr) %>%
+                      clip = north_sea) %>%
   sf::st_cast(x =.,
-              to = "MULTIPOLYGON")
+              to = "MULTIPOLYGON") %>%
+  dplyr::rename("geom" = "geometry") %>%
+  dplyr::bind_rows(moray)
 
-mapview::mapview(test2)
+mapview::mapview(data_region)
 
-data_sr <- data %>%
-  # make data valid to fix topology exception
-  sf::st_make_valid() %>%
-  # clip to the study region
-  sf::st_intersection(x = .,
-                      y = sr)
-View(data_sr)
-list(unique(sf::st_geometry_type(data_sr)))
-
-mapview::mapview(data_sr)
+# data_sr <- data %>%
+#   # make data valid to fix topology exception
+#   sf::st_make_valid() %>%
+#   # clip to the study region
+#   sf::st_intersection(x = .,
+#                       y = north_sea)
+# View(data_sr)
+# list(unique(sf::st_geometry_type(data_sr)))
+# 
+# mapview::mapview(data_sr)
 
 #####################################
 #####################################
 
 # imma_collection <- data_sr %>%
 #   # filter for only collection geometry
-#   dplyr::filter(st_geometry_type(.) == "GEOMETRYCOLLECTION") |> 
+#   dplyr::filter(st_geometry_type(.) == "GEOMETRYCOLLECTION") |>
 #   # extract the polygons to make the geometry collection
-#   sf::st_collection_extract(type = "POLYGON") |> 
+#   sf::st_collection_extract(type = "POLYGON") |>
 #   # group by all the other columns
 #   dplyr::group_by(across(-geom)) %>%  # Group by all columns except geometry
 #   # summarise by a unioned geometry
-#   dplyr::summarise(geometry = sf::st_union(geom)) |> 
+#   dplyr::summarise(geom = sf::st_union(geom)) |>
 #   # ungroup to get the IMMAs again
 #   dplyr::ungroup()
 # 
@@ -144,6 +151,7 @@ mapview::mapview(data_sr)
 #   # add back in the previous collection IMMA objects
 #   bind_rows(imma_collection)
 # 
+# View(imma_clean)
 # mapview::mapview(imma_clean)
 
 #####################################

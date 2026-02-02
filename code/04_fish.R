@@ -44,6 +44,7 @@ output_dir <- "data/b_intermediate_data"
 #####################################
 #####################################
 
+# read data
 data <- terra::rast(fs::path(data_dir, "fish_north-sea_richness_present_day", ext = "tiff"))
 
 study_area <- sf::st_read(dsn = fs::path(output_dir, "study_area.gpkg"), layer = "north_sea") %>%
@@ -58,6 +59,7 @@ sf::st_layers(dsn = fs::path(output_dir, "study_area.gpkg"))
 
 plot(data)
 
+# limit fish data to 
 ns_fish <- data %>%
   terra::crop(x = .,
               y = study_area,

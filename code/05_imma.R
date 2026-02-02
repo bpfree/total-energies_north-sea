@@ -16,6 +16,7 @@ if (!require("pacman")) install.packages("pacman")
 pacman::p_load(dplyr,
                ggplot2,
                janitor,
+               mapview,
                odp,
                rmapshaper,
                sf,
@@ -85,47 +86,65 @@ names(data)
 #   geom_sf()
 
 sr <- sf::st_read(dsn = fs::path(output_dir, "study_area.gpkg"),
-                            layer = "north_sea")
+                            layer = "greater_north_sea")
 
 sf::st_crs(x = sr)
 
-ggplot(data = sr) +
-  geom_sf()
+mapview::mapview(sr)
+
+# ggplot(data = sr) +
+#   geom_sf()
 
 #####################################
 #####################################
 
 # reduce IMMAs to study region
 ## need to change off spherical geometry for the "clip" to work
-sf_use_s2(FALSE)
+# sf_use_s2(FALSE)
 
-# test <- data %>%
-#   rmapshaper::ms_clip(target = .,
-#                       clip = sr) %>%
-#   sf::st_cast(x =.,
-#               to = "MULTIPOLYGON")
-# 
-# list(unique(sf::st_geometry_type(test)))
-# 
-# single <- data %>%
-#   dplyr::filter(stringr::str_detect(title, "Moray"))
-# 
-# list(unique(sf::st_geometry_type(single)))
+test2 <- data %>%
+  rmapshaper::ms_clip(target = .,
+                      clip = sr) %>%
+  sf::st_cast(x =.,
+              to = "MULTIPOLYGON")
 
-# test <- test %>%
-#   rbind(single)
+mapview::mapview(test2)
 
 data_sr <- data %>%
   # make data valid to fix topology exception
   sf::st_make_valid() %>%
   # clip to the study region
   sf::st_intersection(x = .,
-              y = sr)
+                      y = sr)
 View(data_sr)
 list(unique(sf::st_geometry_type(data_sr)))
 
-ggplot(data = data_sr) +
-  geom_sf()
+mapview::mapview(data_sr)
+
+#####################################
+#####################################
+
+# imma_collection <- data_sr %>%
+#   # filter for only collection geometry
+#   dplyr::filter(st_geometry_type(.) == "GEOMETRYCOLLECTION") |> 
+#   # extract the polygons to make the geometry collection
+#   sf::st_collection_extract(type = "POLYGON") |> 
+#   # group by all the other columns
+#   dplyr::group_by(across(-geom)) %>%  # Group by all columns except geometry
+#   # summarise by a unioned geometry
+#   dplyr::summarise(geometry = sf::st_union(geom)) |> 
+#   # ungroup to get the IMMAs again
+#   dplyr::ungroup()
+# 
+# mapview::mapview(imma_collection)
+# 
+# imma_clean <- data_sr %>%
+#   # get the MULTIPOLYGON objects
+#   filter(!st_geometry_type(.) == "GEOMETRYCOLLECTION") |>
+#   # add back in the previous collection IMMA objects
+#   bind_rows(imma_collection)
+# 
+# mapview::mapview(imma_clean)
 
 #####################################
 #####################################
@@ -144,23 +163,3 @@ sf::st_write(obj = data_sr,
 
 # inspect that data got added
 sf::st_layers(dsn = fs::path(output_dir, stringr::str_glue("ns_{layer}.gpkg")))
-
-
-
-
-
-
-
-# code from Juan Mayorga (https://github.com/pristine-seas/prj-MPAs-to-30x30/blob/main/scripts/01_MPAs_we_have.qmd)
-
-collections_to_poly <- mWDPA_clean %>%
-  filter(st_geometry_type(.) == "GEOMETRYCOLLECTION") |> 
-  st_collection_extract(type = "POLYGON") |> 
-  group_by(across(-geometry)) %>%  # Group by all columns except geometry
-  summarise(geometry = st_union(geometry)) |> 
-  ungroup() |> 
-  mutate(AREA_KM2 = as.numeric(st_area(geometry)/10^6)) 
-
-mWDPA_clean <- mWDPA_clean %>%
-  filter(!st_geometry_type(.) == "GEOMETRYCOLLECTION") |> 
-  bind_rows(collections_to_poly)

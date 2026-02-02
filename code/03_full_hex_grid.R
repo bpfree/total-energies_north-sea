@@ -82,7 +82,7 @@ ns_hexes_full <- hexes %>%
 #####################################
 
 # export hexagon grid
-sf::st_write(obj = ns, dsn = data_dir, layer = stringr::str_glue("north_sea"), append = F)
+sf::st_write(obj = ns, dsn = data_dir, layer = stringr::str_glue("greater_north_sea"), append = F)
 sf::st_write(obj = ns_hex, dsn = data_dir, layer = "ns_hex", append = F)
 sf::st_write(obj = ns_hexes_full, dsn = data_dir, layer = "ns_hexes_full", append = F)
 

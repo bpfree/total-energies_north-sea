@@ -40,8 +40,8 @@ pacman::p_load(dplyr,
 # parameters
 ### will need to define the geometry field (e.g., wkt_point)
 ### boundary box for the study region
-bbox <- 'geometry within "POLYGON((-4.4454 50.9954, 12.0059 50.9954, 12.0059 61.0170, -4.4454 61.0170, -4.4454 50.9954))"'
-odp_data <- "7199f9bc-96ae-49d1-a814-df8c4bcc7552"
+# bbox <- 'geometry within "POLYGON((-4.4454 50.9954, 12.0059 50.9954, 12.0059 61.0170, -4.4454 61.0170, -4.4454 50.9954))"'
+odp_data <- "a29029e6-0f60-4488-af33-fb3d86e02d47"
 
 #####################################
 #####################################
@@ -77,79 +77,91 @@ schema <- table$schema()
 
 # query -- by boundary box
 ## returns a cursor that streams rows lazily
-cursor <- table$select(filter = bbox)
+cursor <- table$select(filter = "lat >= 50.9954 AND lat <= 61.0170 AND lon >= -4.4454 AND lon <= 12.0059")
 
 # fetch table into a dataframe that you can use for analysis
 df <- cursor$dataframe()
 
-dim(df)
-names(df)
-View(df)
-str(df)
+# dim(df)
+# names(df)
+# View(df)
+# str(df)
 
 #####################################
 
-# # load in dataset (see https://app.hubocean.earth/) -- seagrass
-# dataset_full <- client$dataset(odp_data)
-# 
-# # generate table (defaults to the first table in the dataset)
-# table_full <- dataset_full$table
-# schema_full <- table_full$schema()
-# 
-# # query -- by boundary box
-# ## returns a cursor that streams rows lazily
-# cursor_full <- table_full$select()
-# 
-# # fetch table into a dataframe that you can use for analysis
-# df_full <- cursor_full$dataframe()
-# 
-# dim(df_full)
-# names(df_full)
-# View(df_full)
-# str(df_full)
-# 
-# data_full <- df_full %>%
-#   janitor::clean_names() %>%
-#   # convert the WKB geometry field to a more user friendly geomtry field
-#   dplyr::mutate(geometry = sf::st_as_sfc(structure(as.list(geometry), class = "WKB"))) %>%
-#   sf::st_as_sf(crs = 4326)
-
-##############
-
 data <- df %>%
   janitor::clean_names() %>%
-  # convert the WKB geometry field to a more user friendly geomtry field
-  dplyr::mutate(geometry = sf::st_as_sfc(structure(as.list(geometry), class = "WKB"))) %>%
   # set CRS to WGS84
-  sf::st_as_sf(crs = 4326)
+  sf::st_as_sf(crs = 4326, coords = c("lon", "lat")) %>%
+  # create maximum coral score for species at each location
+  dplyr::mutate(coral_max = pmax(aa,
+                                 dp,
+                                 er,
+                                 gd,
+                                 mo,
+                                 ov,
+                                 pa,
+                                 pp,
+                                 pr,
+                                 sv),
+                # reclassify based on the maximum score
+                # scores come from Tong et al. (2023) [https://www.frontiersin.org/journals/marine-science/articles/10.3389/fmars.2023.1217851/full]
+                classification = case_when(coral_max < 200 ~ "very low",
+                                           coral_max >= 200 & coral_max < 400 ~ "low",
+                                           coral_max >= 400 & coral_max < 600 ~ "moderate",
+                                           coral_max >= 600 & coral_max < 800 ~ "high",
+                                           coral_max >= 800 ~ "very high"))
 
-View(data)
-class(data)
+rm(df, client, cursor, dataset, table)
+# mapview::mapview(data)
+
+# View(data)
+# class(data)
 
 ns <- sf::st_read(dsn = fs::path(output_dir, "study_area.gpkg"), layer = "greater_north_sea")
 
-region_data <- data %>%
-  # obtain only seagrass in the study area
-  rmapshaper::ms_clip(target = .,
-                      clip = ns) %>%
-  # create field called "layer" and fill with "seagrass" for summary
-  dplyr::mutate(layer = "seagrass") %>%
-  dplyr::select(layer, geometry) %>%
-  sf::st_make_valid()
+# to make easier on memory
+data_split <- data %>%
+  # create column and populate with the nth-tile for row's location (10 separate bunches)
+  dplyr::mutate(split_id = ntile(row_number(), 10)) %>%
+  # group the data into batches based on the split ID
+  dplyr::group_split(split_id)
+
+clipped_list <- purrr::map(
+  data_split,
+  ~ rmapshaper::ms_clip(.x,
+                        ns)
+)
+
+clipped_data <- bind_rows(clipped_list) %>%
+  dplyr::select(-split_id)
+
+
+# 
+# region_data <- data %>%
+#   # obtain only seagrass in the study area
+#   rmapshaper::ms_clip(target = .,
+#                       clip = ns) %>%
+#   # create field called "layer" and fill with "cold-water coral" for summary
+#   dplyr::mutate(layer = "cold-water coral") %>%
+#   dplyr::select(layer, coral_max, classification, geometry) %>%
+#   sf::st_make_valid()
 
 ##############
+
+rm(clipped_list, data, data_split, ns)
 
 hex_dir <- "data/b_intermediate_data/study_area.gpkg"
 hex_grid <- sf::st_read(dsn = hex_dir, layer = "ns_hexes_full")
 
 # seagrass hex grids
-region_data_hex <- hex_grid[region_data, ] %>%
+region_data_hex <- hex_grid[clipped_data, ] %>%
   # spatially join seagrass values to North Sea hex cells
   sf::st_join(x = .,
-              y = region_data,
+              y = clipped_data,
               join = st_intersects) %>%
   # select fields of importance
-  dplyr::select(h3_index, layer)
+  dplyr::select(h3_index, coral_max, classification)
 
 ##############
 

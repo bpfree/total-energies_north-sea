@@ -151,6 +151,8 @@ region_data_hex <- hex_grid[region_data, ] %>%
   # select fields of importance
   dplyr::select(h3_index, layer)
 
+mapview::mapview(region_data_hex)
+
 ##############
 
 # export data

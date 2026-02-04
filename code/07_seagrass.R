@@ -156,8 +156,8 @@ mapview::mapview(region_data_hex)
 ##############
 
 # export data
-# sf::st_write(obj = data_full, dsn = "data/b_intermediate_data/habitats.gpkg", layer = "seagrass", append = T)
-sf::st_write(obj = region_data, dsn = "data/b_intermediate_data/habitats.gpkg", layer = "seagrass_ns", append = T)
-sf::st_write(obj = region_data_hex, dsn = "data/c_hex_data/data_ns_hex.gpkg", layer = "seagrass_hex", append = T)
+# sf::st_write(obj = data_full, dsn = "data/b_intermediate_data/habitats.gpkg", layer = "seagrass", append = F)
+sf::st_write(obj = region_data, dsn = "data/b_intermediate_data/habitats.gpkg", layer = "seagrass_ns", append = F)
+sf::st_write(obj = region_data_hex, dsn = "data/c_hex_data/data_ns_hex.gpkg", layer = "seagrass_hex", append = F)
 
 sf::st_layers(dsn = "data/b_intermediate_data/habitats.gpkg")

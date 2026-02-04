@@ -100,7 +100,7 @@ mapview::mapview(data)
 ns <- sf::st_read(dsn = fs::path(output_dir, "study_area.gpkg"), layer = "greater_north_sea")
 
 region_data <- data %>%
-  # obtain only seagrass in the study area
+  # obtain only protected areas in the study area
   rmapshaper::ms_clip(target = .,
                       clip = ns) %>%
   # create field called "layer" and fill with "protected_seas" for summary
@@ -128,7 +128,8 @@ region_data_hex <- hex_grid[region_data, ] %>%
               y = region_data,
               join = st_intersects) %>%
   # select fields of importance
-  dplyr::select(h3_index, layer)
+  dplyr::select(h3_index, layer) %>%
+  dplyr::distinct()
 
 sf::st_crs(region_data_hex)
 mapview::mapview(region_data_hex)
@@ -148,7 +149,7 @@ sf::st_write(obj = region_data,
              # overwrite previously existing layers
              append = F)
 
-sf::st_write(obj = region_data_hex, dsn = "data/c_hex_data/data_ns_hex.gpkg", layer = "protected_areas_hex", append = T)
+sf::st_write(obj = region_data_hex, dsn = "data/c_hex_data/data_ns_hex.gpkg", layer = "protected_areas_hex", append = F)
 
 sf::st_layers(dsn = fs::path(output_dir, "ns_protected_areas.gpkg"))
 # sf::st_delete(dsn = fs::path(output_dir, "ns_protected_areas.gpkg"), layer = "ns_protected_seas")

@@ -163,11 +163,42 @@ region_data_hex <- hex_grid[clipped_data, ] %>%
   # select fields of importance
   dplyr::select(h3_index, coral_max, classification)
 
+region_data_hex_no_geo <- region_data_hex %>%
+  sf::st_drop_geometry()
+
+# Keep only one result per cell
+region_data_hex_single <- region_data_hex_no_geo %>%
+  # group by key fields to reduce duplicates
+  dplyr::group_by(h3_index) %>%
+  # return only distinct rows (remove duplicates)
+  dplyr::summarize(max = max(coral_max)) %>%
+  dplyr::mutate(classification = case_when(max < 200 ~ "very low",
+                                             max >= 200 & max < 400 ~ "low",
+                                             max >= 400 & max < 600 ~ "moderate",
+                                             max >= 600 & max < 800 ~ "high",
+                                             max >= 800 ~ "very high")) %>%
+  dplyr::filter(grepl(pattern = "high|very high",
+                     classification,
+                     ignore.case = T))
+
+region_data_hex_join <- hex_grid %>%
+  dplyr::left_join(x = .,
+                   y = region_data_hex_single,
+                   by = "h3_index") %>%
+  dplyr::filter(grepl(pattern = "high|very high",
+                      classification,
+                      ignore.case = T)) %>%
+  dplyr::select(h3_index) %>%
+  dplyr::mutate(layer = "corals") %>%
+  dplyr::relocate(layer,
+                  .after = h3_index)
+
+mapview::mapview(region_data_hex_join)
+
 ##############
 
 # export data
-# sf::st_write(obj = data_full, dsn = "data/b_intermediate_data/habitats.gpkg", layer = "seagrass", append = T)
-sf::st_write(obj = region_data, dsn = "data/b_intermediate_data/habitats.gpkg", layer = "seagrass_ns", append = T)
-sf::st_write(obj = region_data_hex, dsn = "data/c_hex_data/data_ns_hex.gpkg", layer = "seagrass_hex", append = T)
+# sf::st_write(obj = region_data_hex_join, dsn = "data/b_intermediate_data/habitats.gpkg", layer = "cold_water_corals_ns", append = F)
+sf::st_write(obj = region_data_hex_join, dsn = "data/c_hex_data/data_ns_hex.gpkg", layer = "cold_water_corals_hex", append = F)
 
-sf::st_layers(dsn = "data/b_intermediate_data/habitats.gpkg")
+sf::st_layers(dsn = "data/c_hex_data/coral.gpkg")

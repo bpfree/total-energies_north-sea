@@ -66,7 +66,52 @@ ns_fish <- data %>%
               mask = T)
 plot(ns_fish)
 
+ns_fish_poly <- ns_fish |>
+  terra::as.polygons() |>
+  sf::st_as_sf() |>
+  dplyr::rename("species_rich" = 1) %>%
+  dplyr::mutate(layer = "fish richness")
+
+View(ns_fish_poly)
+
+mapview::mapview(ns_fish_poly)
+
+hex_dir <- "data/b_intermediate_data/study_area.gpkg"
+hex_grid <- sf::st_read(dsn = hex_dir, layer = "ns_hexes_full")
+
+region_data_hex <- hex_grid[ns_fish_poly, ] %>%
+  # spatially join fish species richness values to North Sea hex cells
+  sf::st_join(x = .,
+              y = ns_fish_poly,
+              join = st_intersects) %>%
+  sf::st_drop_geometry() |>
+  dplyr::group_by(h3_index, layer) |>
+  # return only distinct rows (remove duplicates)
+  dplyr::summarize(max = max(species_rich)) %>%
+  dplyr::ungroup()
+
+# check for duplicates -- there don't seem to be any
+duplicates <- region_data_hex %>%
+  # create frequency field based on index
+  dplyr::add_count(h3_index) %>%
+  # see which ones are duplicates
+  dplyr::filter(n>1) %>%
+  # show distinct options
+  dplyr::distinct()
+
+region_data_hex_join <- hex_grid %>%
+  dplyr::inner_join(x = .,
+                   y = region_data_hex,
+                   by = "h3_index")
+  
+
+mapview::mapview(test)
+
 #####################################
 #####################################
 
 terra::writeRaster(x = ns_fish, filename = fs::path(output_dir, "ns_fish.grd"), overwrite = T)
+sf::st_write(obj = region_data_hex_join,
+             dsn = "data/c_hex_data/data_ns_hex.gpkg",
+             layer = "fish_hex",
+             append = F)

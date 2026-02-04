@@ -103,8 +103,7 @@ region_data_hex_join <- hex_grid %>%
   dplyr::inner_join(x = .,
                    y = region_data_hex,
                    by = "h3_index")
-  
-# change
+
 mapview::mapview(test)
 
 #####################################

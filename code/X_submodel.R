@@ -17,18 +17,6 @@ pacman::p_load(dplyr,
                tidyr,
                tidyverse)
 
-# create export directory
-fs::dir_create(path = "data/b_intermediate_data/species")
-fs::dir_create(path = "data/b_intermediate_data/presence")
-
-# input directory
-species_dir <- "data/a_raw_data/species"
-data_dir <- "data/b_intermediate_data/study_area.gpkg"
-
-# set directory
-output_dir <- "data/b_intermediate_data/species"
-presence_dir <- "data/b_intermediate_data/presence"
-
 #####################################
 #####################################
 
@@ -66,7 +54,7 @@ hex_dir <- "data/b_intermediate_data/study_area.gpkg"
 sf::st_layers(dsn = data_dir)
 
 ## output directories
-output_dir
+output_dir <- "d_final_data"
 
 #####################################
 #####################################
@@ -75,22 +63,28 @@ output_dir
 hex_grid <- sf::st_read(dsn = hex_dir, layer = "ns_hexes_full")
 
 # mobile species submodel
-cetaceans
-seabirds
+# cetaceans
+# seabirds
 fishes <- sf::st_read(dsn = data_dir, "fish_hex") %>%
   sf::st_drop_geometry()
 
 # sessile subsets
 coral <- sf::st_read(dsn = data_dir, layer = "cold_water_corals_hex") %>%
   score_function(layer = .,
-                field_name = "coral",
+                field_name = "c_val",
                 score_value = 1)
 seagrass <- sf::st_read(dsn = data_dir, layer = "seagrass_hex") %>%
-  sf::st_drop_geometry()
+  score_function(layer = .,
+                 field_name = "s_val",
+                 score_value = 1)
 protected_areas <- sf::st_read(dsn = data_dir, layer = "protected_areas_hex") %>%
-  sf::st_drop_geometry()
+  score_function(layer = .,
+                 field_name = "pa_val",
+                 score_value = 1)
 imma <- sf::st_read(dsn = data_dir, "imma_hex") %>%
-  sf::st_drop_geometry()
+  score_function(layer = .,
+                 field_name = "i_val",
+                 score_value = 1)
 
 #####################################
 #####################################
@@ -101,19 +95,19 @@ hex_sessile <- hex_grid %>%
                    by = "h3_index") %>%
   dplyr::left_join(x = .,
                    y = seagrass,
-                   by = "h3_index")
+                   by = "h3_index") %>%
+  dplyr::left_join(x = .,
+                   y = protected_areas,
+                   by = "h3_index") %>%
+  dplyr::left_join(x = .,
+                   y = imma,
+                   by = "h3_index") %>%
   
-  # add value of 1 for datasets when hex cell has value of NA
-  ## for hex cells not impacted by a particular dataset, that cell gets a value of 1
-  ### this indicates  suitability with wind energy development
-  dplyr::mutate(across(2, ~replace(x = .,
+  # add value of 0 for datasets when hex cell has value of NA
+  dplyr::mutate(across(2:5, ~replace(x = .,
                                    list = is.na(.),
                                    # replacement values
-                                   values = 1))) %>%
+                                   values = 0))) %>%
   
-  ## geometric mean = nth root of the product of the variable values
-  dplyr::mutate(!!stringr::str_glue("{submodel_code}_geom_mean") := .data[[stringr::str_glue("{layer_name}_max")]] ^ gm_wt) %>%
-  
-  # relocate the industry and operations geometric mean field
-  dplyr::relocate(stringr::str_glue("{submodel_code}_geom_mean"),
-                  .after = stringr::str_glue("{layer_name}_max"))
+  # sum 
+  dplyr::mutate(sessile_sum = c_val + s_val + pa_val + i_val)

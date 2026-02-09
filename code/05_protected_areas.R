@@ -128,7 +128,7 @@ region_data_hex <- hex_grid[region_data, ] %>%
               y = region_data,
               join = st_intersects) %>%
   # select fields of importance
-  dplyr::select(h3_index, layer) %>%
+  dplyr::select(h3_index) %>%
   dplyr::distinct()
 
 sf::st_crs(region_data_hex)

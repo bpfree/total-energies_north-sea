@@ -51,25 +51,29 @@ study_area <- sf::st_read(dsn = fs::path(output_dir, "study_area.gpkg"), layer =
   sf::st_transform(x = .,
                    crs = crs(data))
 
-plot(study_area)
+mapview::mapview(study_area)
 sf::st_layers(dsn = fs::path(output_dir, "study_area.gpkg"))
 
 #####################################
 #####################################
 
-plot(data)
+mapview::mapview(data)
 
 # limit fish data to 
 ns_fish <- data %>%
   terra::crop(x = .,
               y = study_area,
               mask = T)
-plot(ns_fish)
+mapview::mapview(ns_fish)
 
 ns_fish_poly <- ns_fish |>
+  # convert raster to polygons
   terra::as.polygons() |>
+  # set as sf
   sf::st_as_sf() |>
+  # rename field (based on indexed location)
   dplyr::rename("species_rich" = 1) %>%
+  # create new layer
   dplyr::mutate(layer = "fish richness")
 
 View(ns_fish_poly)
@@ -85,9 +89,11 @@ region_data_hex <- hex_grid[ns_fish_poly, ] %>%
               y = ns_fish_poly,
               join = st_intersects) %>%
   sf::st_drop_geometry() |>
+  # group by H3 index and layer name
   dplyr::group_by(h3_index, layer) |>
   # return only distinct rows (remove duplicates)
   dplyr::summarize(max = max(species_rich)) %>%
+  # ungroup to get each H3 index and its max species value
   dplyr::ungroup()
 
 # check for duplicates -- there don't seem to be any
@@ -104,7 +110,7 @@ region_data_hex_join <- hex_grid %>%
                    y = region_data_hex,
                    by = "h3_index")
 
-mapview::mapview(test)
+mapview::mapview(region_data_hex_join)
 
 #####################################
 #####################################

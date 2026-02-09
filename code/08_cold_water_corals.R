@@ -68,7 +68,7 @@ client <- odp::odp_client(api_key = odp_api_key)
 #####################################
 #####################################
 
-# load in dataset (see https://app.hubocean.earth/) -- seagrass
+# load in dataset (see https://app.hubocean.earth/)
 dataset <- client$dataset(odp_data)
 
 # generate table (defaults to the first table in the dataset)
@@ -139,7 +139,7 @@ clipped_data <- bind_rows(clipped_list) %>%
 
 # 
 # region_data <- data %>%
-#   # obtain only seagrass in the study area
+#   # obtain only coral in the study area
 #   rmapshaper::ms_clip(target = .,
 #                       clip = ns) %>%
 #   # create field called "layer" and fill with "cold-water coral" for summary
@@ -154,9 +154,9 @@ rm(clipped_list, data, data_split, ns)
 hex_dir <- "data/b_intermediate_data/study_area.gpkg"
 hex_grid <- sf::st_read(dsn = hex_dir, layer = "ns_hexes_full")
 
-# seagrass hex grids
+# coral hex grids
 region_data_hex <- hex_grid[clipped_data, ] %>%
-  # spatially join seagrass values to North Sea hex cells
+  # spatially join coral values to North Sea hex cells
   sf::st_join(x = .,
               y = clipped_data,
               join = st_intersects) %>%
@@ -188,10 +188,7 @@ region_data_hex_join <- hex_grid %>%
   dplyr::filter(grepl(pattern = "high|very high",
                       classification,
                       ignore.case = T)) %>%
-  dplyr::select(h3_index) %>%
-  dplyr::mutate(layer = "corals") %>%
-  dplyr::relocate(layer,
-                  .after = h3_index)
+  dplyr::select(h3_index)
 
 mapview::mapview(region_data_hex_join)
 

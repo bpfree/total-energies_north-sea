@@ -149,7 +149,9 @@ region_data_hex <- hex_grid[region_data, ] %>%
               y = region_data,
               join = st_intersects) %>%
   # select fields of importance
-  dplyr::select(h3_index, layer)
+  dplyr::select(h3_index) %>%
+  # get only unique H3 indexes
+  dplyr::distinct()
 
 mapview::mapview(region_data_hex)
 

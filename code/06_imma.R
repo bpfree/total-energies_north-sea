@@ -179,7 +179,7 @@ region_data_hex <- hex_grid[imma_clean, ] %>%
               y = imma_clean,
               join = st_intersects) %>%
   # select fields of importance
-  dplyr::select(h3_index, layer) %>%
+  dplyr::select(h3_index) %>%
   dplyr::distinct()
 
 mapview::mapview(region_data_hex)
@@ -200,7 +200,6 @@ sf::st_write(obj = imma_clean,
              append = F)
 
 sf::st_write(obj = region_data_hex, dsn = "data/c_hex_data/data_ns_hex.gpkg", layer = "imma_hex", append = F)
-
 
 # inspect that data got added
 sf::st_layers(dsn = fs::path(output_dir, stringr::str_glue("ns_{layer}.gpkg")))

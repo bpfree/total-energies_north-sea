@@ -173,4 +173,5 @@ mapview::mapview(model_hex,
 
 sf::st_write(obj = model_hex,
              dsn = "data/d_final_data/north_sea_nature_index.gpkg",
-             layer = "north_sea_model_4555_mobilesessile")
+             layer = "north_sea_model_4555_mobilesessile",
+             append = F)

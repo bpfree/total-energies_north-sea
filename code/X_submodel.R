@@ -21,8 +21,8 @@ pacman::p_load(dplyr,
 #####################################
 
 # parameters
-submodel1 <- 0.45
-submodel2 <- 1 - submodel1
+submodel1 <- 0.45 # mobile species
+submodel2 <- 1 - submodel1 # sessile species
 
 # function
 ## score function
@@ -63,8 +63,17 @@ output_dir <- "d_final_data"
 hex_grid <- sf::st_read(dsn = hex_dir, layer = "ns_hexes_full")
 
 # mobile species submodel
-# cetaceans
-# seabirds
+## cetaceans
+cetaceans <- sf::st_read(dsn = data_dir,
+                         layer = "ceta_hex") %>%
+  sf::st_drop_geometry()
+
+## seabirds
+seabirds <- sf::st_read(dsn = data_dir,
+                         layer = "seabirds_hex") %>%
+  sf::st_drop_geometry()
+
+## fishes
 fishes <- sf::st_read(dsn = data_dir, "fish_hex") %>%
   sf::st_drop_geometry()
 
@@ -89,6 +98,31 @@ imma <- sf::st_read(dsn = data_dir, "imma_hex") %>%
 #####################################
 #####################################
 
+hex_mobile <- hex_grid %>%
+  dplyr::left_join(x = .,
+                   y = cetaceans,
+                   by = "h3_index") %>%
+  dplyr::left_join(x = .,
+                   y = seabirds,
+                   by = "h3_index") %>%
+  dplyr::left_join(x = .,
+                   y = fishes,
+                   by = "h3_index") %>%
+  
+  # add value of 0 for datasets when hex cell has value of NA
+  dplyr::mutate(across(2:4, ~replace(x = .,
+                                     list = is.na(.),
+                                     # replacement values
+                                     values = 0))) %>%
+  
+  # sum the layers of interest
+  dplyr::mutate(mobile_sum = ceta_rich + bird_rich + fish_rich) |>
+  
+  # move the sessile sum column to end of key fields
+  dplyr::relocate(mobile_sum, .before = geom)
+
+#####################################
+
 hex_sessile <- hex_grid %>%
   dplyr::left_join(x = .,
                    y = coral,
@@ -109,5 +143,34 @@ hex_sessile <- hex_grid %>%
                                    # replacement values
                                    values = 0))) %>%
   
-  # sum 
-  dplyr::mutate(sessile_sum = c_val + s_val + pa_val + i_val)
+  # sum the layers of interest
+  dplyr::mutate(sessile_sum = c_val + s_val + pa_val + i_val) |>
+  
+  # move the sessile sum column to end of key fields
+  dplyr::relocate(sessile_sum, .before = geom)
+
+mapview::mapview(hex_sessile)
+
+#####################################
+#####################################
+
+hex_sessile_no_geom <- hex_sessile %>%
+  sf::st_drop_geometry() %>%
+  dplyr::select(-h3_index)
+
+model_hex <- hex_mobile %>%
+  cbind(hex_sessile_no_geom) %>%
+  dplyr::mutate(nature_index = mobile_sum * submodel1 + sessile_sum * submodel2) %>%
+  dplyr::relocate(nature_index, .before = geom)
+
+mapview::mapview(model_hex,
+                 # column to map
+                 zcol = "nature_index",
+                 # show legend
+                 legend = TRUE)
+
+#####################################
+
+sf::st_write(obj = model_hex,
+             dsn = "data/d_final_data/north_sea_nature_index.gpkg",
+             layer = "north_sea_model_4555_mobilesessile")

@@ -52,6 +52,7 @@ Habitat designation
 
 ### Scores
 | Layer | Score | Consideration |
+|---------------|---------------|---------------|
 | Fish | 0 - 1 | Linear normalization with 0.01 added to minimum |
 | Cetaceans | | Species list compiled from list provided by Total Energies, which used [Waggitt et al. (2020)](https://besjournals.onlinelibrary.wiley.com/doi/pdf/10.1111/1365-2664.13525) |
 | Seabirds | | Species list compiled from list provided by Total Energies, which used [Waggitt et al. (2020)](https://besjournals.onlinelibrary.wiley.com/doi/pdf/10.1111/1365-2664.13525) |

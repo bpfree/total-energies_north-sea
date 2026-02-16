@@ -74,7 +74,10 @@ ns_fish_poly <- ns_fish |>
   # rename field (based on indexed location)
   dplyr::rename("species_rich" = 1) %>%
   # create new layer
-  dplyr::mutate(layer = "fish richness")
+  dplyr::mutate("rescale" = (species_rich - min(species_rich)) / (max(species_rich) - min(species_rich))) |>
+  dplyr::mutate("rescale" = ifelse(rescale == 0.00,
+                                   rescale + 0.01,
+                                   rescale))
 
 View(ns_fish_poly)
 
@@ -90,9 +93,9 @@ region_data_hex <- hex_grid[ns_fish_poly, ] %>%
               join = st_intersects) %>%
   sf::st_drop_geometry() |>
   # group by H3 index and layer name
-  dplyr::group_by(h3_index, layer) |>
+  dplyr::group_by(h3_index) |>
   # return only distinct rows (remove duplicates)
-  dplyr::summarize(max = max(species_rich)) %>%
+  dplyr::summarize(fish_rich = max(rescale)) %>%
   # ungroup to get each H3 index and its max species value
   dplyr::ungroup()
 

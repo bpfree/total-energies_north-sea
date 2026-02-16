@@ -42,7 +42,13 @@ Habitat sensitivity assessment in North Sea
 Please contact Brian Free ([brian.free@oceandata.earth](mailto:brian.free@oceandata.earth)) with any questions regarding the code.
 
 ### **Study region**
-Greater North Sea -- boundary box of bbox <- 'geometry within "POLYGON((-4.4454 50.9954, 12.0059 50.9954, 12.0059 61.0170, -4.4454 61.0170, -4.4454 50.9954))"'
+The study defined a boundary box for the Greater North Sea with points of: 
+* southwest: -4.4454, 50.9954 
+* southeast: 12.0059, 50.9954
+* northeast: 12.0059, 61.0170
+* northwest: -4.4454 61.0170
+
+Since the desired resolution for the analysis was at 500m, a hex grid at resolution 8 generated the hex grid using h3 indexes.
 
 ### **Model configuration**
 Habitat designation

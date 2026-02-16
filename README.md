@@ -44,9 +44,29 @@ Please contact Brian Free ([brian.free@oceandata.earth](mailto:brian.free@oceand
 ### **Study region**
 Greater North Sea -- boundary box of bbox <- 'geometry within "POLYGON((-4.4454 50.9954, 12.0059 50.9954, 12.0059 61.0170, -4.4454 61.0170, -4.4454 50.9954))"'
 
+### **Model configuration**
+Habitat designation
+- Unlikely habitat: scores below 75
+- ProbableHabitat: scores between 50 and 75
+- Core habitat: scores over 75
+
+### Scores
+| Layer | Score | Consideration |
+| Fish | 0 - 1 | Linear normalization with 0.01 added to minimum |
+| Cetaceans | | Species list compiled from list provided by Total Energies, which used [Waggitt et al. (2020)](https://besjournals.onlinelibrary.wiley.com/doi/pdf/10.1111/1365-2664.13525) |
+| Seabirds | | Species list compiled from list provided by Total Energies, which used [Waggitt et al. (2020)](https://besjournals.onlinelibrary.wiley.com/doi/pdf/10.1111/1365-2664.13525) |
+
+## Methods
+### Linear normalization
+* Normalized score = (value - minimum) / (maximum - minimum)
+If normalized value is minimum value then the returning value equals zero; to avoid these scores \
+to have zero values, 0.01 got added to those scores. Otherwise keep the normalized value.
+
 ### **Data sources**
 #### *Generic Data*
 | Layer | Data Source | Data Name | Metadata  | Notes |
 |---------------|---------------|---------------|---------------|---------------|
 | Fish | [Cesc Gordó-Vilaseca](https://www.nature.com/articles/s41467-024-49911-9) | Fish species richness | [GitHub repository](https://github.com/CescGV/JSDM-Barents-Norwegian-North/tree/main) |
 | Cetaceans | [MPA EU](https://mpa-europe.eu) and provided by Silas C. Principe | Cetaceans species distribution models | | [GitHub](https://github.com/iobis/mpaeu_sdm/tree/main), [Shiny OBIS](https://shiny.obis.org/distmaps/)
+| Seabids | [MPA EU](https://mpa-europe.eu) and provided by Silas C. Principe | Seabirds species distribution models | | [GitHub](https://github.com/iobis/mpaeu_sdm/tree/main), [Shiny OBIS](https://shiny.obis.org/distmaps/)
+

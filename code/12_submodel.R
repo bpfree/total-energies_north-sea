@@ -163,6 +163,10 @@ model_hex <- hex_mobile %>%
   dplyr::mutate(nature_index = mobile_sum * submodel1 + sessile_sum * submodel2) %>%
   dplyr::relocate(nature_index, .before = geom)
 
+model_hex_csv <- model_hex %>%
+  dplyr::mutate(geometry = sf::st_as_text(geom)) %>%
+  sf::st_drop_geometry()
+
 mapview::mapview(model_hex,
                  # column to map
                  zcol = "nature_index",
@@ -171,7 +175,13 @@ mapview::mapview(model_hex,
 
 #####################################
 
+# export as geopackage
 sf::st_write(obj = model_hex,
              dsn = "data/d_final_data/north_sea_nature_index.gpkg",
              layer = "north_sea_model_4555_mobilesessile",
              append = F)
+
+# write to CSV
+readr::write_csv(x = model_hex_csv,
+                 file = "data/d_final_data/model_hex.csv",
+                 append = TRUE)

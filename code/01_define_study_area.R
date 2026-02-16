@@ -74,6 +74,8 @@ study_area <- rbind(c("point", -4.4454, 50.9954),
   sf::st_as_sf() %>%
   sf::st_make_valid()
 
+mapview::mapview(study_area)
+
 #####################################
 
 # export the data

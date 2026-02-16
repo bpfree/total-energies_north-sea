@@ -1,5 +1,5 @@
 ############################
-### 10. species richness ###
+### 10. species presence ###
 ############################
 
 # Clear environment
@@ -18,29 +18,36 @@ pacman::p_load(dplyr,
                tidyverse)
 
 # create export directory
-fs::dir_create(path = "data/b_intermediate_data/species")
-fs::dir_create(path = "data/b_intermediate_data/presence")
+fs::dir_create(path = "data/b_intermediate_data/species/cetaceans")
+fs::dir_create(path = "data/b_intermediate_data/species/seabirds")
+fs::dir_create(path = "data/b_intermediate_data/presence/cetaceans")
+fs::dir_create(path = "data/b_intermediate_data/presence/seabirds")
 
 # input directory
-species_dir <- "data/a_raw_data/species"
+cetaceans_dir <- "data/a_raw_data/species/cetaceans"
+seabirds_dir <- "data/a_raw_data/species/seabirds"
 data_dir <- "data/b_intermediate_data/study_area.gpkg"
 
 # set directory
-output_dir <- "data/b_intermediate_data/species"
-presence_dir <- "data/b_intermediate_data/presence"
+## cetaceans
+ceta_sp_dir <- "data/b_intermediate_data/species/cetaceans"
+ceta_pres_dir <- "data/b_intermediate_data/presence/cetaceans"
+
+## cetaceans
+seabirds_sp_dir <- "data/b_intermediate_data/species/seabirds"
+seabirds_pres_dir <- "data/b_intermediate_data/presence/seabirds"
 
 # load boundary box
 bbox <- sf::st_read(dsn = data_dir, layer = "ns_boundary")
 
 # set parameter
-threshold1 <- 10
-threshold2 <- 50
-threshold3 <- 75
-threshold4 <- 100
+threshold1 <- 50 # unlikely to be there (<50)
+threshold2 <- 75 # more probable than not (50 - 74)
+threshold3 <- 100 # core habitat (75 - 100)
 
 # create species list
 # List your species here
-target_species <- c(
+cetaceans_species <- c(
   # cetaceans
   137087,
   137091,
@@ -54,8 +61,114 @@ target_species <- c(
   137117,
   137119,
   137107,
-  137111,
+  137111)
+
+# target_species <- c(
+#   # seabirds
+#   137128,
+#   137129,
+#   159172,
+#   159179,
+#   137130,
+#   137137,
+#   137071,
+#   137131,
+#   137195,
+#   137185,
+#   137186,
+#   137187,
+#   137188,
+#   148798,
+#   1773443, # species data not existing
+#   137189,
+#   567449,
+#   567825,
+#   137138,
+#   137141,
+#   137142,
+#   137144,
+#   137145,
+#   137146,
+#   137147, # see species 1584284
+#   1584284,
+#   232052,
+#   137149,
+#   137072,
+#   137073,
+#   159097,
+#   159098,
+#   148776,
+#   137178,
+#   137179,
+#   137168,
+#   137169,
+#   137181,
+#   137182,
+#   137183,
+#   137184,
+#   137203,
+#   137156,
+#   137074,
+#   137075,
+#   137171,
+#   137172,
+#   137173,
+#   137174,
+#   137162,
+#   137165,
+#   567480,
+#   413044, # see species 137166
+#   137166,
+#   137133
+# )
+
+# open species file
+for (sp in cetaceans_species) {
+  message("Loading data for cetacean species ", sp)
   
+  try(file <- fs::dir_ls(path = cetaceans_dir,
+                         regexp = stringr::str_glue("{sp}")), silent = F)
+  
+  # (?<=...) = after
+  # (?=...) = before
+  try(model <- stringr::str_extract(file, "(?<=mpaeu_method=)[^_]+(?=_scen)"), silent = F)
+  
+  try(species <- terra::rast(x = fs::path(cetaceans_dir, stringr::str_glue("taxonid={sp}_model=mpaeu_method={model}_scen=current_cog"), ext = "tif")), silent = F)
+  
+  message("Cropping and masking data for cetacean species ", sp)
+  
+  # crop and mask species to boundary box
+  try(species_ns <- species %>%
+    terra::crop(x = .,
+                # boundary box
+                y = bbox,
+                # mask the data
+                mask = T), silent = F)
+  try(plot(species_ns, main = stringr::str_glue("{sp} SDM")), silent = F)
+  
+  message("Exporting species ", sp)
+  
+  # export data
+  try(terra::writeRaster(x = species_ns, filename = fs::path(ceta_sp_dir, stringr::str_glue("taxonid_{sp}_{model}_scen_current.grd")), overwrite = T), silent = F)
+
+  message("Create presence/absence data for species", sp)
+  
+  # transform data based on probability of occurrence
+  try(present_values <- ifelse(species_ns[] <= threshold1, 0.3, # very low probability of species exist
+                               # probable (0.6)
+                               ifelse(species_ns[] > threshold1 & species_ns[] <= threshold2, 0.6,
+                                      # core habitat (1.)
+                                      ifelse(species_ns[] > threshold2 & species_ns[] <= threshold3, 1, NA))), silent = F)
+  
+  try(species_ns_present <- terra::setValues(species_ns, present_values), silent = F)
+  try(plot(species_ns_present, main = stringr::str_glue("{sp} presence")), silent = F)
+  
+  # export data
+  try(terra::writeRaster(x = species_ns_present, filename = fs::path(ceta_pres_dir, stringr::str_glue("taxonid_{sp}_{model}_scen_current_presence.grd")), overwrite = T), silent = F)
+}
+
+
+seabirds_species <- c(
   # seabirds
   137128,
   137129,
@@ -114,50 +227,49 @@ target_species <- c(
   137133
 )
 
+#####################################
+
 # open species file
-for (sp in target_species) {
-  message("Loading data for species ", sp)
+for (sp in seabirds_species) {
+  message("Loading data for seabird species ", sp)
   
-  try(file <- fs::dir_ls(path = species_dir,
-                     regexp = stringr::str_glue("{sp}")), silent = F)
+  try(file <- fs::dir_ls(path = seabirds_dir,
+                         regexp = stringr::str_glue("{sp}")), silent = F)
   
   # (?<=...) = after
   # (?=...) = before
   try(model <- stringr::str_extract(file, "(?<=mpaeu_method=)[^_]+(?=_scen)"), silent = F)
   
-  try(species <- terra::rast(x = fs::path(species_dir, stringr::str_glue("taxonid={sp}_model=mpaeu_method={model}_scen=current_cog"), ext = "tif")), silent = F)
+  try(species <- terra::rast(x = fs::path(seabirds_dir, stringr::str_glue("taxonid={sp}_model=mpaeu_method={model}_scen=current_cog"), ext = "tif")), silent = F)
   
-  message("Cropping and masking data for species ", sp)
+  message("Cropping and masking data for seabird species ", sp)
   
   # crop and mask species to boundary box
   try(species_ns <- species %>%
-    terra::crop(x = .,
-                # boundary box
-                y = bbox,
-                # mask the data
-                mask = T), silent = F)
+        terra::crop(x = .,
+                    # boundary box
+                    y = bbox,
+                    # mask the data
+                    mask = T), silent = F)
   try(plot(species_ns, main = stringr::str_glue("{sp} SDM")), silent = F)
   
   message("Exporting species ", sp)
   
   # export data
-  try(terra::writeRaster(x = species_ns, filename = fs::path(output_dir, stringr::str_glue("taxonid_{sp}_{model}_scen_current.grd")), overwrite = T), silent = F)
-
+  try(terra::writeRaster(x = species_ns, filename = fs::path(seabirds_sp_dir, stringr::str_glue("taxonid_{sp}_{model}_scen_current.grd")), overwrite = T), silent = F)
+  
   message("Create presence/absence data for species", sp)
   
-  # transform data so values at and below 50 become absence (0) and for those above 50 become present (1)
-  try(present_values <- ifelse(species_ns[] <= threshold1, 0.1, # very low probability of species exist
-                               # low probability
-                               ifelse(species_ns[] > threshold1 & species_ns[] <= threshold2, 0.3,
-                                      # more probable than not
-                                      ifelse(species_ns[] > threshold2 & species_ns[] <= threshold3, 0.6,
-                                             # near certainty species exists in location
-                                             ifelse(species_ns[] > threshold3 & species_ns[] <= threshold4, 1, NA)))), silent = F)
+  # transform data based on probability of occurrence
+  try(present_values <- ifelse(species_ns[] <= threshold1, 0.3, # very low probability of species exist
+                               # probable (0.6)
+                               ifelse(species_ns[] > threshold1 & species_ns[] <= threshold2, 0.6,
+                                      # core habitat (1.)
+                                      ifelse(species_ns[] > threshold2 & species_ns[] <= threshold3, 1, NA))), silent = F)
   
   try(species_ns_present <- terra::setValues(species_ns, present_values), silent = F)
   try(plot(species_ns_present, main = stringr::str_glue("{sp} presence")), silent = F)
   
   # export data
-  try(terra::writeRaster(x = species_ns_present, filename = fs::path(presence_dir, stringr::str_glue("taxonid_{sp}_{model}_scen_current_presence.grd")), overwrite = T), silent = F)
-  
-  }
+  try(terra::writeRaster(x = species_ns_present, filename = fs::path(seabirds_pres_dir, stringr::str_glue("taxonid_{sp}_{model}_scen_current_presence.grd")), overwrite = T), silent = F)
+}

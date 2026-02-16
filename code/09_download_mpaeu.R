@@ -20,22 +20,23 @@ pacman::p_load(dplyr,
                tidyr)
 
 # List your species here
+# target_species <- c(
+#   # cetaceans
+#   137087,
+#   137091,
+#   137094,
+#   137098,
+#   137080,
+#   137100,
+#   137101,
+#   137102,
+#   137084,
+#   137117,
+#   137119,
+#   137107,
+#   137111)
+
 target_species <- c(
-  # cetaceans
-  137087,
-  137091,
-  137094,
-  137098,
-  137080,
-  137100,
-  137101,
-  137102,
-  137084,
-  137117,
-  137119,
-  137107,
-  137111,
-  
   # seabirds
   137128,
   137129,
@@ -96,7 +97,9 @@ target_species <- c(
 
 # create and set output directory
 fs::dir_create("data/a_raw_data/species")
-output_folder <- "data/a_raw_data/species"
+fs::dir_create("data/a_raw_data/species/cetaceans")
+fs::dir_create("data/a_raw_data/species/seabirds")
+output_folder <- "data/a_raw_data/species/seabirds"
 
 # set model methods of interest
 priority_models <- c("maxent", "ensemble") #rf, xgboost, esm

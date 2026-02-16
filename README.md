@@ -48,21 +48,23 @@ The study defined a boundary box for the Greater North Sea with points of:
 * northeast: 12.0059, 61.0170
 * northwest: -4.4454 61.0170
 
-Since the desired resolution for the analysis was at 500m, a hex grid at resolution 8 generated the hex grid using h3 indexes.
+Since the desired resolution for the analysis was at 500m, a hex grid at [resolution 8](https://gist.github.com/colbyn/001064f00385d253b42693c3889f9beb) generated the hex grid using [H3 indexes](https://h3geo.org). 
 
 ### **Model configuration**
 Habitat designation
 - Unlikely habitat: scores below 75
-- ProbableHabitat: scores between 50 and 75
+- Probable Habitat: scores between 50 and 75
 - Core habitat: scores over 75
+
+### Cold water corals
+
 
 ### Scores
 | Layer | Score | Consideration |
 |---------------|---------------|---------------|
 | Fish | 0 - 1 | Linear normalization with 0.01 added to minimum |
-| Cetaceans | | Species list compiled from list provided by Total Energies, which used [Waggitt et al. (2020)](https://besjournals.onlinelibrary.wiley.com/doi/pdf/10.1111/1365-2664.13525) \
-along with cetaceans that have at least one observation in the ICES statistical surveys for the North Sea |
-| Seabirds | | Species list compiled from list provided by Total Energies, which used [Waggitt et al. (2020)](https://besjournals.onlinelibrary.wiley.com/doi/pdf/10.1111/1365-2664.13525) |
+| Cetaceans | | Species list compiled from list provided by Total Energies, [Waggitt et al. (2020)](https://besjournals.onlinelibrary.wiley.com/doi/pdf/10.1111/1365-2664.13525) along with cetaceans that have at least one observation in the [ICES statistical surveys]() for the North Sea |
+| Seabirds | | Species list compiled from list provided by Total Energies, [Waggitt et al. (2020)](https://besjournals.onlinelibrary.wiley.com/doi/pdf/10.1111/1365-2664.13525), along with data from [ICES statistical surveys](https://esas.ices.dk/inventory) and [MPA EU](https://shiny.obis.org/distmaps/) |
 | Protected areas | 0, 1| Absence, Presence |
 | Cold water corals | 0, 1| Absence, Presence |
 | Important Marine Mammal Areas | 0, 1| Absence, Presence |
@@ -81,4 +83,5 @@ to have zero values, 0.01 got added to those scores. Otherwise keep the normaliz
 | Fish | [Cesc Gordó-Vilaseca](https://www.nature.com/articles/s41467-024-49911-9) | Fish species richness | [GitHub repository](https://github.com/CescGV/JSDM-Barents-Norwegian-North/tree/main) |
 | Cetaceans | [MPA EU](https://mpa-europe.eu) and provided by Silas C. Principe | Cetaceans species distribution models | | [GitHub](https://github.com/iobis/mpaeu_sdm/tree/main), [Shiny OBIS](https://shiny.obis.org/distmaps/)
 | Seabids | [MPA EU](https://mpa-europe.eu) and provided by Silas C. Principe | Seabirds species distribution models | | [GitHub](https://github.com/iobis/mpaeu_sdm/tree/main), [Shiny OBIS](https://shiny.obis.org/distmaps/)
-
+| Conservation areas | [Marine Mammals Protected Areas Task Force](https://www.marinemammalhabitat.org) | Important Marine Mammal Areas | | Need to [request download](https://www.marinemammalhabitat.org/immas/imma-spatial-layer-download/) |
+| Protected areas | Protected Seas | Marine protected areas | | [Ocean Data Platform](https://app.hubocean.earth/catalog/dataset/a608f54b-75c7-4df9-a3a8-cedbfa391873/protectedseas-navigator-v2-focused-area-based-protections) | Used the focused dataset

@@ -8,6 +8,7 @@ rm(list = ls())
 # load packages
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(dplyr,
+               mapview,
                mregions2,
                odp,
                sf,
@@ -58,20 +59,22 @@ ns <- mregions2::gaz_search(36317) %>%
   mregions2::gaz_geometry() %>%
   sf::st_make_valid()
 
-ggplot2::ggplot(ns) +
-  ggplot2::geom_sf()
+mapview::mapview(ns)
 
 #####################################
 #####################################
 
 # return the hexes in the water
 ns_hex <- hexes %>%
+  # intersect the hexes with the North Sea boundary
   sf::st_intersection(x = .,
                       y = ns)
 
 # get list of hex grids in North Sea
 ns_hex_list <- ns_hex %>%
+  # drop geometry to make faster
   sf::st_drop_geometry() %>%
+  # select on the H3 index column
   dplyr::select(h3_index)
 
 # get full hex grid

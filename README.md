@@ -73,7 +73,7 @@ Habitat designation
 ## Methods
 ### Linear normalization
 * Normalized score = (value - minimum) / (maximum - minimum)
-If normalized value is minimum value then the returning value equals zero; to avoid these scores/
+If normalized value is minimum value then the returning value equals zero; to avoid these scores
 to have zero values, 0.01 got added to those scores. Otherwise keep the normalized value.
 
 

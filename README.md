@@ -23,9 +23,9 @@ Habitat sensitivity assessment in North Sea
 │   ├── intermediate        : Transformed data
 │   ├── model               : Final model data
 │
-├── codes                   : Scripts for cleaning, processing, and analyzing data
+├── code                    : Scripts for cleaning, processing, and analyzing data
 │
-├── figures                 : All figures
+├── figure                  : All figures
 │
 ├── methodology             : Detailed methodologies for the data and analysis
 │
@@ -35,6 +35,7 @@ Habitat sensitivity assessment in North Sea
 -   **data**
     -   **raw_data:** the raw data integrated in the analysis (**Note:** original data name and structure were kept except when either name was not descriptive or similar data were put in same directory to simplify input directories)
     -   **intermediate_data:** disaggregated processed data
+    -   **hex_data:** geopackage 
 
 ***Note for PC users:*** The code was written on a Mac so to run the scripts replace "/" in the pathnames for directories with two "\\".
 
@@ -47,3 +48,5 @@ Greater North Sea -- boundary box of bbox <- 'geometry within "POLYGON((-4.4454 
 #### *Generic Data*
 | Layer | Data Source | Data Name | Metadata  | Notes |
 |---------------|---------------|---------------|---------------|---------------|
+| Fish | [Cesc Gordó-Vilaseca](https://www.nature.com/articles/s41467-024-49911-9) | Fish species richness | [GitHub repository](https://github.com/CescGV/JSDM-Barents-Norwegian-North/tree/main) |
+| Cetaceans

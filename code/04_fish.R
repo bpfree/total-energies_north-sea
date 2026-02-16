@@ -45,6 +45,8 @@ output_dir <- "data/b_intermediate_data"
 #####################################
 
 # read data
+## fisheries species richness for present day in North Sea
+### data provided by Cesc Gordó-Vilaseca shared the data that came from the paper (https://www.nature.com/articles/s41467-024-49911-9)
 data <- terra::rast(fs::path(data_dir, "fish_north-sea_richness_present_day", ext = "tiff"))
 
 study_area <- sf::st_read(dsn = fs::path(output_dir, "study_area.gpkg"), layer = "north_sea") %>%

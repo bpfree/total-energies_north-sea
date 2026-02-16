@@ -48,7 +48,7 @@ The study defined a boundary box for the Greater North Sea with points of:
 * northeast: 12.0059, 61.0170
 * northwest: -4.4454 61.0170
 
-Since the desired resolution for the analysis was at 500m, a hex grid at [resolution 8](https://gist.github.com/colbyn/001064f00385d253b42693c3889f9beb) generated the hex grid using [H3 indexes](https://h3geo.org). 
+Since the desired resolution for the analysis was at 500m, a hex grid at [resolution 8](https://gist.github.com/colbyn/001064f00385d253b42693c3889f9beb) generated the hex grid using [H3 indexes](https://h3geo.org). Only the hexes that intersected with the Greater North Sea boundary layer provided by [Marine Regions](https://marineregions.org/gazetteer.php) were used in the final analysis.
 
 ### **Model configuration**
 Habitat designation
@@ -63,7 +63,7 @@ Habitat designation
 | Layer | Score | Consideration |
 |---------------|---------------|---------------|
 | Fish | 0 - 1 | Linear normalization with 0.01 added to minimum |
-| Cetaceans | | Species list compiled from list provided by Total Energies, [Waggitt et al. (2020)](https://besjournals.onlinelibrary.wiley.com/doi/pdf/10.1111/1365-2664.13525) along with cetaceans that have at least one observation in the [ICES statistical surveys]() for the North Sea |
+| Cetaceans | | Species list compiled from list provided by Total Energies, [Waggitt et al. (2020)](https://besjournals.onlinelibrary.wiley.com/doi/pdf/10.1111/1365-2664.13525) along with cetaceans that have at least one observation in the [ICES statistical surveys](https://cetaceans.ices.dk/inventory) for the North Sea |
 | Seabirds | | Species list compiled from list provided by Total Energies, [Waggitt et al. (2020)](https://besjournals.onlinelibrary.wiley.com/doi/pdf/10.1111/1365-2664.13525), along with data from [ICES statistical surveys](https://esas.ices.dk/inventory) and [MPA EU](https://shiny.obis.org/distmaps/) |
 | Protected areas | 0, 1| Absence, Presence |
 | Cold water corals | 0, 1| Absence, Presence |

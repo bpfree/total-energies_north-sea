@@ -1,4 +1,8 @@
-# combined species richness
+##################################################
+### 11. cetaceans and seabird species richness ###
+##################################################
+
+# clear environment
 rm(list = ls())
 
 # libraries
@@ -61,8 +65,8 @@ terra::nlyr(cetaceans_stack) # should show 16 layers
 cetaceans_select <- cetaceans_stack[[-c(3,11,14)]]
 
 sources(cetaceans_select) # will show 13 sources
-names(cetaceans_select) # will show 16 layers (3 with 2 layers)
-terra::nlyr(cetaceans_select) # should show 16 layers
+names(cetaceans_select) # will show 13 layers (duplicates removed)
+terra::nlyr(cetaceans_select) # should show 13 layers
 
 
 mapview::mapview(cetaceans_select)
@@ -180,7 +184,7 @@ seabirds_dir <- "data/b_intermediate_data/presence/seabirds"
 seabirds_species <- c(
   # seabirds
   137128,
-  137129,
+  137129, # there are two -- need to remove one
   159172,
   159179,
   137130,
@@ -221,7 +225,7 @@ seabirds_species <- c(
   137183,
   137184,
   137203,
-  137156,
+  137156, # there are two -- need to remove one
   137074,
   137075,
   137171,
@@ -246,15 +250,15 @@ length(seabirds_files)
 
 seabirds_list <- lapply(seabirds_files, terra::rast)
 seabirds_stack <- terra::rast(seabirds_list)
-sources(seabirds_stack) # will show 13 sources
-names(seabirds_stack) # will show 16 layers (3 with 2 layers)
-terra::nlyr(seabirds_stack) # should show 16 layers
+sources(seabirds_stack) # will show 52 sources
+names(seabirds_stack) # will show 52 layers (2 with 2 layers -- 137129 and 137156)
+terra::nlyr(seabirds_stack) # should show 54 layers
 
-seabirds_select <- seabirds_stack[[-c(3,11,14)]]
+seabirds_select <- seabirds_stack[[-c(8, 21)]]
 
-sources(seabirds_select) # will show 13 sources
-names(seabirds_select) # will show 16 layers (3 with 2 layers)
-terra::nlyr(seabirds_select) # should show 16 layers
+sources(seabirds_select) # will show 52 sources
+names(seabirds_select) # will show 52 layers (duplicates removed)
+terra::nlyr(seabirds_select) # should show 52 layers
 
 seabirds_sum <- terra::app(seabirds_select,
                             fun = sum,

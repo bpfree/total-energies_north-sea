@@ -33,8 +33,7 @@ Habitat sensitivity assessment in North Sea
 ```
 
 -   **data**
-    -   **raw_data:** the raw data integrated in the analysis (**Note:** original data name and structure were kept except when either
-    name was not descriptive or similar data were put in same directory to simplify input directories)
+    -   **raw_data:** the raw data integrated in the analysis (**Note:** original data name and structure were kept except when either name was not descriptive or similar data were put in same directory to simplify input directories)
     -   **intermediate_data:** disaggregated processed data
     -   **hex_data:** geopackage 
 
@@ -49,9 +48,7 @@ The study defined a boundary box for the Greater North Sea with points of:
 * northeast: 12.0059, 61.0170
 * southeast: 12.0059, 50.9954
 
-Since the desired resolution for the analysis was at 500m, a hex grid at [resolution 8](https://gist.github.com/colbyn/001064f00385d253b42693c3889f9beb)
-generated the hex grid using [H3 indexes](https://h3geo.org). Only the hexes that intersected with the Greater North Sea boundary layer provided by
-[Marine Regions](https://marineregions.org/gazetteer.php) were used in the final analysis.
+Since the desired resolution for the analysis was at 500m, a hex grid at [resolution 8](https://gist.github.com/colbyn/001064f00385d253b42693c3889f9beb) generated the hex grid using [H3 indexes](https://h3geo.org). Only the hexes that intersected with the Greater North Sea boundary layer provided by [Marine Regions](https://marineregions.org/gazetteer.php) were used in the final analysis.
 
 ### **Model configuration**
 Habitat designation
@@ -67,9 +64,7 @@ Habitat designation
 |---------------|---------------|---------------|
 | Fish | 0 - 1 | Linear normalization with 0.01 added to minimum |
 | Cetaceans | | Species list compiled from list provided by Total Energies,
-[Waggitt et al. (2020)](https://besjournals.onlinelibrary.wiley.com/doi/pdf/10.1111/1365-2664.13525),
-along with cetaceans that have at least one observation in the [ICES statistical surveys](https://cetaceans.ices.dk/inventory)
-for the North Sea |
+[Waggitt et al. (2020)](https://besjournals.onlinelibrary.wiley.com/doi/pdf/10.1111/1365-2664.13525), along with cetaceans that have at least one observation in the [ICES statistical surveys](https://cetaceans.ices.dk/inventory) for the North Sea |
 | Seabirds | | Species list compiled from list provided by Total Energies,
 [Waggitt et al. (2020)](https://besjournals.onlinelibrary.wiley.com/doi/pdf/10.1111/1365-2664.13525),
 along with data from [ICES statistical surveys](https://esas.ices.dk/inventory) and [MPA EU](https://shiny.obis.org/distmaps/) |
@@ -84,7 +79,8 @@ along with data from [ICES statistical surveys](https://esas.ices.dk/inventory) 
 If normalized value is minimum value then the returning value equals zero; to avoid these scores
 to have zero values, 0.01 got added to those scores. Otherwise keep the normalized value.
 
-
+### Overlapping features
+When a hex grid received more than one value from a linear normalization, due to the shape incongruity, then the maximum value was kept.
 
 ### **Data sources**
 #### *Generic Data*

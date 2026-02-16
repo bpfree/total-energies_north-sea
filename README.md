@@ -41,6 +41,7 @@ Habitat sensitivity assessment in North Sea
 
 Please contact Brian Free ([brian.free@oceandata.earth](mailto:brian.free@oceandata.earth)) with any questions regarding the code.
 
+## **Overview**
 ### **Study region**
 The study defined a boundary box for the Greater North Sea with points of: 
 * southwest: -4.4454, 50.9954
@@ -50,14 +51,24 @@ The study defined a boundary box for the Greater North Sea with points of:
 
 Since the desired resolution for the analysis was at 500m, a hex grid at [resolution 8](https://gist.github.com/colbyn/001064f00385d253b42693c3889f9beb) generated the hex grid using [H3 indexes](https://h3geo.org). Only the hexes that intersected with the Greater North Sea boundary layer provided by [Marine Regions](https://marineregions.org/gazetteer.php) were used in the final analysis.
 
-### **Model configuration**
+## Methods
+### Linear normalization
+* Normalized score = (value - minimum) / (maximum - minimum)
+If normalized value is minimum value then the returning value equals zero; to avoid these scores
+to have zero values, 0.01 got added to those scores. Otherwise keep the normalized value.
+
+### Overlapping features
+When a hex grid received more than one value from a linear normalization, due to the shape incongruity, then the maximum value was kept.
+
+### Habitats
+#### Cold water corals
+
+### Species
+#### Cetaceans and seabirds
 Habitat designation
 - Unlikely habitat: scores below 75
 - Probable Habitat: scores between 50 and 75
 - Core habitat: scores over 75
-
-### Cold water corals
-
 
 ### Scores
 | Layer | Score | Consideration |
@@ -70,17 +81,8 @@ Habitat designation
 | Important Marine Mammal Areas | 0, 1| Absence, Presence |
 | Seagrass | 0, 1| Absence, Presence |
 
-## Methods
-### Linear normalization
-* Normalized score = (value - minimum) / (maximum - minimum)
-If normalized value is minimum value then the returning value equals zero; to avoid these scores
-to have zero values, 0.01 got added to those scores. Otherwise keep the normalized value.
-
-### Overlapping features
-When a hex grid received more than one value from a linear normalization, due to the shape incongruity, then the maximum value was kept.
-
-### **Data sources**
-#### *Generic Data*
+## **Data sources**
+### *Generic Data*
 | Layer | Data Source | Data Name | Metadata  | Notes |
 |---------------|---------------|---------------|---------------|---------------|
 | Fish | [Cesc Gordó-Vilaseca](https://www.nature.com/articles/s41467-024-49911-9) | Fish species richness | [GitHub repository](https://github.com/CescGV/JSDM-Barents-Norwegian-North/tree/main) |

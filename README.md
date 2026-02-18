@@ -62,6 +62,7 @@ When a hex grid received more than one value from a linear normalization, due to
 
 ### Habitats
 #### Cold water corals
+The cold water corals dataset has values for 10 species that range between 0 and 1000. Classifications on coral presence are separated by steps of 200: very low (<200), low (200 - 400), moderate (400 - 600), high (600 - 800), and very high (800). This study only considered if a cold water coral was present, not the overall species richness. To determine if a cold water coral reef was present, the maximum score across the 10 species was returned and only values above 600 were kept.
 
 ### Species
 #### Cetaceans and seabirds

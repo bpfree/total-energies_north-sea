@@ -5,11 +5,26 @@
 # clear environment
 rm(list = ls())
 
-# libraries
-library(terra)
-library(stringr)
-library(tidyverse)
-library(sf)
+# load packages
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(dplyr,
+               fs,
+               h3,
+               janitor,
+               jsonlite,
+               mapview,
+               mregions2,
+               odp,
+               purrr,
+               readr,
+               rmapshaper,
+               sf,
+               stringr,
+               terra,
+               tidyr)
+
+#####################################
+#####################################
 
 # input directory
 fs::dir_create("data/b_intermediate_data")
@@ -34,29 +49,28 @@ cetaceans_species <- c(
   137107,
   137111) # there are two -- need to remove one
 
-# # open species file
-# for (sp in target_species) {
-#   message("Loading data for species ", sp)
-#   
-#   file <- fs::dir_ls(path = presence_dir,
-#                      regexp = stringr::str_glue("{sp}"))
-#   
-#   # (?<=...) = after
-#   # (?=...) = before
-#   # [^...] = list excluded characters
-#   model <- stringr::str_extract(file, "(?<=mpaeu_method=)[^_]+(?=_scen)")
-# }
+#####################################
 
+# get all the cetaceans raster layers
 cetaceans_files <- fs::dir_ls(
+  # path
   path = cetaceans_dir,
+  # return only files that end with .grd
   regexp = stringr::str_glue("\\.grd$"),
+  # files
   type = "file"
 )
 
+# calculate the number of files that match the .grd in the specified folder
 length(cetaceans_files)
 
+# open species presence raster files as a list
 cetaceans_list <- lapply(cetaceans_files, terra::rast)
+
+# create a stack of the species raster files
 cetaceans_stack <- terra::rast(cetaceans_list)
+
+# inspect data
 sources(cetaceans_stack) # will show 13 sources
 names(cetaceans_stack) # will show 16 layers (3 with 2 layers)
 terra::nlyr(cetaceans_stack) # should show 16 layers
@@ -64,25 +78,34 @@ terra::nlyr(cetaceans_stack) # should show 16 layers
 # remove the duplicated layers for the 3 species (using their index location)
 cetaceans_select <- cetaceans_stack[[-c(3,11,14)]]
 
+# inspect data
 sources(cetaceans_select) # will show 13 sources
 names(cetaceans_select) # will show 13 layers (duplicates removed)
 terra::nlyr(cetaceans_select) # should show 13 layers
 
+#####################################
 
+# inspect data
 mapview::mapview(cetaceans_select)
 plot(cetaceans_select)
 
+# create summed raster
 cetaceans_sum <- terra::app(cetaceans_select,
+                            # apply function (sum)
                           fun = sum,
+                          # remove any that meet NAs
                           na.rm = TRUE)
 
+# inspect data
 plot(cetaceans_sum)
 
+# export data
 terra::writeRaster(x = cetaceans_sum, filename = fs::path(output_dir, "ns_cetaceans_species_richness", ext = "grd"), overwrite = T)
 
 #####################################
 #####################################
 
+# convert raster to vector
 ns_ceta_poly <- cetaceans_sum |>
   # convert raster to polygons
   terra::as.polygons() |>
@@ -90,38 +113,36 @@ ns_ceta_poly <- cetaceans_sum |>
   sf::st_as_sf() |>
   # rename field
   dplyr::rename("richness" = "sum") %>%
+  # reclassify species richness
   dplyr::mutate("rescale" = (richness - min(richness)) / (max(richness) - min(richness))) |>
+  # change values for reclassification
   dplyr::mutate("rescale" = ifelse(rescale == 0.00,
+                                   # when species richness reclassification equals 0 (minimum) add 0.01
                                    rescale + 0.01,
+                                   # otherwise keep reclassification value
                                    rescale))
 
+# inspect data
 names(ns_ceta_poly)
-
 View(ns_ceta_poly)
-
 mapview::mapview(ns_ceta_poly)
 
+#####################################
+#####################################
+
+# load hex grid
 hex_dir <- "data/b_intermediate_data/study_area.gpkg"
 hex_grid <- sf::st_read(dsn = hex_dir, layer = "ns_hexes_full")
 
-# region_ceta_hex <- hex_grid[ns_ceta_poly, ] %>%
-#   # spatially join fish species richness values to North Sea hex cells
-#   sf::st_join(x = .,
-#               y = ns_ceta_poly,
-#               join = st_intersects) %>%
-#   sf::st_drop_geometry() |>
-#   # group by H3 index and layer name
-#   dplyr::group_by(h3_index, rescale) |>
-#   # return only distinct rows (remove duplicates)
-#   dplyr::summarize(max = max(rescale)) %>%
-#   # ungroup to get each H3 index and its max species value
-#   dplyr::ungroup()
-
+# cetacean species richness hex grid
 region_ceta_hex <- hex_grid[ns_ceta_poly, ] %>%
   # spatially join fish species richness values to North Sea hex cells
   sf::st_join(x = .,
+              # joned data
               y = ns_ceta_poly,
+              # join function
               join = st_intersects) %>%
+  # drop geometry -- faster processing
   sf::st_drop_geometry() |>
   # group by H3 index and layer name
   dplyr::group_by(h3_index) |>
@@ -129,23 +150,6 @@ region_ceta_hex <- hex_grid[ns_ceta_poly, ] %>%
   dplyr::summarize(ceta_rich = max(rescale)) %>%
   # ungroup to get each H3 index and its max species value
   dplyr::ungroup()
-
-# region_ceta_hex3 <- hex_grid[ns_ceta_poly, ] %>%
-#   # spatially join fish species richness values to North Sea hex cells
-#   sf::st_join(x = .,
-#               y = ns_ceta_poly,
-#               join = st_intersects) %>%
-#   sf::st_drop_geometry() |>
-#   # group by H3 index and layer name
-#   dplyr::group_by(h3_index, rescale) |>
-#   # return only distinct rows (remove duplicates)
-#   dplyr::summarize(max = max(rescale)) |>
-#   # ungroup to get each H3 index and its max species value
-#   dplyr::distinct()
-
-# test <- region_ceta_hex %>%
-#   dplyr::group_by(h3_index) %>%
-#   dplyr::summarize(max = max(rescale))
 
 # check for duplicates -- there don't seem to be any
 duplicates <- region_ceta_hex %>%
@@ -157,8 +161,11 @@ duplicates <- region_ceta_hex %>%
   dplyr::distinct()
 
 region_ceta_hex_join <- hex_grid %>%
+  # join data to the full hex grid
   dplyr::inner_join(x = .,
+                    # joined data
                     y = region_ceta_hex,
+                    # joined field
                     by = "h3_index")
 
 # mapview::mapview(region_ceta_hex_join)
@@ -166,6 +173,7 @@ region_ceta_hex_join <- hex_grid %>%
 #####################################
 #####################################
 
+# export data
 sf::st_write(obj = region_ceta_hex_join,
              dsn = "data/c_hex_data/data_ns_hex.gpkg",
              layer = "ceta_hex",
@@ -240,16 +248,29 @@ seabirds_species <- c(
   137133
 )
 
+#####################################
+#####################################
+
+# load data
 seabirds_files <- fs::dir_ls(
+  # path
   path = seabirds_dir,
+  # return on .grd files
   regexp = stringr::str_glue("\\.grd$"),
+  # files
   type = "file"
 )
 
+# inspect data
 length(seabirds_files)
 
+# open seabird species rasters as list
 seabirds_list <- lapply(seabirds_files, terra::rast)
+
+# create stack of seabird species rasters
 seabirds_stack <- terra::rast(seabirds_list)
+
+# inspect data
 sources(seabirds_stack) # will show 52 sources
 names(seabirds_stack) # will show 52 layers (2 with 2 layers -- 137129 and 137156)
 terra::nlyr(seabirds_stack) # should show 54 layers
@@ -260,17 +281,23 @@ sources(seabirds_select) # will show 52 sources
 names(seabirds_select) # will show 52 layers (duplicates removed)
 terra::nlyr(seabirds_select) # should show 52 layers
 
+# summarize seabird species richness across the stack
 seabirds_sum <- terra::app(seabirds_select,
-                            fun = sum,
-                            na.rm = TRUE)
+                           # function for summarizing
+                           fun = sum,
+                           # remove NAs
+                           na.rm = TRUE)
 
+# inspect data
 plot(seabirds_sum)
 
+# export data
 terra::writeRaster(x = seabirds_sum, filename = fs::path(output_dir, "ns_seabirds_species_richness", ext = "grd"), overwrite = T)
 
 #####################################
 #####################################
 
+# convert raster to vector
 ns_seabirds_poly <- seabirds_sum |>
   # convert raster to polygons
   terra::as.polygons() |>
@@ -278,35 +305,28 @@ ns_seabirds_poly <- seabirds_sum |>
   sf::st_as_sf() |>
   # rename field
   dplyr::rename("richness" = "sum") %>%
+  # reclassify species richness (between 0 and 1)
   dplyr::mutate("rescale" = (richness - min(richness)) / (max(richness) - min(richness))) |>
   dplyr::mutate("rescale" = ifelse(rescale == 0.00,
+                                   # when species richness reclassification equals 0 (minimum) add 0.01
                                    rescale + 0.01,
+                                   # otherwise keep reclassification value
                                    rescale))
 
+# inspect data
 names(ns_seabirds_poly)
-
 View(ns_seabirds_poly)
-
 mapview::mapview(ns_seabirds_poly)
 
-# region_seabirds_hex <- hex_grid[ns_seabirds_poly, ] %>%
-#   # spatially join fish species richness values to North Sea hex cells
-#   sf::st_join(x = .,
-#               y = ns_seabirds_poly,
-#               join = st_intersects) %>%
-#   sf::st_drop_geometry() |>
-#   # group by H3 index and layer name
-#   dplyr::group_by(h3_index, rescale) |>
-#   # return only distinct rows (remove duplicates)
-#   dplyr::summarize(max = max(rescale)) %>%
-#   # ungroup to get each H3 index and its max species value
-#   dplyr::ungroup()
-
+# seabird species richness on hex grid
 region_seabirds_hex <- hex_grid[ns_seabirds_poly, ] %>%
   # spatially join fish species richness values to North Sea hex cells
   sf::st_join(x = .,
+              # joined data
               y = ns_seabirds_poly,
+              # joined function
               join = st_intersects) %>%
+  # drop geometry -- faster processing
   sf::st_drop_geometry() |>
   # group by H3 index and layer name
   dplyr::group_by(h3_index) |>
@@ -314,23 +334,6 @@ region_seabirds_hex <- hex_grid[ns_seabirds_poly, ] %>%
   dplyr::summarize(bird_rich = max(rescale)) %>%
   # ungroup to get each H3 index and its max species value
   dplyr::ungroup()
-
-# region_seabirds_hex3 <- hex_grid[ns_seabirds_poly, ] %>%
-#   # spatially join fish species richness values to North Sea hex cells
-#   sf::st_join(x = .,
-#               y = ns_seabirds_poly,
-#               join = st_intersects) %>%
-#   sf::st_drop_geometry() |>
-#   # group by H3 index and layer name
-#   dplyr::group_by(h3_index, rescale) |>
-#   # return only distinct rows (remove duplicates)
-#   dplyr::summarize(max = max(rescale)) |>
-#   # ungroup to get each H3 index and its max species value
-#   dplyr::distinct()
-
-# test <- region_seabirds_hex %>%
-#   dplyr::group_by(h3_index) %>%
-#   dplyr::summarize(max = max(rescale))
 
 # check for duplicates -- there don't seem to be any
 duplicates <- region_seabirds_hex %>%
@@ -341,9 +344,12 @@ duplicates <- region_seabirds_hex %>%
   # show distinct options
   dplyr::distinct()
 
+# join seabirds species richness on full hex grid
 region_seabirds_hex_join <- hex_grid %>%
   dplyr::inner_join(x = .,
+                    # joined data
                     y = region_seabirds_hex,
+                    # joined column
                     by = "h3_index")
 
 # mapview::mapview(region_seabirds_hex_join)
@@ -351,7 +357,11 @@ region_seabirds_hex_join <- hex_grid %>%
 #####################################
 #####################################
 
+# export data
 sf::st_write(obj = region_seabirds_hex_join,
+             # destination
              dsn = "data/c_hex_data/data_ns_hex.gpkg",
+             # layer
              layer = "seabirds_hex",
+             # appending
              append = F)

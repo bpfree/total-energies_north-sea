@@ -8,8 +8,19 @@ rm(list = ls())
 # load packages
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(dplyr,
+               fs,
+               h3,
+               janitor,
+               jsonlite,
+               mapview,
+               mregions2,
                odp,
+               purrr,
+               readr,
+               rmapshaper,
                sf,
+               stringr,
+               terra,
                tidyr)
 
 # Commentary on R and code formulation:

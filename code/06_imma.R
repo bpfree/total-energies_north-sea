@@ -14,12 +14,19 @@ rm(list = ls())
 # load packages
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(dplyr,
-               ggplot2,
+               fs,
+               h3,
                janitor,
+               jsonlite,
                mapview,
+               mregions2,
                odp,
+               purrr,
+               readr,
                rmapshaper,
                sf,
+               stringr,
+               terra,
                tidyr)
 
 # Commentary on R and code formulation:
@@ -74,6 +81,7 @@ data <- sf::st_read(dsn = fs::path(data_dir, "imma/iucn-imma/iucn-imma.gpkg"),
   dplyr::filter(stringr::str_detect(ident_code, "NEATL")) %>%
   # project to WGS84
   sf::st_transform(x = .,
+                   # coordinate reference system of interest
                    crs = "EPSG:4326")
 
 ## inspect data
@@ -82,23 +90,8 @@ sf::st_crs(x = data)
 head(data)
 names(data)
 
-# moray <- data |>
-#   dplyr::filter(stringr::str_detect(title, "Moray"))
-# 
-# mapview::mapview()
-# 
-# # ggplot(data = data) +
-# #   geom_sf()
-# 
 north_sea <- sf::st_read(dsn = fs::path(output_dir, "study_area.gpkg"),
-                            layer = "greater_north_sea")
-# 
-# sf::st_crs(x = north_sea)
-# 
-# mapview::mapview(north_sea)
-# 
-# # ggplot(data = north_sea) +
-# #   geom_sf()
+                         layer = "greater_north_sea")
 
 #####################################
 #####################################
@@ -107,32 +100,15 @@ north_sea <- sf::st_read(dsn = fs::path(output_dir, "study_area.gpkg"),
 ## need to change off spherical geometry for the "clip" to work
 sf_use_s2(FALSE)
 
-# data_region <- data %>%
-#   rmapshaper::ms_clip(target = .,
-#                       clip = north_sea) %>%
-#   sf::st_cast(x =.,
-#               to = "MULTIPOLYGON") %>%
-#   dplyr::rename("geom" = "geometry") %>%
-#   dplyr::bind_rows(moray) %>%
-#   # create field called "layer" and fill with "seagrass" for summary
-#   dplyr::mutate(layer = "imma")
-# 
-# mapview::mapview(data_region)
-# 
-# data_flat <- data_region %>%
-#   sf::st_make_valid() |>
-#   dplyr::select(layer, geom) %>%
-#   dplyr::group_by(layer) |>
-#   dplyr::summarise()
-# 
-# mapview::mapview(data_flat)
-
 data_sr <- data %>%
   # make data valid to fix topology exception
   sf::st_make_valid() %>%
   # clip to the study region
   sf::st_intersection(x = .,
+                      # clip region
                       y = north_sea)
+
+# inspect data
 View(data_sr)
 list(unique(sf::st_geometry_type(data_sr)))
 
@@ -141,6 +117,7 @@ mapview::mapview(data_sr)
 #####################################
 #####################################
 
+# solve the problem with the geometry collection data
 imma_collection <- data_sr %>%
   # filter for only collection geometry
   dplyr::filter(st_geometry_type(.) == "GEOMETRYCOLLECTION") |>
@@ -153,11 +130,13 @@ imma_collection <- data_sr %>%
   # ungroup to get the IMMAs again
   dplyr::ungroup()
 
+# inspect the data
 mapview::mapview(imma_collection)
 
+# get the clean data
 imma_clean <- data_sr %>%
   # get the MULTIPOLYGON objects
-  filter(!st_geometry_type(.) == "GEOMETRYCOLLECTION") |>
+  dplyr::filter(!st_geometry_type(.) == "GEOMETRYCOLLECTION") |>
   # add back in the previous collection IMMA objects
   bind_rows(imma_collection) %>%
   # create new column
@@ -176,10 +155,13 @@ hex_grid <- sf::st_read(dsn = hex_dir, layer = "ns_hexes_full")
 region_data_hex <- hex_grid[imma_clean, ] %>%
   # spatially join seagrass values to North Sea hex cells
   sf::st_join(x = .,
+              # data to join
               y = imma_clean,
+              # join function
               join = st_intersects) %>%
   # select fields of importance
   dplyr::select(h3_index) %>%
+  # return distinct hexagons
   dplyr::distinct()
 
 mapview::mapview(region_data_hex)

@@ -14,8 +14,19 @@ rm(list = ls())
 # load packages
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(dplyr,
+               fs,
+               h3,
+               janitor,
+               jsonlite,
+               mapview,
+               mregions2,
                odp,
+               purrr,
+               readr,
+               rmapshaper,
                sf,
+               stringr,
+               terra,
                tidyr)
 
 # Commentary on R and code formulation:
@@ -82,6 +93,7 @@ cursor <- table$select(filter = bbox)
 # fetch table into a dataframe that you can use for analysis
 df <- cursor$dataframe()
 
+# inspect data
 dim(df)
 names(df)
 View(df)
@@ -90,55 +102,38 @@ str(df)
 #####################################
 
 # # load in dataset (see https://app.hubocean.earth/) -- seagrass
-# dataset_full <- client$dataset(odp_data)
-# 
-# # generate table (defaults to the first table in the dataset)
-# table_full <- dataset_full$table
-# schema_full <- table_full$schema()
-# 
-# # query -- by boundary box
-# ## returns a cursor that streams rows lazily
-# cursor_full <- table_full$select()
-# 
-# # fetch table into a dataframe that you can use for analysis
-# df_full <- cursor_full$dataframe()
-# 
-# dim(df_full)
-# names(df_full)
-# View(df_full)
-# str(df_full)
-# 
-# data_full <- df_full %>%
-#   janitor::clean_names() %>%
-#   # convert the WKB geometry field to a more user friendly geomtry field
-#   dplyr::mutate(geometry = sf::st_as_sfc(structure(as.list(geometry), class = "WKB"))) %>%
-#   sf::st_as_sf(crs = 4326)
-
-##############
-
 data <- df %>%
+  # clean column names
   janitor::clean_names() %>%
   # convert the WKB geometry field to a more user friendly geomtry field
   dplyr::mutate(geometry = sf::st_as_sfc(structure(as.list(geometry), class = "WKB"))) %>%
   # set CRS to WGS84
   sf::st_as_sf(crs = 4326)
 
+# inspect data
 View(data)
 class(data)
 
+#####################################
+
+# load greater North Sea data
 ns <- sf::st_read(dsn = fs::path(output_dir, "study_area.gpkg"), layer = "greater_north_sea")
 
+# limit data to study region
 region_data <- data %>%
   # obtain only seagrass in the study area
   rmapshaper::ms_clip(target = .,
                       clip = ns) %>%
   # create field called "layer" and fill with "seagrass" for summary
   dplyr::mutate(layer = "seagrass") %>%
+  # select fields
   dplyr::select(layer, geometry) %>%
+  # make geometry valid
   sf::st_make_valid()
 
-##############
+#####################################
 
+# load hex grid data
 hex_dir <- "data/b_intermediate_data/study_area.gpkg"
 hex_grid <- sf::st_read(dsn = hex_dir, layer = "ns_hexes_full")
 
@@ -146,20 +141,25 @@ hex_grid <- sf::st_read(dsn = hex_dir, layer = "ns_hexes_full")
 region_data_hex <- hex_grid[region_data, ] %>%
   # spatially join seagrass values to North Sea hex cells
   sf::st_join(x = .,
+              # joined data
               y = region_data,
+              # join function
               join = st_intersects) %>%
   # select fields of importance
   dplyr::select(h3_index) %>%
   # get only unique H3 indexes
   dplyr::distinct()
 
+# inspect data
 mapview::mapview(region_data_hex)
 
-##############
+#####################################
+#####################################
 
 # export data
 # sf::st_write(obj = data_full, dsn = "data/b_intermediate_data/habitats.gpkg", layer = "seagrass", append = F)
 sf::st_write(obj = region_data, dsn = "data/b_intermediate_data/habitats.gpkg", layer = "seagrass_ns", append = F)
 sf::st_write(obj = region_data_hex, dsn = "data/c_hex_data/data_ns_hex.gpkg", layer = "seagrass_hex", append = F)
 
+# inspect geopackage layers
 sf::st_layers(dsn = "data/b_intermediate_data/habitats.gpkg")

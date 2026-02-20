@@ -8,10 +8,20 @@ rm(list = ls())
 # load packages
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(dplyr,
+               fs,
+               h3,
+               janitor,
+               jsonlite,
+               mapview,
+               mregions2,
                odp,
+               purrr,
+               readr,
+               rmapshaper,
                sf,
-               tidyr,
-               terra)
+               stringr,
+               terra,
+               tidyr)
 
 # Commentary on R and code formulation:
 ## ***Note: If not familiar with dplyr notation
@@ -33,6 +43,9 @@ pacman::p_load(dplyr,
 #####################################
 
 # set parameters
+## useful guide on H3: https://h3geo.org/docs/core-library/restable/
+### cell area: 0.737327598 km2 (on average)
+### cell side length: 0.531414010 km (= 531,41401 m)
 res <- 8
 
 # Set directories

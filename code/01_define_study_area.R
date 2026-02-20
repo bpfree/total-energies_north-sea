@@ -45,10 +45,10 @@ output_dir <- "data/b_intermediate_data"
 # study area
 ## create points for study area
 ### add points as they need to be drawn (clockwise or counterclockwise)
-study_area <- rbind(c("point", -4.4454, 50.9954),
-                    c("point", 12.0059, 50.9954),
-                    c("point", 12.0059, 61.0170),
-                    c("point", -4.4454, 61.0170)) %>%
+study_area <- rbind(c("point", -4.4454, 50.9954), # southwest
+                    c("point", 12.0059, 50.9954), # southeast
+                    c("point", 12.0059, 61.0170), # northeast
+                    c("point", -4.4454, 61.0170)) %>% # northwest
   # convert to data frame
   as.data.frame() %>%
   # rename column names
@@ -89,9 +89,13 @@ mapview::mapview(study_area)
 #              append = F)
 
 sf::st_write(obj = study_area,
+             # destination
              dsn = fs::path(output_dir,
                             "study_area.gpkg"),
+             # layer
              layer = "ns_boundary",
+             # append (false = overwrite pre-existing file instead of appending onto the existing file)
              append = F)
 
+# check layers withing the output geopackage
 sf::st_layers(dsn = fs::path(output_dir, "study_area.gpkg"))

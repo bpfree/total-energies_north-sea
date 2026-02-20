@@ -14,8 +14,19 @@ rm(list = ls())
 # load packages
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(dplyr,
+               fs,
+               h3,
+               janitor,
+               jsonlite,
+               mapview,
+               mregions2,
                odp,
+               purrr,
+               readr,
+               rmapshaper,
                sf,
+               stringr,
+               terra,
                tidyr)
 
 # Commentary on R and code formulation:
@@ -89,7 +100,9 @@ df <- cursor$dataframe()
 
 #####################################
 
+# reclassified coral data
 data <- df %>%
+  # clean column names
   janitor::clean_names() %>%
   # set CRS to WGS84
   sf::st_as_sf(crs = 4326, coords = c("lon", "lat")) %>%
@@ -106,64 +119,75 @@ data <- df %>%
                                  sv),
                 # reclassify based on the maximum score
                 # scores come from Tong et al. (2023) [https://www.frontiersin.org/journals/marine-science/articles/10.3389/fmars.2023.1217851/full]
-                classification = case_when(coral_max < 200 ~ "very low",
-                                           coral_max >= 200 & coral_max < 400 ~ "low",
-                                           coral_max >= 400 & coral_max < 600 ~ "moderate",
-                                           coral_max >= 600 & coral_max < 800 ~ "high",
-                                           coral_max >= 800 ~ "very high"))
+                classification = dplyr::case_when(coral_max < 200 ~ "very low",
+                                                  coral_max >= 200 & coral_max < 400 ~ "low",
+                                                  coral_max >= 400 & coral_max < 600 ~ "moderate",
+                                                  coral_max >= 600 & coral_max < 800 ~ "high",
+                                                  coral_max >= 800 ~ "very high"))
 
+#####################################
+
+# remove unneeded objects
 rm(df, client, cursor, dataset, table)
 # mapview::mapview(data)
 
 # View(data)
 # class(data)
 
+#####################################
+
+# load greater North Sea
 ns <- sf::st_read(dsn = fs::path(output_dir, "study_area.gpkg"), layer = "greater_north_sea")
 
 # to make easier on memory
 data_split <- data %>%
   # create column and populate with the nth-tile for row's location (10 separate bunches)
-  dplyr::mutate(split_id = ntile(row_number(), 10)) %>%
+  dplyr::mutate(split_id = dplyr::ntile(row_number(), 10)) %>%
   # group the data into batches based on the split ID
   dplyr::group_split(split_id)
 
+# clipped data
 clipped_list <- purrr::map(
-  data_split,
-  ~ rmapshaper::ms_clip(.x,
-                        ns)
+  # applied list
+  .x = data_split,
+  # function to apply
+  ~ rmapshaper::ms_clip(target = .x,
+                        # clip object
+                        clip = ns)
 )
 
+# rebuild coral data in study region
 clipped_data <- bind_rows(clipped_list) %>%
+  # removed unneeded fields
   dplyr::select(-split_id)
 
+#####################################
 
-# 
-# region_data <- data %>%
-#   # obtain only coral in the study area
-#   rmapshaper::ms_clip(target = .,
-#                       clip = ns) %>%
-#   # create field called "layer" and fill with "cold-water coral" for summary
-#   dplyr::mutate(layer = "cold-water coral") %>%
-#   dplyr::select(layer, coral_max, classification, geometry) %>%
-#   sf::st_make_valid()
-
-##############
-
+# remove unneeded objects
 rm(clipped_list, data, data_split, ns)
 
+#####################################
+
+# load hex grid data
 hex_dir <- "data/b_intermediate_data/study_area.gpkg"
 hex_grid <- sf::st_read(dsn = hex_dir, layer = "ns_hexes_full")
+
+#####################################
 
 # coral hex grids
 region_data_hex <- hex_grid[clipped_data, ] %>%
   # spatially join coral values to North Sea hex cells
   sf::st_join(x = .,
+              # joined data
               y = clipped_data,
+              # join function
               join = st_intersects) %>%
   # select fields of importance
   dplyr::select(h3_index, coral_max, classification)
 
+# coral hex without geometry (make it less data intense)
 region_data_hex_no_geo <- region_data_hex %>%
+  # drop geometry
   sf::st_drop_geometry()
 
 # Keep only one result per cell
@@ -172,21 +196,27 @@ region_data_hex_single <- region_data_hex_no_geo %>%
   dplyr::group_by(h3_index) %>%
   # return only distinct rows (remove duplicates)
   dplyr::summarize(max = max(coral_max)) %>%
+  # create classification field based on coral scores
   dplyr::mutate(classification = case_when(max < 200 ~ "very low",
                                              max >= 200 & max < 400 ~ "low",
                                              max >= 400 & max < 600 ~ "moderate",
                                              max >= 600 & max < 800 ~ "high",
                                              max >= 800 ~ "very high")) %>%
+  # filter for only high and very high classifications
   dplyr::filter(grepl(pattern = "high|very high",
-                     classification,
-                     ignore.case = T))
+                      # within classification field
+                      x = classification,
+                      # is not case sensitive
+                      ignore.case = T))
 
 region_data_hex_join <- hex_grid %>%
   dplyr::left_join(x = .,
                    y = region_data_hex_single,
                    by = "h3_index") %>%
   dplyr::filter(grepl(pattern = "high|very high",
-                      classification,
+                      # within classification field
+                      x = classification,
+                      # is not case sensitive
                       ignore.case = T)) %>%
   dplyr::select(h3_index)
 
@@ -198,4 +228,5 @@ mapview::mapview(region_data_hex_join)
 # sf::st_write(obj = region_data_hex_join, dsn = "data/b_intermediate_data/habitats.gpkg", layer = "cold_water_corals_ns", append = F)
 sf::st_write(obj = region_data_hex_join, dsn = "data/c_hex_data/data_ns_hex.gpkg", layer = "cold_water_corals_hex", append = F)
 
+# inspect geopackage layers
 sf::st_layers(dsn = "data/c_hex_data/coral.gpkg")

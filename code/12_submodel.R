@@ -9,14 +9,19 @@ rm(list = ls())
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(dplyr,
                fs,
+               h3,
+               janitor,
                jsonlite,
+               mapview,
+               mregions2,
                odp,
+               purrr,
                readr,
+               rmapshaper,
                sf,
                stringr,
                terra,
-               tidyr,
-               tidyverse)
+               tidyr)
 
 #####################################
 #####################################
@@ -52,6 +57,7 @@ score_function <- function(layer, field_name, score_value){
 data_dir <- "data/c_hex_data/data_ns_hex.gpkg"
 hex_dir <- "data/b_intermediate_data/study_area.gpkg"
 
+# inspect geopackages
 sf::st_layers(dsn = data_dir)
 
 ## output directories
@@ -67,39 +73,59 @@ hex_grid <- sf::st_read(dsn = hex_dir, layer = "ns_hexes_full")
 ## cetaceans
 cetaceans <- sf::st_read(dsn = data_dir,
                          layer = "ceta_hex") %>%
+  # drop geometry for faster processing
   sf::st_drop_geometry()
 
 ## seabirds
 seabirds <- sf::st_read(dsn = data_dir,
-                         layer = "seabirds_hex") %>%
+                        layer = "seabirds_hex") %>%
+  # drop geometry for faster processing
   sf::st_drop_geometry()
 
 ## fishes
 fishes <- sf::st_read(dsn = data_dir, "fish_hex") %>%
+  # drop geometry for faster processing
   sf::st_drop_geometry()
 
 # sessile subsets
 coral <- sf::st_read(dsn = data_dir, layer = "cold_water_corals_hex") %>%
+  # run score function
   score_function(layer = .,
-                field_name = "c_val",
-                score_value = 1)
+                 # field name
+                 field_name = "c_val",
+                 # score value
+                 score_value = 1)
+
 seagrass <- sf::st_read(dsn = data_dir, layer = "seagrass_hex") %>%
+  # run score function
   score_function(layer = .,
+                 # field name
                  field_name = "s_val",
+                 # score value
                  score_value = 1)
+
 protected_areas <- sf::st_read(dsn = data_dir, layer = "protected_areas_hex") %>%
+  # run score function
   score_function(layer = .,
+                 # field name
                  field_name = "pa_val",
+                 # score value
                  score_value = 1)
+
 imma <- sf::st_read(dsn = data_dir, "imma_hex") %>%
+  # run score function
   score_function(layer = .,
+                 # field name
                  field_name = "i_val",
+                 # score value
                  score_value = 1)
 
 #####################################
 #####################################
 
+# create mobile submodel dataset
 hex_mobile <- hex_grid %>%
+  # join mobile species data to full hex grid
   dplyr::left_join(x = .,
                    y = cetaceans,
                    by = "h3_index") %>%
@@ -112,6 +138,7 @@ hex_mobile <- hex_grid %>%
   
   # add value of 0 for datasets when hex cell has value of NA
   dplyr::mutate(across(2:4, ~replace(x = .,
+                                     # when NA
                                      list = is.na(.),
                                      # replacement values
                                      values = 0))) %>%
@@ -124,6 +151,7 @@ hex_mobile <- hex_grid %>%
 
 #####################################
 
+# create sessile submodel dataset
 hex_sessile <- hex_grid %>%
   dplyr::left_join(x = .,
                    y = coral,
@@ -140,9 +168,9 @@ hex_sessile <- hex_grid %>%
   
   # add value of 0 for datasets when hex cell has value of NA
   dplyr::mutate(across(2:5, ~replace(x = .,
-                                   list = is.na(.),
-                                   # replacement values
-                                   values = 0))) %>%
+                                     list = is.na(.),
+                                     # replacement values
+                                     values = 0))) %>%
   
   # sum the layers of interest
   dplyr::mutate(sessile_sum = c_val + s_val + pa_val + i_val) |>
@@ -155,19 +183,33 @@ mapview::mapview(hex_sessile)
 #####################################
 #####################################
 
+# sessile no geometry
 hex_sessile_no_geom <- hex_sessile %>%
+  # drop geometry
   sf::st_drop_geometry() %>%
+  # remove unneeded fields
   dplyr::select(-h3_index)
 
+#####################################
+#####################################
+
+# create final model hexagon grid
 model_hex <- hex_mobile %>%
+  # bind sessile submodel fields
   cbind(hex_sessile_no_geom) %>%
+  # create nature index with respective submodel values
   dplyr::mutate(nature_index = mobile_sum * submodel1 + sessile_sum * submodel2) %>%
+  # relocate nature index field
   dplyr::relocate(nature_index, .before = geom)
 
+# create a CSV version of data
 model_hex_csv <- model_hex %>%
+  # change geometry to appropriate format
   dplyr::mutate(geometry = sf::st_as_text(geom)) %>%
+  # drop other geometry field
   sf::st_drop_geometry()
 
+# inspect data
 mapview::mapview(model_hex,
                  # column to map
                  zcol = "nature_index",
@@ -175,14 +217,22 @@ mapview::mapview(model_hex,
                  legend = TRUE)
 
 #####################################
+#####################################
 
 # export as geopackage
 sf::st_write(obj = model_hex,
+             # destination
              dsn = "data/d_final_data/north_sea_nature_index.gpkg",
+             # layer
              layer = "north_sea_model_4555_mobilesessile",
+             # appending
              append = F)
 
 # write to CSV
 readr::write_csv(x = model_hex_csv,
+                 # file
                  file = "data/d_final_data/model_hex.csv",
-                 append = TRUE)
+                 # appending
+                 append = TRUE,
+                 # column names
+                 col_names = TRUE)

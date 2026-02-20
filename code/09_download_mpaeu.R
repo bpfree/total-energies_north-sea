@@ -10,33 +10,92 @@ rm(list = ls())
 # Explore also through the STAC catalogue:
 # https://radiantearth.github.io/stac-browser/#/external/obis-maps.s3.us-east-1.amazonaws.com/sdm/stac/catalog.json
 
+#####################################
+#####################################
+
 # load packages
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(dplyr,
+               fs,
+               h3,
+               janitor,
                jsonlite,
+               mapview,
+               mregions2,
                odp,
+               purrr,
+               readr,
+               rmapshaper,
                sf,
                stringr,
+               terra,
                tidyr)
 
-# List your species here
-# target_species <- c(
-#   # cetaceans
-#   137087,
-#   137091,
-#   137094,
-#   137098,
-#   137080,
-#   137100,
-#   137101,
-#   137102,
-#   137084,
-#   137117,
-#   137119,
-#   137107,
-#   137111)
+# parameter
+## set model methods of interest
+priority_models <- c("maxent", "ensemble") #rf, xgboost, esm
 
-target_species <- c(
+#####################################
+#####################################
+
+# List your species here
+cetaceans_species <- c(
+  # cetaceans
+  137087,
+  137091,
+  137094,
+  137098,
+  137080,
+  137100,
+  137101,
+  137102,
+  137084,
+  137117,
+  137119,
+  137107,
+  137111)
+
+# create and set output directory
+fs::dir_create("data/a_raw_data/species")
+fs::dir_create("data/a_raw_data/species/cetaceans")
+cetaceans_folder <- "data/a_raw_data/species/cetaceans"
+
+for (sp in cetaceans_species) {
+    message("Downloading data for species ", sp)
+
+    sp_json <- try(suppressWarnings(jsonlite::read_json(stringr::str_glue(
+        "https://obis-maps.s3.us-east-1.amazonaws.com/sdm/stac/species-catalog/species-mpaeu/species-mpaeu-collection/taxonid={sp}/taxonid={sp}.json"
+    ))), silent = TRUE)
+
+    if (inherits(sp_json, "try-error")) {
+        message("No data for species ", sp)
+        next
+    }
+
+    # get methods for the species
+    met <- unlist(sp_json$properties$methods, use.names = F)
+
+    # return methods that match the ones of interest
+    available_met <- intersect(priority_models, met)
+
+    if (length(available_met) < 1) {
+        message("No data for species ", sp, " for selected methods")
+        next
+    }
+
+    # download the species file
+    sp_download <- stringr::str_glue("https://obis-maps.s3.us-east-1.amazonaws.com/sdm/species/taxonid={sp}/model=mpaeu/predictions/taxonid={sp}_model=mpaeu_method={available_met[1]}_scen=current_cog.tif")
+    download.file(
+        url = sp_download,
+        destfile = file.path(cetaceans_folder, basename(sp_download))
+    )
+}
+
+#####################################
+#####################################
+
+# List your species here
+seabirds_species <- c(
   # seabirds
   137128,
   137129,
@@ -95,50 +154,36 @@ target_species <- c(
   137133
 )
 
-# create and set output directory
-fs::dir_create("data/a_raw_data/species")
-fs::dir_create("data/a_raw_data/species/cetaceans")
 fs::dir_create("data/a_raw_data/species/seabirds")
-output_folder <- "data/a_raw_data/species/seabirds"
+seabirds_folder <- "data/a_raw_data/species/seabirds"
 
-# set model methods of interest
-priority_models <- c("maxent", "ensemble") #rf, xgboost, esm
-
-for (sp in target_species) {
-    message("Downloading data for species ", sp)
-
-    sp_json <- try(suppressWarnings(jsonlite::read_json(stringr::str_glue(
-        "https://obis-maps.s3.us-east-1.amazonaws.com/sdm/stac/species-catalog/species-mpaeu/species-mpaeu-collection/taxonid={sp}/taxonid={sp}.json"
-    ))), silent = TRUE)
-
-    if (inherits(sp_json, "try-error")) {
-        message("No data for species ", sp)
-        next
-    }
-
-    # get methods for the species
-    met <- unlist(sp_json$properties$methods, use.names = F)
-
-    # return methods that match the ones of interest
-    available_met <- intersect(priority_models, met)
-
-    if (length(available_met) < 1) {
-        message("No data for species ", sp, " for selected methods")
-        next
-    }
-
-    # download the species file
-    sp_download <- stringr::str_glue("https://obis-maps.s3.us-east-1.amazonaws.com/sdm/species/taxonid={sp}/model=mpaeu/predictions/taxonid={sp}_model=mpaeu_method={available_met[1]}_scen=current_cog.tif")
-    download.file(
-        url = sp_download,
-        destfile = file.path(output_folder, basename(sp_download))
-    )
+for (sp in seabirds_species) {
+  message("Downloading data for species ", sp)
+  
+  sp_json <- try(suppressWarnings(jsonlite::read_json(stringr::str_glue(
+    "https://obis-maps.s3.us-east-1.amazonaws.com/sdm/stac/species-catalog/species-mpaeu/species-mpaeu-collection/taxonid={sp}/taxonid={sp}.json"
+  ))), silent = TRUE)
+  
+  if (inherits(sp_json, "try-error")) {
+    message("No data for species ", sp)
+    next
+  }
+  
+  # get methods for the species
+  met <- unlist(sp_json$properties$methods, use.names = F)
+  
+  # return methods that match the ones of interest
+  available_met <- intersect(priority_models, met)
+  
+  if (length(available_met) < 1) {
+    message("No data for species ", sp, " for selected methods")
+    next
+  }
+  
+  # download the species file
+  sp_download <- stringr::str_glue("https://obis-maps.s3.us-east-1.amazonaws.com/sdm/species/taxonid={sp}/model=mpaeu/predictions/taxonid={sp}_model=mpaeu_method={available_met[1]}_scen=current_cog.tif")
+  download.file(
+    url = sp_download,
+    destfile = file.path(seabirds_folder, basename(sp_download))
+  )
 }
-
-# # Direct access is also possible
-# library(terra)
-# 
-# sp <- 137087
-# r <- rast(
-#     paste0("/vsicurl/", glue("https://obis-maps.s3.us-east-1.amazonaws.com/sdm/species/taxonid={sp}/model=mpaeu/predictions/taxonid={sp}_model=mpaeu_method=maxent_scen=current_cog.tif"))
-# ) # appending vsicurl makes access faster when working with https based files

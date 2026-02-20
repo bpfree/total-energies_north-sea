@@ -14,8 +14,19 @@ rm(list = ls())
 # load packages
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(dplyr,
+               fs,
+               h3,
+               janitor,
+               jsonlite,
+               mapview,
+               mregions2,
                odp,
+               purrr,
+               readr,
+               rmapshaper,
                sf,
+               stringr,
+               terra,
                tidyr)
 
 # Commentary on R and code formulation:
@@ -83,12 +94,17 @@ cursor <- table$select(filter = bbox)
 # fetch table into a dataframe that you can use for analysis
 df <- cursor$dataframe()
 
+# inspect dataframe
 dim(df)
 names(df)
 View(df)
 str(df)
 
+#####################################
+
+# clean data
 data <- df %>%
+  # clean column names
   janitor::clean_names() %>%
   # convert the WKB geometry field to a more user friendly geomtry field
   dplyr::mutate(geometry = sf::st_as_sfc(structure(as.list(geometry), class = "WKB"))) %>%
@@ -97,27 +113,40 @@ data <- df %>%
 
 mapview::mapview(data)
 
+#####################################
+
+# load North Sea data
 ns <- sf::st_read(dsn = fs::path(output_dir, "study_area.gpkg"), layer = "greater_north_sea")
 
+# greater North Sea protected areas
 region_data <- data %>%
   # obtain only protected areas in the study area
   rmapshaper::ms_clip(target = .,
+                      # clip object
                       clip = ns) %>%
   # create field called "layer" and fill with "protected_seas" for summary
   dplyr::mutate(layer = layer)
 
+# inspect data
 list(unique(region_data$category_name))
 mapview::mapview(region_data)
 
+#####################################
+
+# validate data
 region_data <- region_data %>%
+  # select fields
   dplyr::select(layer, geometry) %>%
+  # make data valid
   sf::st_make_valid()
 
+# inspect data
 mapview::mapview(region_data)
 
 #####################################
 #####################################
 
+# load hex grid data
 hex_dir <- "data/b_intermediate_data/study_area.gpkg"
 hex_grid <- sf::st_read(dsn = hex_dir, layer = "ns_hexes_full")
 
@@ -125,12 +154,16 @@ hex_grid <- sf::st_read(dsn = hex_dir, layer = "ns_hexes_full")
 region_data_hex <- hex_grid[region_data, ] %>%
   # spatially join seagrass values to North Sea hex cells
   sf::st_join(x = .,
+              # joined data
               y = region_data,
+              # joined function
               join = st_intersects) %>%
   # select fields of importance
   dplyr::select(h3_index) %>%
+  # make unique data
   dplyr::distinct()
 
+# inspect data
 sf::st_crs(region_data_hex)
 mapview::mapview(region_data_hex)
 
@@ -151,5 +184,6 @@ sf::st_write(obj = region_data,
 
 sf::st_write(obj = region_data_hex, dsn = "data/c_hex_data/data_ns_hex.gpkg", layer = "protected_areas_hex", append = F)
 
+# inspect the geopackage layers
 sf::st_layers(dsn = fs::path(output_dir, "ns_protected_areas.gpkg"))
 # sf::st_delete(dsn = fs::path(output_dir, "ns_protected_areas.gpkg"), layer = "ns_protected_seas")

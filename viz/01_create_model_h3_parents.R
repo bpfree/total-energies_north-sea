@@ -19,6 +19,7 @@ client <- odp_client()
 
 r8_tab <- client$dataset("47b3ee44-ced3-4d87-ae50-a181b7a31e5c")$table
 
+# define aggregations for columns
 col_aggrs <- list(
   "mobile_sum" = "sum",
   "sessile_sum" = "sum",
@@ -32,6 +33,7 @@ col_aggrs <- list(
   "nature_index" = "mean"
 )
 
+# aggregate to res 6, generate geometry from index
 r6_agg <- r8_tab$aggregate(
   group_by = "h3(geometry, 6)",
   aggr = col_aggrs
@@ -39,6 +41,7 @@ r6_agg <- r8_tab$aggregate(
 r6_agg <- r6_agg |> dplyr::mutate(geometry = sf::st_as_text(cell_to_polygon(group)))  # index to geo
 r6_agg <- r6_agg |> dplyr::rename(h3_index = group) # rename index like r8 table
 
+# aggregate to res 4, generate geometry from index
 r4_agg <- r8_tab$aggregate(
   group_by = "h3(geometry, 4)",
   aggr = col_aggrs

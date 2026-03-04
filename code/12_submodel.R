@@ -207,7 +207,7 @@ model_hex_csv <- model_hex %>%
   # change geometry to appropriate format
   dplyr::mutate(geometry = sf::st_as_text(geom)) %>%
   # drop other geometry field
-  sf::st_drop_geometry
+  sf::st_drop_geometry()
 
 # inspect data
 mapview::mapview(model_hex,

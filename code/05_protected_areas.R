@@ -106,7 +106,7 @@ str(df)
 data <- df %>%
   # clean column names
   janitor::clean_names() %>%
-  # convert the WKB geometry field to a more user friendly geomtry field
+  # convert the WKB geometry field to a more user friendly geometry field
   dplyr::mutate(geometry = sf::st_as_sfc(structure(as.list(geometry), class = "WKB"))) %>%
   # set CRS to WGS84
   sf::st_as_sf(crs = 4326)

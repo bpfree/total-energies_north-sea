@@ -36,7 +36,7 @@ score_function <- function(layer, field_name, score_value){
   # add cost value
   data <- layer %>%
     # create new field to add score value
-    dplyr::mutate({{field_name}} := score_value) %>%
+    dplyr::mutate({{field_name}} := score_value) |>
     # remove geometry so it is simplified data frame
     sf::st_drop_geometry() %>%
     # select fields of interest
@@ -207,7 +207,7 @@ model_hex_csv <- model_hex %>%
   # change geometry to appropriate format
   dplyr::mutate(geometry = sf::st_as_text(geom)) %>%
   # drop other geometry field
-  sf::st_drop_geometry()
+  sf::st_drop_geometry
 
 # inspect data
 mapview::mapview(model_hex,

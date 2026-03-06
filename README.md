@@ -49,7 +49,7 @@ The study defined a boundary box for the Greater North Sea with points of:
 * northeast: 12.0059, 61.0170
 * southeast: 12.0059, 50.9954
 
-Since the desired resolution for the analysis was at 500m, a hex grid at [resolution 8](https://h3geo.org/docs/core-library/restable) generated the hex grid using [H3 indexes](https://h3geo.org). Only the hexes that intersected with the Greater North Sea boundary layer provided by [Marine Regions](https://marineregions.org/gazetteer.php) were used in the final analysis.
+Since the desired resolution for the analysis was at 500m, a hex grid at [resolution 8](https://h3geo.org/docs/core-library/restable) generated the hex grid using [H3 indexes](https://h3geo.org) within the [Greater North Sea](https://www.marineregions.org/gazetteer.php?p=details&id=36317) got returned. [Marine Regions](https://marineregions.org/gazetteer.php) provided the boundary layer of the Greater North Sea (as defined by [ICES](http://gis.ices.dk/geonetwork/srv/eng/catalog.search#/metadata/4745e824-a612-4a1f-bc56-b540772166eb)) in the final analysis.
 
 ## Methods
 ### Linear normalization

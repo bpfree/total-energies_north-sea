@@ -228,6 +228,34 @@ sf::st_write(obj = model_hex,
              # appending
              append = F)
 
+
+#####################################
+
+# ODP
+## connect to client
+client <- odp::odp_client()
+
+## load in dataset (see https://app.hubocean.earth/)
+dataset <- client$dataset("47b3ee44-ced3-4d87-ae50-a181b7a31e5c")
+
+## prepare the data for ODP
+model_hex_odp <- model_hex %>%
+  # change geometry to appropriate format
+  dplyr::mutate(geometry = sf::st_as_text(geom)) %>%
+  # drop the old geometry
+  sf::st_drop_geometry()
+
+# generate table (defaults to the first table in the dataset)
+table <- dataset$table
+
+# drop the existing table
+table$drop()
+
+# create with the table to repopulate
+table$create(model_hex_odp)
+
+#####################################
+
 # write to CSV
 readr::write_csv(x = model_hex_csv,
                  # file

@@ -84,6 +84,7 @@ Each nature data set got limited to the [Greater North Sea](https://www.marinere
 ### Linear normalization
 A linear function normalized species richness values for fish, cetaceans, and seabirds. Normalizing the minimum and maximum species richness to be between 0 and 1 allowed these data to get compared to the data sets that receive
 a discrete value for presence and absence (1 or 0).
+
 The linear normalized function is: (value - minimum) / (maximum - minimum) = normalized score.
 
 To avoid returning a zero for the normalized score (when the value is equal to the minimum), when the linear function returns 0.00, then a value of 0.01 got added. By adding value to the minimum value, it ensures that species
@@ -108,24 +109,24 @@ about the [JCDP](https://jncc.gov.uk/our-work/joint-cetacean-data-programme) and
 The only species from Waggitt et al. (2020) that did not have at least one observation in the ICES statistical survey was _Physeter macrocephalus_.
 
 These species included:
-- Balaenoptera acutorostrata
-- Balaenoptera physalus
-- Delphinus delphis
-- Grampus griseus
-- Halichoerus grypus
-- Lagenorhynchus acutus
-- Lagenorhynchus albirostris
-- Orcinus orca
-- Phoca vitulina
-- Phocoena phocoena
-- Physeter macrocephalus
-- Stenella coeruleoalba
-- Tursiops truncatus
+- _Balaenoptera acutorostrata_
+- _Balaenoptera physalus_
+- _Delphinus delphis_
+- _Grampus griseus_
+- _Halichoerus grypus_
+- _Lagenorhynchus acutus_
+- _Lagenorhynchus albirostris_
+- _Orcinus orca_
+- _Phoca vitulina_
+- _Phocoena phocoena_
+- _Physeter macrocephalus_
+- _Stenella coeruleoalba_
+- _Tursiops truncatus_
 
 Species compiled for seabirds came from Waggitt et al. (2020), ICES's [European Seasbirds at Seas](https://esas.ices.dk/inventory), and a list provided by Total Energies. Species from
 the top 50 in ICES's ESAS supplemented the species already included in Waggitt et al. (2020) and the list provided by Total. The species included in the the lists are:
 
-_ _Alca torda_
+- _Alca torda_
 - _Alle alle_
 - _Aythya marila_
 - _Bucephala clangula_
@@ -186,7 +187,9 @@ between species, only species with modelled data by MPA Europe got included. Spe
 A marine mammal and two seabird species had different accepted species names in [WoRMS](https://www.marinespecies.org/index.php) than those used by ICES, Waggitt et al. (2020), and Total
 Energies. The three species were:
 
-- _Lagenorhynchus acutus_ -- accepted name is _Leucopleurus acutus_ (1571853)
+- _Lagenorhynchus acutus_ [(137100)](https://www.marinespecies.org/aphia.php?p=taxdetails&id=137100) -- accepted name is _Leucopleurus acutus_ [(1571853)](https://www.marinespecies.org/aphia.php?p=taxdetails&id=1571853)
+- _Larus melanocephalus_ [(137147)](https://www.marinespecies.org/aphia.php?p=taxdetails&id=137147) -- accepted name is _Ichthyaetus melanocephalus_ [(1584284)](https://www.marinespecies.org/aphia.php?p=taxdetails&id=1584284)
+- _Thalasseus sandvicensis_ [(413044)](https://www.marinespecies.org/aphia.php?p=taxdetails&id=413044) -- accepted name is _Sterna sandvicensis_ [(137166)](https://www.marinespecies.org/aphia.php?p=taxdetails&id=137166)
 
 #### Habitat designation 
 - Unlikely habitat: scores below 75

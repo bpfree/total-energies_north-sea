@@ -51,6 +51,18 @@ The study defined a boundary box for the Greater North Sea with points of:
 
 Since the desired resolution for the analysis was at 500m, a hex grid at [resolution 8](https://h3geo.org/docs/core-library/restable) generated the hex grid using [H3 indexes](https://h3geo.org) within the [Greater North Sea](https://www.marineregions.org/gazetteer.php?p=details&id=36317) got returned. [Marine Regions](https://marineregions.org/gazetteer.php) provided the boundary layer of the Greater North Sea (as defined by [ICES](http://gis.ices.dk/geonetwork/srv/eng/catalog.search#/metadata/4745e824-a612-4a1f-bc56-b540772166eb)) in the final analysis.
 
+## **Data sources**
+### *Generic Data*
+| Layer | Data Source | Data Name | Metadata  | Notes |
+|---------------|---------------|---------------|---------------|---------------|
+| Fish | [Cesc Gordó-Vilaseca](https://www.nature.com/articles/s41467-024-49911-9) | Fish species richness | [GitHub repository](https://github.com/CescGV/JSDM-Barents-Norwegian-North/tree/main) |
+| Cetaceans | [MPA EU](https://mpa-europe.eu) and provided by Silas C. Principe | Cetaceans species distribution models | | [GitHub](https://github.com/iobis/mpaeu_sdm/tree/main), [Shiny OBIS](https://shiny.obis.org/distmaps/)
+| Seabirds | [MPA EU](https://mpa-europe.eu) and provided by Silas C. Principe | Seabirds species distribution models | | [GitHub](https://github.com/iobis/mpaeu_sdm/tree/main), [Shiny OBIS](https://shiny.obis.org/distmaps/)
+| Conservation areas | [Marine Mammals Protected Areas Task Force](https://www.marinemammalhabitat.org) | Important Marine Mammal Areas | | Need to [request download](https://www.marinemammalhabitat.org/immas/imma-spatial-layer-download/) |
+| Protected areas | [Protected Seas](https://protectedseas.net) | Marine protected areas | | [Ocean Data Platform](https://app.hubocean.earth/catalog/dataset/a608f54b-75c7-4df9-a3a8-cedbfa391873/protectedseas-navigator-v2-focused-area-based-protections) | Used the focused dataset
+| Corals | [Tong et al. (2023)](https://www.frontiersin.org/journals/marine-science/articles/10.3389/fmars.2023.1217851/full) | Cold water corals | | [Direct data download](https://zenodo.org/records/7896310) |
+| Seagrass | [WCMC](https://data-gis.unep-wcmc.org/portal/home/item.html?id=aaa46cd3d3d640b2916b8f0a0ffe07cb) | Seagrass | | [Ocean Data Platform](https://app.hubocean.earth/catalog/dataset/7199f9bc-96ae-49d1-a814-df8c4bcc7552/unep-wcmc-global-distribution-of-seagrasses-polygons-), [WCMC direct data download](https://wcmc.io/WCMC_013_014) |
+
 ## Methods
 ### Linear normalization
 * Normalized score = (value - minimum) / (maximum - minimum)
@@ -58,7 +70,7 @@ If normalized value is minimum value then the returning value equals zero; to av
 to have zero values, 0.01 got added to those scores. Otherwise keep the normalized value.
 
 ### Overlapping features
-When a hex grid received more than one value from a linear normalization, due to the shape incongruity, then the maximum value was kept.
+When a hex grid received more than one value from a linear normalization, due to the shape incongruity, then the maximum value was kept. Selecting the maximum value the study pursued an approach that reflected a precautionary principle since the nature index would represent the best case scenario for nature.
 
 ### Habitats
 #### Cold water corals
@@ -82,14 +94,11 @@ Habitat designation
 | Important Marine Mammal Areas | 0, 1| Absence, Presence |
 | Seagrass | 0, 1| Absence, Presence |
 
-## **Data sources**
-### *Generic Data*
-| Layer | Data Source | Data Name | Metadata  | Notes |
-|---------------|---------------|---------------|---------------|---------------|
-| Fish | [Cesc Gordó-Vilaseca](https://www.nature.com/articles/s41467-024-49911-9) | Fish species richness | [GitHub repository](https://github.com/CescGV/JSDM-Barents-Norwegian-North/tree/main) |
-| Cetaceans | [MPA EU](https://mpa-europe.eu) and provided by Silas C. Principe | Cetaceans species distribution models | | [GitHub](https://github.com/iobis/mpaeu_sdm/tree/main), [Shiny OBIS](https://shiny.obis.org/distmaps/)
-| Seabirds | [MPA EU](https://mpa-europe.eu) and provided by Silas C. Principe | Seabirds species distribution models | | [GitHub](https://github.com/iobis/mpaeu_sdm/tree/main), [Shiny OBIS](https://shiny.obis.org/distmaps/)
-| Conservation areas | [Marine Mammals Protected Areas Task Force](https://www.marinemammalhabitat.org) | Important Marine Mammal Areas | | Need to [request download](https://www.marinemammalhabitat.org/immas/imma-spatial-layer-download/) |
-| Protected areas | [Protected Seas](https://protectedseas.net) | Marine protected areas | | [Ocean Data Platform](https://app.hubocean.earth/catalog/dataset/a608f54b-75c7-4df9-a3a8-cedbfa391873/protectedseas-navigator-v2-focused-area-based-protections) | Used the focused dataset
-| Corals | [Tong et al. (2023)](https://www.frontiersin.org/journals/marine-science/articles/10.3389/fmars.2023.1217851/full) | Cold water corals | | [Direct data download](https://zenodo.org/records/7896310) |
-| Seagrass | [WCMC](https://data-gis.unep-wcmc.org/portal/home/item.html?id=aaa46cd3d3d640b2916b8f0a0ffe07cb) | Seagrass | | [Ocean Data Platform](https://app.hubocean.earth/catalog/dataset/7199f9bc-96ae-49d1-a814-df8c4bcc7552/unep-wcmc-global-distribution-of-seagrasses-polygons-), [WCMC direct data download](https://wcmc.io/WCMC_013_014) |
+## Considerations / Limitations / Assumptions
+Resolution of fish, cetaceans, and seabirds
+
+Ignoring of other datasets
+
+Evaluations of what to classify as habitat and scores
+
+Maximum score kept 

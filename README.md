@@ -7,8 +7,8 @@ Habitat sensitivity assessment in North Sea
 * **Project lead:** [Laurence Janssens](mailto:laurence.janssens@oceandata.earth)
 
 * **Total Adviser:** [Phil Wemyss](mailto:phil.wemyss@external.totalenergies.com)
-* **Total GIS Analyst:** [Katrina Povidisa-Delefosse](katrina.povidisa-delefosse@totalenergies.com)
-* **Total GIS Analyst:** [Ilaria Valentini](ilaria.valentini@totalenergies.com)
+* **Total GIS Analyst:** [Katrina Povidisa-Delefosse]((mailto:katrina.povidisa-delefosse@totalenergies.com)
+* **Total GIS Analyst:** [Ilaria Valentini]((mailto:ilaria.valentini@totalenergies.com)
 
 ### **Repository Structure**
 
@@ -88,7 +88,7 @@ Habitat designation
 |---------------|---------------|---------------|---------------|---------------|
 | Fish | [Cesc Gordó-Vilaseca](https://www.nature.com/articles/s41467-024-49911-9) | Fish species richness | [GitHub repository](https://github.com/CescGV/JSDM-Barents-Norwegian-North/tree/main) |
 | Cetaceans | [MPA EU](https://mpa-europe.eu) and provided by Silas C. Principe | Cetaceans species distribution models | | [GitHub](https://github.com/iobis/mpaeu_sdm/tree/main), [Shiny OBIS](https://shiny.obis.org/distmaps/)
-| Seabids | [MPA EU](https://mpa-europe.eu) and provided by Silas C. Principe | Seabirds species distribution models | | [GitHub](https://github.com/iobis/mpaeu_sdm/tree/main), [Shiny OBIS](https://shiny.obis.org/distmaps/)
+| Seabirds | [MPA EU](https://mpa-europe.eu) and provided by Silas C. Principe | Seabirds species distribution models | | [GitHub](https://github.com/iobis/mpaeu_sdm/tree/main), [Shiny OBIS](https://shiny.obis.org/distmaps/)
 | Conservation areas | [Marine Mammals Protected Areas Task Force](https://www.marinemammalhabitat.org) | Important Marine Mammal Areas | | Need to [request download](https://www.marinemammalhabitat.org/immas/imma-spatial-layer-download/) |
 | Protected areas | [Protected Seas](https://protectedseas.net) | Marine protected areas | | [Ocean Data Platform](https://app.hubocean.earth/catalog/dataset/a608f54b-75c7-4df9-a3a8-cedbfa391873/protectedseas-navigator-v2-focused-area-based-protections) | Used the focused dataset
 | Corals | [Tong et al. (2023)](https://www.frontiersin.org/journals/marine-science/articles/10.3389/fmars.2023.1217851/full) | Cold water corals | | [Direct data download](https://zenodo.org/records/7896310) |

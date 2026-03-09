@@ -223,8 +223,10 @@ products and any instance where multiple values existed for the same hex, the ma
 
 ### Fishes
 A summarized fish species data layer came from a paper by [Gordó-Vilaseca et al. (2024)](https://www.nature.com/articles/s41467-024-49911-9) that examined biomass distributions for a
-variety of species across the North Sea and Barents Sea. The data shared by Gordó-Vilaseca are the present day species richness data (as seen in Figure 2(A)). The Greater North Sea
-boundary limited the data to the study region before applying a linear normalization and rescaling the minimum species richness.
+variety of species across the North Sea and Barents Sea. The data shared by Gordó-Vilaseca are the present day species richness data (as seen in Figure 2(A)).
+
+#### Normalization
+The Greater North Sea boundary limited the data to the study region before applying a linear normalization and rescaling the minimum species richness.
 
 ### Scores
 | Layer | Score | Consideration |
@@ -236,8 +238,6 @@ boundary limited the data to the study region before applying a linear normaliza
 | Cold water corals | 0, 1| Absence, Presence |
 | Important Marine Mammal Areas | 0, 1| Absence, Presence |
 | Seagrass | 0, 1| Absence, Presence |
-
-#### Normalization
 
 ### Submodel
 Mobile = fishes + cetaceans + seabirds

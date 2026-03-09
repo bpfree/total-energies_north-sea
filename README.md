@@ -50,15 +50,15 @@ The study defined a boundary box for the Greater North Sea with points of:
 * southeast: 12.0059, 50.9954
 
 Since the desired resolution for the analysis was at 500m, a hex grid at [resolution 8](https://h3geo.org/docs/core-library/restable) generated the hex grid using [H3 indexes](https://h3geo.org) within 
-the [Greater North Sea](https://www.marineregions.org/gazetteer.php?p=details&id=36317) got returned. [Marine Regions](https://marineregions.org/gazetteer.php) provided the boundary layer of the Greater 
+the [Greater North Sea](https://www.marineregions.org/gazetteer.php?p=details&id=36317). [Marine Regions](https://marineregions.org/gazetteer.php) provided the boundary layer of the Greater 
 North Sea (as defined by [ICES](http://gis.ices.dk/geonetwork/srv/eng/catalog.search#/metadata/4745e824-a612-4a1f-bc56-b540772166eb)) in the final analysis.
 
 ## **Data sources**
 ### *Generic Data*
 | Layer | Data Source | Data Name | Metadata  | Notes |
 |---------------|---------------|---------------|---------------|---------------|
-| Study area | Marine Regions | Greater North Sea | Metadata | Notes |
-| Platforms | Total Energies | 
+| Study area | [mregions2](https://docs.ropensci.org/mregions2/) | [Marine Regions](https://marineregions.org/gazetteer.php) | [Greater North Sea](https://www.marineregions.org/gazetteer.php?p=details&id=36317) | Defined by [ICES Ecoregions](http://gis.ices.dk/geonetwork/srv/eng/catalog.search#/metadata/4745e824-a612-4a1f-bc56-b540772166eb) |
+| Platforms | Total Energies | | | |
 | Species list | [Natura 2000](https://natura2000.eea.europa.eu) | [Doggerbank](https://biodiversity.europa.eu/sites/natura2000/DE1003301) | | 1 habitat, 7 species |
 | Species list | [Natura 2000](https://natura2000.eea.europa.eu) | [Sydlige Nordsø](https://biodiversity.europa.eu/sites/natura2000/DK00VD374) | | 0 habitats, 0 species |
 | Species list | [Natura 2000](https://natura2000.eea.europa.eu) | [Sydlige Nordsø](https://biodiversity.europa.eu/sites/natura2000/DK00VD375) | | 1 habitat, 3 species |

@@ -88,8 +88,7 @@ a discrete value for presence and absence (1 or 0).
 The linear normalized function is: (value - minimum) / (maximum - minimum) = normalized score.
 
 To avoid returning a zero for the normalized score (when the value is equal to the minimum), when the linear function returns 0.00, then a value of 0.01 got added. By adding value to the minimum value, it ensures that species
-richness never would get treated as absence. For all
-other values, keep the normalized value.
+richness never would get treated as absence.
 
 ### Overlapping features
 When a hex grid received more than one value from a linear normalization, due to the shape incongruity, then the maximum value was kept. Selecting the maximum value the study pursued an 
@@ -213,10 +212,13 @@ was classified as unlikely habitat and given a score 0.3. Species distribution m
 occurred in locations with values over 75 and they received a value of 1.
 
 | SDM value | Classification | Score |
+|---------------|---------------|---------------|
 | 0 - 50 | Unlikely habitat | 0.3 |
 | 50 - 75 | Unlikely habitat | 0.6 |
 | 75+ | Unlikely habitat | 1.0 |
 
+#### Normalization
+Cetaceans and seabirds had the same normalization and maximum value selection 
 
 ### Scores
 | Layer | Score | Consideration |

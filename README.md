@@ -80,6 +80,11 @@ Since the desired resolution for the analysis was at 500m, a hex grid at [resolu
 Each nature data set got limited to the [Greater North Sea](https://www.marineregions.org/gazetteer.php?p=details&id=36317) boundary before performing any further data transformations. \
 The Important Marine Mammal Areas required extra steps in data processing to return the correct data for the Greater North Sea.
 
+This is a really long line of text that I want to continue \
+on the next line in the editor, but I want it to appear \
+as a single, unbroken paragraph in the rendered GitHub view.
+
+
 ### Linear normalization
 * Normalized score = (value - minimum) / (maximum - minimum)
 If normalized value is minimum value then the returning value equals zero; to avoid these scores

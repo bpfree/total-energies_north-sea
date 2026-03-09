@@ -153,7 +153,7 @@ hex_grid <- sf::st_read(dsn = hex_dir, layer = "ns_hexes_full")
 
 # IMMA hex grids
 region_data_hex <- hex_grid[imma_clean, ] %>%
-  # spatially join seagrass values to North Sea hex cells
+  # spatially join IMMA values to North Sea hex cells
   sf::st_join(x = .,
               # data to join
               y = imma_clean,

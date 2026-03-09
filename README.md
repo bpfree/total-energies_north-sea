@@ -183,8 +183,8 @@ the top 50 in ICES's ESAS supplemented the species already included in Waggitt e
 
 #### Species distribution models
 Species distribution models for the interested species came from the [MPA Europe](https://shiny.obis.org/distmaps/) project on modeling ocean biodiversity. The study used species
-distribution model data from MPA Europe given they were produced at 5km resolution; comparatively, Waggitt et al. (2020) modelled their species at 10km. To maintain comparability
-between species, only species with modelled data by MPA Europe got included. Species were matched by their WoRMS [Aphia identification](https://www.marinespecies.org/about.php#what_is_aphia).
+distribution model data from MPA Europe given they were produced at 5km resolution; comparatively, Waggitt et al. (2020) modeled their species at 10km. To maintain comparability
+between species, only species with modeled data by MPA Europe got included. Species were matched by their WoRMS [Aphia identification](https://www.marinespecies.org/about.php#what_is_aphia).
 A marine mammal and two seabird species had different accepted species names in [WoRMS](https://www.marinespecies.org/index.php) than those used by ICES, Waggitt et al. (2020), and Total
 Energies. The three species were:
 
@@ -192,12 +192,31 @@ Energies. The three species were:
 - _Larus melanocephalus_ [(137147)](https://www.marinespecies.org/aphia.php?p=taxdetails&id=137147) -- accepted name is _Ichthyaetus melanocephalus_ [(1584284)](https://www.marinespecies.org/aphia.php?p=taxdetails&id=1584284)
 - _Thalasseus sandvicensis_ [(413044)](https://www.marinespecies.org/aphia.php?p=taxdetails&id=413044) -- accepted name is _Sterna sandvicensis_ [(137166)](https://www.marinespecies.org/aphia.php?p=taxdetails&id=137166)
 
-MPA Europe did not posses a species distribution model for a species on the Total Energies list (_Hydrobates leucorhous_).
+MPA Europe did not posses a species distribution model for a species on the Total Energies list (_Hydrobates leucorhous_). The study thus did not include _Hydrobates leucorhous_ in the final analysis.
 
-#### Habitat designation 
-- Unlikely habitat: scores below 75
-- Probable Habitat: scores between 50 and 75
-- Core habitat: scores over 75
+#### Habitat designation
+MPA Europe's species distribution models relied on presence-only data. The [best modeled outputs](https://iobis.github.io/mpaeu_docs/methods-testing.html#overview-and-chosen-approach) were LASSO and maxent (maximum entropy).
+LASSO results were not available for download, so the priority were maxent along with ensemble outputs when the maxent models did not exist for a particular species. Most species have the maxent models, but five had ensemble
+models:
+
+Cetaceans
+- _Phoca vitulina_ [(137084)](https://www.marinespecies.org/aphia.php?p=taxdetails&id=137084)
+- _Orcinus orca_ [(137102)](https://www.marinespecies.org/aphia.php?p=taxdetails&id=137102)
+- _Tursiops truncatus_ [(137111)](https://www.marinespecies.org/aphia.php?p=taxdetails&id=137111)
+
+Seabirds
+- _Alle alle_ [137129](https://www.marinespecies.org/aphia.php?p=taxdetails&id=137129)
+- _Rissa tridactyla_ [137156](https://www.marinespecies.org/aphia.php?p=taxdetails&id=137156)
+
+Species distribution model results were scored to reflect the match to likely habitat. Any location with a species distribution model value under 50 (quantitatively more probable than not)
+was classified as unlikely habitat and given a score 0.3. Species distribution model values between 50 and 75 got a score of 0.6 to reflect that these areas are probable habitat. Core habitat
+occurred in locations with values over 75 and they received a value of 1.
+
+| SDM value | Classification | Score |
+| 0 - 50 | Unlikely habitat | 0.3 |
+| 50 - 75 | Unlikely habitat | 0.6 |
+| 75+ | Unlikely habitat | 1.0 |
+
 
 ### Scores
 | Layer | Score | Consideration |
@@ -218,6 +237,9 @@ Fish, cetaceans, and seabirds data --
 Presence-only models -- 
 
 Resolution of fish, cetaceans, and seabirds
+
+Wanting places even very rare occurrences of data -- hence the inclusion of even low values for species distribution models
+Score of 1 for any species is similar to presence of other layer types
 
 Ignoring of other data sets
 

@@ -49,7 +49,9 @@ The study defined a boundary box for the Greater North Sea with points of:
 * northeast: 12.0059, 61.0170
 * southeast: 12.0059, 50.9954
 
-Since the desired resolution for the analysis was at 500m, a hex grid at [resolution 8](https://h3geo.org/docs/core-library/restable) generated the hex grid using [H3 indexes](https://h3geo.org) within the [Greater North Sea](https://www.marineregions.org/gazetteer.php?p=details&id=36317) got returned. [Marine Regions](https://marineregions.org/gazetteer.php) provided the boundary layer of the Greater North Sea (as defined by [ICES](http://gis.ices.dk/geonetwork/srv/eng/catalog.search#/metadata/4745e824-a612-4a1f-bc56-b540772166eb)) in the final analysis.
+Since the desired resolution for the analysis was at 500m, a hex grid at [resolution 8](https://h3geo.org/docs/core-library/restable) generated the hex grid using [H3 indexes](https://h3geo.org) within 
+the [Greater North Sea](https://www.marineregions.org/gazetteer.php?p=details&id=36317) got returned. [Marine Regions](https://marineregions.org/gazetteer.php) provided the boundary layer of the Greater 
+North Sea (as defined by [ICES](http://gis.ices.dk/geonetwork/srv/eng/catalog.search#/metadata/4745e824-a612-4a1f-bc56-b540772166eb)) in the final analysis.
 
 ## **Data sources**
 ### *Generic Data*
@@ -77,12 +79,9 @@ Since the desired resolution for the analysis was at 500m, a hex grid at [resolu
 
 ## Methods
 ### Geographic constraint
-Each nature data set got limited to the [Greater North Sea](https://www.marineregions.org/gazetteer.php?p=details&id=36317) boundary before performing any further data transformations. \
+Each nature data set got limited to the [Greater North Sea](https://www.marineregions.org/gazetteer.php?p=details&id=36317) boundary before performing any further data transformations. 
 The Important Marine Mammal Areas required extra steps in data processing to return the correct data for the Greater North Sea.
 
-This is a really long line of text that I want to continue 
-on the next line in the editor, but I want it to appear 
-as a single, unbroken paragraph in the rendered GitHub view.
 
 
 ### Linear normalization

@@ -55,6 +55,18 @@ Since the desired resolution for the analysis was at 500m, a hex grid at [resolu
 ### *Generic Data*
 | Layer | Data Source | Data Name | Metadata  | Notes |
 |---------------|---------------|---------------|---------------|---------------|
+| Study area | Marine Regions | Greater North Sea | Metadata | Notes |
+| Platforms | Total Energies | 
+| Species list | [Natura 2000](https://natura2000.eea.europa.eu) | [Doggerbank](https://biodiversity.europa.eu/sites/natura2000/DE1003301) | | 1 habitat, 7 species |
+| Species list | [Natura 2000](https://natura2000.eea.europa.eu) | [Sydlige Nordsø](https://biodiversity.europa.eu/sites/natura2000/DK00VD374) | | 0 habitats, 0 species |
+| Species list | [Natura 2000](https://natura2000.eea.europa.eu) | [Sydlige Nordsø](https://biodiversity.europa.eu/sites/natura2000/DK00VD375) | | 1 habitat, 3 species |
+| Species list | [Natura 2000](https://natura2000.eea.europa.eu) | [Jyske Rev, Lillefiskerbanke](https://biodiversity.europa.eu/sites/natura2000/DK00VA257) | | 1 habitat, 0 species |
+| Species list | [Natura 2000](https://natura2000.eea.europa.eu) | [Sandbanker ud for Thyborøn](https://biodiversity.europa.eu/sites/natura2000/DK00VA340) | | 2 habitats, 1 species |
+| Species list | [Natura 2000](https://natura2000.eea.europa.eu) | [Sylter Aussenriff](https://biodiversity.europa.eu/sites/natura2000/DE1209301) | | 2 habitat, 17 species |
+
+### *Nature Data*
+| Layer | Data Source | Data Name | Metadata  | Notes |
+|---------------|---------------|---------------|---------------|---------------|
 | Fish | [Cesc Gordó-Vilaseca](https://www.nature.com/articles/s41467-024-49911-9) | Fish species richness | [GitHub repository](https://github.com/CescGV/JSDM-Barents-Norwegian-North/tree/main) |
 | Cetaceans | [MPA EU](https://mpa-europe.eu) and provided by Silas C. Principe | Cetaceans species distribution models | | [GitHub](https://github.com/iobis/mpaeu_sdm/tree/main), [Shiny OBIS](https://shiny.obis.org/distmaps/)
 | Seabirds | [MPA EU](https://mpa-europe.eu) and provided by Silas C. Principe | Seabirds species distribution models | | [GitHub](https://github.com/iobis/mpaeu_sdm/tree/main), [Shiny OBIS](https://shiny.obis.org/distmaps/)
@@ -64,6 +76,9 @@ Since the desired resolution for the analysis was at 500m, a hex grid at [resolu
 | Seagrass | [WCMC](https://data-gis.unep-wcmc.org/portal/home/item.html?id=aaa46cd3d3d640b2916b8f0a0ffe07cb) | Seagrass | [ISO](https://data-gis.unep-wcmc.org/portal/sharing/rest/content/items/aaa46cd3d3d640b2916b8f0a0ffe07cb/info/metadata/metadata.xml?format=default&output=html) | [Ocean Data Platform](https://app.hubocean.earth/catalog/dataset/7199f9bc-96ae-49d1-a814-df8c4bcc7552/unep-wcmc-global-distribution-of-seagrasses-polygons-), [WCMC direct data download](https://wcmc.io/WCMC_013_014) |
 
 ## Methods
+### Geographic constraint
+
+
 ### Linear normalization
 * Normalized score = (value - minimum) / (maximum - minimum)
 If normalized value is minimum value then the returning value equals zero; to avoid these scores

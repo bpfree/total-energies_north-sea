@@ -179,6 +179,7 @@ the top 50 in ICES's ESAS supplemented the species already included in Waggitt e
 - _Sternula albifrons_
 - _Thalasseus sandvicensis_
 - _Uria aalge_
+- _Xema sabini_
 
 #### Species distribution models
 Species distribution models for the interested species came from the [MPA Europe](https://shiny.obis.org/distmaps/) project on modeling ocean biodiversity. The study used species
@@ -190,6 +191,8 @@ Energies. The three species were:
 - _Lagenorhynchus acutus_ [(137100)](https://www.marinespecies.org/aphia.php?p=taxdetails&id=137100) -- accepted name is _Leucopleurus acutus_ [(1571853)](https://www.marinespecies.org/aphia.php?p=taxdetails&id=1571853)
 - _Larus melanocephalus_ [(137147)](https://www.marinespecies.org/aphia.php?p=taxdetails&id=137147) -- accepted name is _Ichthyaetus melanocephalus_ [(1584284)](https://www.marinespecies.org/aphia.php?p=taxdetails&id=1584284)
 - _Thalasseus sandvicensis_ [(413044)](https://www.marinespecies.org/aphia.php?p=taxdetails&id=413044) -- accepted name is _Sterna sandvicensis_ [(137166)](https://www.marinespecies.org/aphia.php?p=taxdetails&id=137166)
+
+MPA Europe did not posses a species distribution model for a species on the Total Energies list (_Hydrobates leucorhous_).
 
 #### Habitat designation 
 - Unlikely habitat: scores below 75

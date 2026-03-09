@@ -180,7 +180,7 @@ the top 50 in ICES's ESAS supplemented the species already included in Waggitt e
 - _Uria aalge_
 - _Xema sabini_
 
-#### Species distribution models
+##### Species distribution models
 Species distribution models for the interested species came from the [MPA Europe](https://shiny.obis.org/distmaps/) project on modeling ocean biodiversity. The study used species
 distribution model data from MPA Europe given they were produced at 5km resolution; comparatively, Waggitt et al. (2020) modeled their species at 10km. To maintain comparability
 between species, only species with modeled data by MPA Europe got included. Species were matched by their WoRMS [Aphia identification](https://www.marinespecies.org/about.php#what_is_aphia).
@@ -193,7 +193,7 @@ Energies. The three species were:
 
 MPA Europe did not posses a species distribution model for a species on the Total Energies list (_Hydrobates leucorhous_). The study thus did not include _Hydrobates leucorhous_ in the final analysis.
 
-#### Habitat designation
+##### Habitat designation
 MPA Europe's species distribution models relied on presence-only data. The [best modeled outputs](https://iobis.github.io/mpaeu_docs/methods-testing.html#overview-and-chosen-approach) were LASSO and maxent (maximum entropy).
 LASSO results were not available for download, so the priority were maxent along with ensemble outputs when the maxent models did not exist for a particular species. Most species have the maxent models, but five had ensemble
 models:
@@ -218,23 +218,40 @@ occurred in locations with values over 75 and they received a value of 1.
 | 75+ | Unlikely habitat | 1.0 |
 
 #### Normalization
-Cetaceans and seabirds had the same normalization and maximum value selection 
+A summarized total species richness layer were created for each cetaceans and seabirds by combining all species values for each. The linear normalization was run on the summarized data
+products and any instance where multiple values existed for the same hex, the maximum normalized value was selected.
+
+### Fishes
+A summarized fish species data layer came from a paper by [Gordó-Vilaseca et al. (2024)](https://www.nature.com/articles/s41467-024-49911-9) that examined biomass distributions for a
+variety of species across the North Sea and Barents Sea. The data shared by Gordó-Vilaseca are the present day species richness data (as seen in Figure 2(A)). The Greater North Sea
+boundary limited the data to the study region before applying a linear normalization and rescaling the minimum species richness.
 
 ### Scores
 | Layer | Score | Consideration |
 |---------------|---------------|---------------|
 | Fish | 0 - 1 | Linear normalization with 0.01 added to minimum |
-| Cetaceans | 0 - 1 | Species list compiled from list provided by Total Energies, [Waggitt et al. (2020)](https://besjournals.onlinelibrary.wiley.com/doi/pdf/10.1111/1365-2664.13525), along 
-with cetaceans that have at least one observation in the [ICES statistical surveys](https://cetaceans.ices.dk/inventory) for the North Sea |
-| Seabirds | 0 - 1 | Species list compiled from list provided by Total Energies, [Waggitt et al. (2020)](https://besjournals.onlinelibrary.wiley.com/doi/pdf/10.1111/1365-2664.13525), along 
-with data from [European Seabirds at Seas](https://esas.ices.dk/inventory) and [MPA EU](https://shiny.obis.org/distmaps/) |
+| Cetaceans | 0 - 1 | Species list compiled from list provided by Total Energies, [Waggitt et al. (2020)](https://besjournals.onlinelibrary.wiley.com/doi/pdf/10.1111/1365-2664.13525), along  with cetaceans that have at least one observation in the [ICES statistical surveys](https://cetaceans.ices.dk/inventory) for the North Sea |
+| Seabirds | 0 - 1 | Species list compiled from list provided by Total Energies, [Waggitt et al. (2020)](https://besjournals.onlinelibrary.wiley.com/doi/pdf/10.1111/1365-2664.13525), along  with data from [European Seabirds at Seas](https://esas.ices.dk/inventory) and [MPA EU](https://shiny.obis.org/distmaps/) |
 | Protected areas | 0, 1| Absence, Presence |
 | Cold water corals | 0, 1| Absence, Presence |
 | Important Marine Mammal Areas | 0, 1| Absence, Presence |
 | Seagrass | 0, 1| Absence, Presence |
 
+#### Normalization
+
+### Submodel
+Mobile = fishes + cetaceans + seabirds
+Sessile = protected areas + cold water corals + IMMAs + seagrass
+
+Sessile = 0.55
+Mobile = 0.45
+Any NAs = 0
+
 ## Considerations / Limitations / Assumptions
+Data not permitted for commercial use
+
 Fish, cetaceans, and seabirds data --
+Fish -- only species richness, not specific species
 
 Presence-only models -- 
 

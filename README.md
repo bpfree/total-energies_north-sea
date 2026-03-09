@@ -79,14 +79,16 @@ North Sea (as defined by [ICES](http://gis.ices.dk/geonetwork/srv/eng/catalog.se
 
 ## Methods
 ### Geographic constraint
-Each nature data set got limited to the [Greater North Sea](https://www.marineregions.org/gazetteer.php?p=details&id=36317) boundary before performing any further data transformations. 
-The Important Marine Mammal Areas required extra steps in data processing to return the correct data for the Greater North Sea.
-
+Each nature data set got limited to the [Greater North Sea](https://www.marineregions.org/gazetteer.php?p=details&id=36317) boundary before performing any further data transformations.
 
 ### Linear normalization
-* Normalized score = (value - minimum) / (maximum - minimum)
-If normalized value is minimum value then the returning value equals zero; to avoid these scores
-to have zero values, 0.01 got added to those scores. Otherwise keep the normalized value.
+A linear function normalized species richness values for fish, cetaceans, and seabirds. Normalizing the minimum and maximum species richness to be between 0 and 1 allowed these data to get compared to the data sets that receive
+a discrete value for presence and absence (1 or 0).
+The linear normalized function is: (value - minimum) / (maximum - minimum) = normalized score.
+
+To avoid returning a zero for the normalized score (when the value is equal to the minimum), when the linear function returns 0.00, then a value of 0.01 got added. By adding value to the minimum value, it ensures that species
+richness never would get treated as absence. For all
+other values, keep the normalized value.
 
 ### Overlapping features
 When a hex grid received more than one value from a linear normalization, due to the shape incongruity, then the maximum value was kept. Selecting the maximum value the study pursued an 
@@ -101,7 +103,92 @@ coral reef was present, the maximum score across the 10 species was returned and
 
 ### Species
 #### Cetaceans and seabirds
-Habitat designation
+Cetaceans considered in the analysis either had at least one observation in the [Joint Cetacean Database Programme](https://cetaceans.ices.dk/beta/Inventory?selecteddataset=JCDP&selecteddataset=ESAS) (for more information
+about the [JCDP](https://jncc.gov.uk/our-work/joint-cetacean-data-programme) and [ICES statistical surveys](https://www.ices.dk/data/data-portals/Pages/Cetaceans.aspx)) or included in the [Waggitt et al. (2020)](https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/1365-2664.13525).
+The only species from Waggitt et al. (2020) that did not have at least one observation in the ICES statistical survey was _Physeter macrocephalus_.
+
+These species included:
+- Balaenoptera acutorostrata
+- Balaenoptera physalus
+- Delphinus delphis
+- Grampus griseus
+- Halichoerus grypus
+- Lagenorhynchus acutus
+- Lagenorhynchus albirostris
+- Orcinus orca
+- Phoca vitulina
+- Phocoena phocoena
+- Physeter macrocephalus
+- Stenella coeruleoalba
+- Tursiops truncatus
+
+Species compiled for seabirds came from Waggitt et al. (2020), ICES's [European Seasbirds at Seas](https://esas.ices.dk/inventory), and a list provided by Total Energies. Species from
+the top 50 in ICES's ESAS supplemented the species already included in Waggitt et al. (2020) and the list provided by Total. The species included in the the lists are:
+
+_ _Alca torda_
+- _Alle alle_
+- _Aythya marila_
+- _Bucephala clangula_
+- _Cepphus grylle_
+- _Chlidonias niger_
+- _Clangula hyemalis_
+- _Fratercula arctica_
+- _Fulmarus glacialis_
+- _Gavia adamsii_
+- _Gavia arctica_
+- _Gavia immer_
+- _Gavia stellata_
+- _Gelochelidon nilotica_
+- _Hydrobates leucorhous_
+- _Hydrobates pelagicus_
+- _Hydrocoloeus minutus_
+- _Hydroprogne caspia_
+- _Larus argentatus_
+- _Larus canus_
+- _Larus fuscus_
+- _Larus glaucoides_
+- _Larus hyperboreus_
+- _Larus marinus_
+- _Larus melanocephalus_
+- _Larus michahellis_
+- _Larus ridibundus_
+- _Melanitta fusca_
+- _Melanitta nigra_
+- _Mergus merganser_
+- _Mergus serrator_
+- _Morus bassanus_
+- _Phalacrocorax aristotelis_
+- _Phalacrocorax carbo_
+- _Phalaropus fulicarius_
+- _Phalaropus lobatus_
+- _Podiceps auritus_
+- _Podiceps cristatus_
+- _Podiceps grisegena_
+- _Podiceps nigricollis_
+- _Puffinus puffinus_
+- _Rissa tridactyla_
+- _Somateria mollissima_
+- _Somateria spectabilis_
+- _Stercorarius longicaudus_
+- _Stercorarius parasiticus_
+- _Stercorarius pomarinus_
+- _Stercorarius skua_
+- _Sterna hirundo_
+- _Sterna paradisaea_
+- _Sternula albifrons_
+- _Thalasseus sandvicensis_
+- _Uria aalge_
+
+#### Species distribution models
+Species distribution models for the interested species came from the [MPA Europe](https://shiny.obis.org/distmaps/) project on modeling ocean biodiversity. The study used species
+distribution model data from MPA Europe given they were produced at 5km resolution; comparatively, Waggitt et al. (2020) modelled their species at 10km. To maintain comparability
+between species, only species with modelled data by MPA Europe got included. Species were matched by their WoRMS [Aphia identification](https://www.marinespecies.org/about.php#what_is_aphia).
+A marine mammal and two seabird species had different accepted species names in [WoRMS](https://www.marinespecies.org/index.php) than those used by ICES, Waggitt et al. (2020), and Total
+Energies. The three species were:
+
+- _Lagenorhynchus acutus_ -- accepted name is _Leucopleurus acutus_ (1571853)
+
+#### Habitat designation 
 - Unlikely habitat: scores below 75
 - Probable Habitat: scores between 50 and 75
 - Core habitat: scores over 75
@@ -113,7 +200,7 @@ Habitat designation
 | Cetaceans | 0 - 1 | Species list compiled from list provided by Total Energies, [Waggitt et al. (2020)](https://besjournals.onlinelibrary.wiley.com/doi/pdf/10.1111/1365-2664.13525), along 
 with cetaceans that have at least one observation in the [ICES statistical surveys](https://cetaceans.ices.dk/inventory) for the North Sea |
 | Seabirds | 0 - 1 | Species list compiled from list provided by Total Energies, [Waggitt et al. (2020)](https://besjournals.onlinelibrary.wiley.com/doi/pdf/10.1111/1365-2664.13525), along 
-with data from [ICES statistical surveys](https://esas.ices.dk/inventory) and [MPA EU](https://shiny.obis.org/distmaps/) |
+with data from [European Seabirds at Seas](https://esas.ices.dk/inventory) and [MPA EU](https://shiny.obis.org/distmaps/) |
 | Protected areas | 0, 1| Absence, Presence |
 | Cold water corals | 0, 1| Absence, Presence |
 | Important Marine Mammal Areas | 0, 1| Absence, Presence |

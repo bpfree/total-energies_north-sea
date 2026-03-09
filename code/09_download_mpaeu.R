@@ -151,7 +151,8 @@ seabirds_species <- c(
   567480,
   413044, # see species 137166
   137166,
-  137133
+  137133,
+  137167
 )
 
 fs::dir_create("data/a_raw_data/species/seabirds")

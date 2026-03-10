@@ -265,7 +265,7 @@ Below are the three main equations for calculating submodel and final model scor
 | Doggerbank | _Phoca vitulina_ | 35% | 65% | 0% |
 | Doggerbank | _Phocoena phocoena_ | 0% | 0% | 100% |
 | Sydlige Nordsø | _Halichoerus grypus_ | 0% | 0% | 100% |
-| Sydlige Nordsø | _Phoca vitulina_ | Probable habitat | 50% |
+| Sydlige Nordsø | _Phoca vitulina_ | 0% | 0% | 50% |
 | Sydlige Nordsø | _Phocoena phocoena_ | 0% | 100% | 0% |
 | Sydlige Nordsø | _Gavia arctica_ | 0% | 100% | 0% |
 | Sydlige Nordsø | _Gavia stellata_ | 0% | 100% | 0% |

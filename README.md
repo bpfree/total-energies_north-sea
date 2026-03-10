@@ -260,31 +260,32 @@ Below are the three main equations for calculating submodel and final model scor
 
 ## Considerations / Limitations / Assumptions
 ### Data components
-The analysis desired to include more data sets within the analysis, but numerous constraints limited what could get used. The cetacean and ICES 
+A major limitation of the study was the inability to integrate more data sets for the nature index. The analysis desired to include more data sets and alternatives to the ones that got ingested,
+but had barriers for inclusion. For instance, while the UNEP-WCMC seagrass is an imperfect data set given that it was created as a global data set, and cannot accurately represent localized, high
+resolution areas, it was the best alternative available. A [seagrass layer](https://emodnet.ec.europa.eu/geonetwork/srv/eng/catalog.search#/metadata/39746d9c-4220-425c-bc26-7cb3056c36a5) exists
+that has 250m resolution for the North Sea ([report](https://emodnet.ec.europa.eu/sites/emodnet.ec.europa.eu/files/public/c20190514_generating_eovs.pdf)). The data were only for non-commercial
+use.
+
+Two other data sets that would contribute to understanding bird species in the North Sea were limited by the inability to use them for commercial uses. [BirdLife](https://datazone.birdlife.org/search)
+and [SeaTrack](https://experience.arcgis.com/experience/c6704d258685414cb020e1de136f6695) contain species data with North Sea coverage. Along with these seabird data, if the analysis could expand
+build its own species distribution models, ICES's [European Seas at Sea](https://www.ices.dk/data/data-portals/Pages/European-Seabirds-at-sea.aspx) and its [Joint Cetacean Data Programme](https://www.ices.dk/data/data-portals/Pages/Cetaceans.aspx)
+data would provide years of presence data. Without building a separate species distribution models, an faster step to create a more comprehensive model is to include more species already modeled
+by the MPA Europe project. As of August 2025, the project produced species distribution models for 12,039 species (explore [main results](https://iobis.github.io/mpaeu_docs/results.html)). If an
+alternative were found, the most appealing data product would be a species distribution model that integrated absence data. Presence-only models, while easier to generate, have more accurate outputs.
+
+Finding alternative data to those included in the analysis could help address a major limitation with the analysis -- the spatial resolution for the fish, cetacean, and seabird data layers. Downscaling
+the fish data set from 10km and the cetacean and seabird data sets from 5km generates numerous issues that generate inherent issues with evaluating the nature score with significant confidence. To
+improve the model outputs, data sets should have more aligned resolutions and ones that are closer to the desired output (in the case of this study, 500m). Additionally it is more preferable to not
+have a summarized data product for species richness that had to get used for the fish data layer. In a more ideal scenario, the species richness would get create in a more similar process to how this
+analysis generated the summarized data product for cetaceans and seabirds.
 
 ### Analysis components
-An assumption was made that the maximum score would get kept to reflect a higher nature score. 
+An assumption was made that the maximum score would get kept to reflect a higher nature score. Another major assumption was the inclusion of species even if it only had a single observation in the
+study region. Although the inclusion does allow for a more precautionary approach for representing nature, it may not allow for the most accurate reflection. This complicated how the species distribution
+models got scored, as potential distribution needed to get differentiated from "real" distribution. Species distribution model outputs of 1 should not get evaluated the same as one with 99. With more
+time, the analysis could undertake more nuance to define unlikely habitat, probable habitat, and core habitat.
 
 ### Future
-A major limitation of the study was the inability to integrate more data sets for the nature index. The UNEP-WCMC seagrass is an imperfect data set given that it was created as a global
-data set, not to represent localized, high resolution areas. A [seagrass layer](https://emodnet.ec.europa.eu/geonetwork/srv/eng/catalog.search#/metadata/39746d9c-4220-425c-bc26-7cb3056c36a5)
-exists that has 250m resolution for the North Sea ([report](https://emodnet.ec.europa.eu/sites/emodnet.ec.europa.eu/files/public/c20190514_generating_eovs.pdf)). The data were only for non-commercial
-use only.
+Explore how species interact with areas that are defined for protected areas in the North Sea -- though should be aware of hos the areas might get designation for a particular species due to nesting
+or another part of the life cycle that limits the time spent in that specific geography.
 
-Data not permitted for commercial use
-
-Fish, cetaceans, and seabirds data --
-Fish -- only species richness, not specific species
-
-Presence-only models -- species distribution models
-
-Resolution of fish, cetaceans, and seabirds
-
-Wanting places even very rare occurrences of data -- hence the inclusion of even low values for species distribution models
-Score of 1 for any species is similar to presence of other layer types
-
-Ignoring of other data sets
-
-Evaluations of what to classify as habitat and scores
-
-Maximum score kept 

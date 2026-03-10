@@ -1,7 +1,3 @@
----
-output:
-  pdf_document: default
----
 # Advancing nature and biodiversity insights in the North Sea
 Habitat sensitivity assessment in North Sea
 

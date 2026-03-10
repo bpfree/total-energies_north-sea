@@ -208,8 +208,8 @@ Cetaceans
 - _Tursiops truncatus_ [(137111)](https://www.marinespecies.org/aphia.php?p=taxdetails&id=137111)
 
 Seabirds
-- _Alle alle_ [137129](https://www.marinespecies.org/aphia.php?p=taxdetails&id=137129)
-- _Rissa tridactyla_ [137156](https://www.marinespecies.org/aphia.php?p=taxdetails&id=137156)
+- _Alle alle_ [(137129)](https://www.marinespecies.org/aphia.php?p=taxdetails&id=137129)
+- _Rissa tridactyla_ [(137156)](https://www.marinespecies.org/aphia.php?p=taxdetails&id=137156)
 
 Species distribution model (SDM) results were scored to reflect the match to likely habitat. Any location with a species distribution model value under 50 (quantitatively more probable than not)
 was classified as unlikely habitat and given a score 0.3. Species distribution model values between 50 and 75 got a score of 0.6 to reflect that these areas are probable habitat. Core habitat

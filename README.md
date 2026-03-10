@@ -253,7 +253,9 @@ remain to have a level of uncertainty concerning their verified locations.
 Below are the three main equations for calculating submodel and final model scores:
 
 [1] mobile_submodel_score = fish_value + cetacean_value + seabird_value
+
 [2] sessile_submodel_score = protected_area_value + imma_value + cold_water_coral_value + seagrass_value
+
 [3] final_model_score = mobile_submodel_score * 0.45 + sessile_submodel_score * 0.55
 
 ## Considerations / Limitations / Assumptions
@@ -266,8 +268,8 @@ An assumption was made that the maximum score would get kept to reflect a higher
 ### Future
 A major limitation of the study was the inability to integrate more data sets for the nature index. The UNEP-WCMC seagrass is an imperfect data set given that it was created as a global
 data set, not to represent localized, high resolution areas. A [seagrass layer](https://emodnet.ec.europa.eu/geonetwork/srv/eng/catalog.search#/metadata/39746d9c-4220-425c-bc26-7cb3056c36a5)
-exists that has 250m resolution for the North Sea ([report](https://emodnet.ec.europa.eu/sites/emodnet.ec.europa.eu/files/public/c20190514_generating_eovs.pdf)). The data were only for non-
-commercial use only.
+exists that has 250m resolution for the North Sea ([report](https://emodnet.ec.europa.eu/sites/emodnet.ec.europa.eu/files/public/c20190514_generating_eovs.pdf)). The data were only for non-commercial
+use only.
 
 Data not permitted for commercial use
 

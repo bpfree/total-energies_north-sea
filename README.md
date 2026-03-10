@@ -258,6 +258,11 @@ Below are the three main equations for calculating submodel and final model scor
 
 [3] final_model_score = mobile_submodel_score * 0.45 + sessile_submodel_score * 0.55
 
+## Results
+| Protected area | Species | Habitat classification | Histogram |
+|----------------|---------|------------------------|-----------|
+| Doggerbank | _Fulmarus glacialis_ | Probable habitat | 100% |
+
 ## Considerations / Limitations / Assumptions
 ### Data components
 A major limitation of the study was the inability to integrate more data sets for the nature index. The analysis desired to include more data sets and alternatives to the ones that got ingested,

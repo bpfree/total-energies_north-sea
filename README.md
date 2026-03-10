@@ -255,9 +255,22 @@ Below are the three main equations for calculating submodel and final model scor
 [3] final_model_score = mobile_submodel_score * 0.45 + sessile_submodel_score * 0.55
 
 ## Results
-| Protected area | Species | Habitat classification | Histogram |
-|----------------|---------|------------------------|-----------|
-| Doggerbank | _Fulmarus glacialis_ | Probable habitat | 100% |
+| Protected area | Species | Unlikely | Probable | Core |
+|----------------|---------|----------|----------|------|
+| Doggerbank | _Fulmarus glacialis_ | 0% | 100% | 0% |
+| Doggerbank | _Larus fuscus_ | 0% | 100% | 0% |
+| Doggerbank | _Morus bassabus_ | 0% | 0% | 100% |
+| Doggerbank | _Rissa tridactyla_ | 0% | 0% | 100% |
+| Doggerbank | _Uria aalge_ | 0% | 100% | 0% |
+| Doggerbank | _Phoca vitulina_ | 35% | 65% | 0% |
+| Doggerbank | _Phocoena phocoena_ | 0% | 0% | 100% |
+| Sydlige Nordsø | _Halichoerus grypus_ | 0% | 0% | 100% |
+| Sydlige Nordsø | _Phoca vitulina_ | Probable habitat | 50% |
+| Sydlige Nordsø | _Phocoena phocoena_ | 0% | 100% | 0% |
+| Sydlige Nordsø | _Gavia arctica_ | 0% | 100% | 0% |
+| Sydlige Nordsø | _Gavia stellata_ | 0% | 100% | 0% |
+| Sydlige Nordsø | _Hydrocoloeus minutus_ | 0% | 100% | 0% |
+| Sydlige Nordsø | _Melanitta nigra_ | 0% | 100% | 0% |
 
 ## Considerations / Limitations / Assumptions
 ### Data components

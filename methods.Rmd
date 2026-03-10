@@ -1,6 +1,7 @@
 ---
 output:
   pdf_document: default
+urlcolor: blue
 ---
 # Advancing nature and biodiversity insights in the North Sea
 Habitat sensitivity assessment in North Sea
@@ -93,6 +94,7 @@ about the [JCDP](https://jncc.gov.uk/our-work/joint-cetacean-data-programme) and
 The only species from Waggitt et al. (2020) that did not have at least one observation in the ICES statistical survey was _Physeter macrocephalus_.
 
 These species included:
+
 - _Balaenoptera acutorostrata_
 - _Balaenoptera physalus_
 - _Delphinus delphis_
@@ -184,13 +186,15 @@ LASSO results were not available for download, so the priority were maxent along
 models:
 
 Cetaceans
+
 - _Phoca vitulina_ [(137084)](https://www.marinespecies.org/aphia.php?p=taxdetails&id=137084)
 - _Orcinus orca_ [(137102)](https://www.marinespecies.org/aphia.php?p=taxdetails&id=137102)
 - _Tursiops truncatus_ [(137111)](https://www.marinespecies.org/aphia.php?p=taxdetails&id=137111)
 
 Seabirds
-- _Alle alle_ [137129](https://www.marinespecies.org/aphia.php?p=taxdetails&id=137129)
-- _Rissa tridactyla_ [137156](https://www.marinespecies.org/aphia.php?p=taxdetails&id=137156)
+
+- _Alle alle_ [(137129)](https://www.marinespecies.org/aphia.php?p=taxdetails&id=137129)
+- _Rissa tridactyla_ [(137156)](https://www.marinespecies.org/aphia.php?p=taxdetails&id=137156)
 
 Species distribution model (SDM) results were scored to reflect the match to likely habitat. Any location with a species distribution model value under 50 (quantitatively more probable than not)
 was classified as unlikely habitat and given a score 0.3. Species distribution model values between 50 and 75 got a score of 0.6 to reflect that these areas are probable habitat. Core habitat

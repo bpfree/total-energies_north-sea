@@ -1,3 +1,7 @@
+---
+output:
+  pdf_document: default
+---
 # Advancing nature and biodiversity insights in the North Sea
 Habitat sensitivity assessment in North Sea
 
@@ -87,19 +91,19 @@ a discrete value for presence and absence (1 or 0).
 
 The linear normalized function is: (value - minimum) / (maximum - minimum) = normalized score.
 
-To avoid returning a zero for the normalized score (when the value is equal to the minimum), when the linear function returns 0.00, then a value of 0.01 got added. By adding value to the minimum value, it ensures that species
+To avoid returning a zero for the normalized score (when the value is equal to the minimum), when the linear function returns 0.00, then a value of 0.01 got added. By adding value to the minimum value, it ensures that any species
 richness never would get treated as absence.
 
 ### Overlapping features
-When a hex grid received more than one value from a linear normalization, due to the shape incongruity, then the maximum value was kept. Selecting the maximum value the study pursued an 
-approach that reflected a precautionary principle (read [here](https://www.ospar.org/convention/principles/precautionary-principle) for what this means) since the nature index would 
+When a hex grid received more than one value from a linear normalization, due to the shape incongruity, then the maximum value was kept. Selecting the maximum value ensured the study pursued an 
+approach that reflected a precautionary principle (read [here](https://www.ospar.org/convention/principles/precautionary-principle) for further context on the principle) since the nature index would 
 represent the best case scenario for nature.
 
 ### Habitats
 #### Cold water corals
-The cold water corals data set has values for 10 species that range between 0 and 1000. Classifications on coral presence are separated by steps of 200: very low (<200), low (200 - 400), 
-moderate (400 - 600), high (600 - 800), and very high (800). This study only considered if a cold water coral was present, not the overall species richness. To determine if a cold water 
-coral reef was present, the maximum score across the 10 species was returned and only values above 600 were kept.
+The cold water corals data set contained values that range between 0 and 1000 for 10 species. Suitability classifications on coral presence are separated by steps of 200: very low (<200),
+low (200 - 400), moderate (400 - 600), high (600 - 800), and very high (800). This study only considered if a cold water coral was present, not the overall species richness. To determine
+if a cold water coral reef was present, the maximum score across the 10 species was returned and only values above 600 were kept.
 
 ### Species
 #### Cetaceans and seabirds
@@ -207,7 +211,7 @@ Seabirds
 - _Alle alle_ [137129](https://www.marinespecies.org/aphia.php?p=taxdetails&id=137129)
 - _Rissa tridactyla_ [137156](https://www.marinespecies.org/aphia.php?p=taxdetails&id=137156)
 
-Species distribution model results were scored to reflect the match to likely habitat. Any location with a species distribution model value under 50 (quantitatively more probable than not)
+Species distribution model (SDM) results were scored to reflect the match to likely habitat. Any location with a species distribution model value under 50 (quantitatively more probable than not)
 was classified as unlikely habitat and given a score 0.3. Species distribution model values between 50 and 75 got a score of 0.6 to reflect that these areas are probable habitat. Core habitat
 occurred in locations with values over 75 and they received a value of 1.
 
@@ -223,7 +227,7 @@ products and any instance where multiple values existed for the same hex, the ma
 
 ### Fishes
 A summarized fish species data layer came from a paper by [Gordó-Vilaseca et al. (2024)](https://www.nature.com/articles/s41467-024-49911-9) that examined biomass distributions for a
-variety of species across the North Sea and Barents Sea. The data shared by Gordó-Vilaseca are the present day species richness data (as seen in Figure 2(A)).
+variety of species across the North Sea and Barents Sea. The data shared by Gordó-Vilaseca are the present day species richness data (as seen in the paper's Figure 2(A)).
 
 #### Normalization
 The Greater North Sea boundary limited the data to the study region before applying a linear normalization and rescaling the minimum species richness.
@@ -234,26 +238,43 @@ The Greater North Sea boundary limited the data to the study region before apply
 | Fish | 0 - 1 | Linear normalization with 0.01 added to minimum |
 | Cetaceans | 0 - 1 | Species list compiled from list provided by Total Energies, [Waggitt et al. (2020)](https://besjournals.onlinelibrary.wiley.com/doi/pdf/10.1111/1365-2664.13525), along  with cetaceans that have at least one observation in the [ICES statistical surveys](https://cetaceans.ices.dk/inventory) for the North Sea |
 | Seabirds | 0 - 1 | Species list compiled from list provided by Total Energies, [Waggitt et al. (2020)](https://besjournals.onlinelibrary.wiley.com/doi/pdf/10.1111/1365-2664.13525), along  with data from [European Seabirds at Seas](https://esas.ices.dk/inventory) and [MPA EU](https://shiny.obis.org/distmaps/) |
-| Protected areas | 0, 1| Absence, Presence |
-| Cold water corals | 0, 1| Absence, Presence |
-| Important Marine Mammal Areas | 0, 1| Absence, Presence |
-| Seagrass | 0, 1| Absence, Presence |
+| Protected areas | 0, 1 | Absence, Presence |
+| Cold water corals | 0, 1 | Absence, Presence |
+| Important Marine Mammal Areas | 0, 1 | Absence, Presence |
+| Seagrass | 0, 1 | Absence, Presence |
 
 ### Submodel
-Mobile = fishes + cetaceans + seabirds
-Sessile = protected areas + cold water corals + IMMAs + seagrass
+Two submodels comprised the final nature score index. The fish, cetacean, and seabird data products were summarized in the mobile species submodel. The sessile submodel comprised
+of the other four datasets: protected areas, important marine mammal areas, cold water corals, and seagrass. Any "NA" data for a data set got reclassified as a 0 before calculating
+submodel scores. These two submodels then were combined to produce a final nature score. More weight was allotted to the sessile submodel since at least two of the layers are immovable,
+making them more reliably known. The analysis weighted the sessile submodel with 55% of the score. It did not receive greater share of weight as the seagrass and coral reef data sets
+remain to have a level of uncertainty concerning their verified locations.
 
-Sessile = 0.55
-Mobile = 0.45
-Any NAs = 0
+Below are the three main equations for calculating submodel and final model scores:
+
+[1] mobile_submodel_score = fish_value + cetacean_value + seabird_value
+[2] sessile_submodel_score = protected_area_value + imma_value + cold_water_coral_value + seagrass_value
+[3] final_model_score = mobile_submodel_score * 0.45 + sessile_submodel_score * 0.55
 
 ## Considerations / Limitations / Assumptions
+### Data components
+The analysis desired to include more data sets within the analysis, but numerous constraints limited what could get used. The cetacean and ICES 
+
+### Analysis components
+An assumption was made that the maximum score would get kept to reflect a higher nature score. 
+
+### Future
+A major limitation of the study was the inability to integrate more data sets for the nature index. The UNEP-WCMC seagrass is an imperfect data set given that it was created as a global
+data set, not to represent localized, high resolution areas. A [seagrass layer](https://emodnet.ec.europa.eu/geonetwork/srv/eng/catalog.search#/metadata/39746d9c-4220-425c-bc26-7cb3056c36a5)
+exists that has 250m resolution for the North Sea ([report](https://emodnet.ec.europa.eu/sites/emodnet.ec.europa.eu/files/public/c20190514_generating_eovs.pdf)). The data were only for non-
+commercial use only.
+
 Data not permitted for commercial use
 
 Fish, cetaceans, and seabirds data --
 Fish -- only species richness, not specific species
 
-Presence-only models -- 
+Presence-only models -- species distribution models
 
 Resolution of fish, cetaceans, and seabirds
 

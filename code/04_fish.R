@@ -9,6 +9,7 @@ rm(list = ls())
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(dplyr,
                fs,
+               ggplot2,
                h3,
                janitor,
                jsonlite,

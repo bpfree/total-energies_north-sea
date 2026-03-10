@@ -92,14 +92,24 @@ data <- df %>%
 
 mapview::mapview(data)
 
-protected_areas <- data %>%
-  dplyr::filter(grepl(pattern = "Doggerbank|Sydlige Nordsø",
+doggerbank <- data %>%
+  dplyr::filter(grepl(pattern = "Doggerbank",
                       # field
                       x = sitename,
                       # is not case sensitive
                       ignore.case = T))
 
-mapview::mapview(protected_areas)
+sydlige_nordso <- data %>%
+  dplyr::filter(grepl(pattern = "Sydlige Nordsø",
+                      # field
+                      x = sitename,
+                      # is not case sensitive
+                      ignore.case = T))
+
+mapview::mapview(doggerbank)
+mapview::mapview(sydlige_nordso)
+
+
 
 #####################################
 
@@ -108,107 +118,277 @@ fulmarus_glacialis <- terra::rast(x = "data/b_intermediate_data/species/seabirds
   # crop species raster
   terra::crop(x = .,
               # boundary box
-              y = protected_areas,
+              y = doggerbank,
               # mask the data
               mask = T)
-plot(fulmarus_glacialis)
+mapview::mapview(fulmarus_glacialis)
+terra::minmax(fulmarus_glacialis)
+hist(fulmarus_glacialis)
+doggerbank_fulmarus_glacialis <- sum(!is.na(values(fulmarus_glacialis)))
+probable_mask <- fulmarus_glacialis > 50 & fulmarus_glacialis <= 75
+count_probable <- sum(values(probable_mask), na.rm = TRUE)
+count_probable / doggerbank_fulmarus_glacialis * 100
+
 
 larus_fuscus <- terra::rast(x = "data/b_intermediate_data/species/seabirds/taxonid_137142_maxent_scen_current.grd") %>%
   # crop species raster
   terra::crop(x = .,
               # boundary box
-              y = protected_areas,
+              y = doggerbank,
               # mask the data
               mask = T)
-plot(larus_fuscus)
+mapview::mapview(larus_fuscus)
+terra::minmax(larus_fuscus)
+hist(larus_fuscus)
+doggerbank_larus_fuscus <- sum(!is.na(values(larus_fuscus)))
+probable_mask <- larus_fuscus > 50 & larus_fuscus <= 75
+count_probable <- sum(values(probable_mask), na.rm = TRUE)
+count_probable / doggerbank_larus_fuscus * 100
+core_mask <- larus_fuscus > 75
+count_core <- sum(values(core_mask), na.rm = TRUE)
+count_core / doggerbank_larus_fuscus * 100
 
 morus_bassanus <- terra::rast(x = "data/b_intermediate_data/species/seabirds/taxonid_148776_maxent_scen_current.grd") %>%
   # crop species raster
   terra::crop(x = .,
               # boundary box
-              y = protected_areas,
+              y = doggerbank,
               # mask the data
               mask = T)
-plot(morus_bassanus)
+mapview::mapview(morus_bassanus)
+terra::minmax(morus_bassanus)
+hist(morus_bassanus)
+doggerbank_morus_bassanus <- sum(!is.na(values(morus_bassanus)))
+probable_mask <- morus_bassanus > 50 & morus_bassanus <= 75
+count_probable <- sum(values(probable_mask), na.rm = TRUE)
+count_probable / doggerbank_morus_bassanus * 100
+core_mask <- morus_bassanus > 75
+count_core <- sum(values(core_mask), na.rm = TRUE)
+count_core / doggerbank_morus_bassanus * 100
 
 rissa_tridactyla <- terra::rast(x = "data/b_intermediate_data/species/seabirds/taxonid_137156_ensemble_scen_current.grd") %>%
   # crop species raster
   terra::crop(x = .,
               # boundary box
-              y = protected_areas,
+              y = doggerbank,
               # mask the data
               mask = T)
-plot(rissa_tridactyla[[1]])
+mapview::mapview(rissa_tridactyla[[1]])
+terra::minmax(rissa_tridactyla[[1]])
+hist(rissa_tridactyla[[1]])
+doggerbank_rissa_tridactyla <- sum(!is.na(values(rissa_tridactyla[[1]])))
+probable_mask <- rissa_tridactyla[[1]] > 50 & rissa_tridactyla[[1]] <= 75
+count_probable <- sum(values(probable_mask), na.rm = TRUE)
+count_probable / doggerbank_rissa_tridactyla * 100
+core_mask <- rissa_tridactyla[[1]] > 75
+count_core <- sum(values(core_mask), na.rm = TRUE)
+count_core / doggerbank_rissa_tridactyla * 100
+
 
 uria_aalge <- terra::rast(x = "data/b_intermediate_data/species/seabirds/taxonid_137133_maxent_scen_current.grd") %>%
   # crop species raster
   terra::crop(x = .,
               # boundary box
-              y = protected_areas,
+              y = doggerbank,
               # mask the data
               mask = T)
-plot(uria_aalge)
+mapview::mapview(uria_aalge)
+terra::minmax(uria_aalge)
+hist(uria_aalge)
+doggerbank_uria_aalge <- sum(!is.na(values(uria_aalge)))
+probable_mask <- uria_aalge > 50 & uria_aalge <= 75
+count_probable <- sum(values(probable_mask), na.rm = TRUE)
+count_probable / doggerbank_uria_aalge * 100
+core_mask <- uria_aalge > 75
+count_core <- sum(values(core_mask), na.rm = TRUE)
+count_core / doggerbank_uria_aalge * 100
 
 phoca_vitulina <- terra::rast(x = "data/b_intermediate_data/species/cetaceans/taxonid_137084_ensemble_scen_current.grd") %>%
   # crop species raster
   terra::crop(x = .,
               # boundary box
-              y = protected_areas,
+              y = doggerbank,
               # mask the data
               mask = T)
-plot(phoca_vitulina[[1]])
+mapview::mapview(phoca_vitulina[[1]])
+terra::minmax(phoca_vitulina[[1]])
+hist(phoca_vitulina[[1]])
+doggerbank_phoca_vitulina <- sum(!is.na(values(phoca_vitulina[[1]])))
+unlikely_mask <- phoca_vitulina[[1]] < 50
+count_unlikely <- sum(values(unlikely_mask), na.rm = TRUE)
+count_unlikely / doggerbank_phoca_vitulina * 100
+probable_mask <- phoca_vitulina[[1]] >= 50 & phoca_vitulina[[1]] <= 75
+count_probable <- sum(values(probable_mask), na.rm = TRUE)
+count_probable / doggerbank_phoca_vitulina * 100
+core_mask <- phoca_vitulina > 75
+count_core <- sum(values(core_mask), na.rm = TRUE)
+count_core / doggerbank_phoca_vitulina * 100
 
 phocoena_phocoena <- terra::rast(x = "data/b_intermediate_data/species/cetaceans/taxonid_137117_maxent_scen_current.grd") %>%
   # crop species raster
   terra::crop(x = .,
               # boundary box
-              y = protected_areas,
+              y = doggerbank,
               # mask the data
               mask = T)
-plot(phocoena_phocoena)
+mapview::mapview(phocoena_phocoena[[1]])
+terra::minmax(phocoena_phocoena[[1]])
+hist(phocoena_phocoena[[1]])
+doggerbank_phocoena_phocoena <- sum(!is.na(values(phocoena_phocoena[[1]])))
+unlikely_mask <- phocoena_phocoena[[1]] < 50
+count_unlikely <- sum(values(unlikely_mask), na.rm = TRUE)
+count_unlikely / doggerbank_phocoena_phocoena * 100
+probable_mask <- phocoena_phocoena[[1]] >= 50 & phocoena_phocoena[[1]] <= 75
+count_probable <- sum(values(probable_mask), na.rm = TRUE)
+count_probable / doggerbank_phocoena_phocoena * 100
+core_mask <- phocoena_phocoena > 75
+count_core <- sum(values(core_mask), na.rm = TRUE)
+count_core / doggerbank_phocoena_phocoena * 100
 
 # Sydlige Nordsø
 halichoerus_grypus <- terra::rast(x = "data/b_intermediate_data/species/cetaceans/taxonid_137080_maxent_scen_current.grd") %>%
   # crop species raster
   terra::crop(x = .,
               # boundary box
-              y = protected_areas,
+              y = sydlige_nordso,
               # mask the data
               mask = T)
-plot(halichoerus_grypus)
+mapview::mapview(halichoerus_grypus)
+terra::minmax(halichoerus_grypus)
+hist(halichoerus_grypus)
+sydlige_nordso_halichoerus_grypus <- sum(!is.na(values(halichoerus_grypus)))
+unlikely_mask <- halichoerus_grypus < 50
+count_unlikely <- sum(values(unlikely_mask), na.rm = TRUE)
+count_unlikely / sydlige_nordso_halichoerus_grypus * 100
+probable_mask <- halichoerus_grypus >= 50 & halichoerus_grypus <= 75
+count_probable <- sum(values(probable_mask), na.rm = TRUE)
+count_probable / sydlige_nordso_halichoerus_grypus * 100
+core_mask <- halichoerus_grypus > 75
+count_core <- sum(values(core_mask), na.rm = TRUE)
+count_core / sydlige_nordso_halichoerus_grypus * 100
+
+phoca_vitulina <- terra::rast(x = "data/b_intermediate_data/species/cetaceans/taxonid_137084_ensemble_scen_current.grd") %>%
+  # crop species raster
+  terra::crop(x = .,
+              # boundary box
+              y = sydlige_nordso,
+              # mask the data
+              mask = T)
+mapview::mapview(phoca_vitulina[[1]])
+terra::minmax(phoca_vitulina[[1]])
+hist(phoca_vitulina[[1]])
+sydlige_nordso_phoca_vitulina <- sum(!is.na(values(phoca_vitulina[[1]])))
+unlikely_mask <- phoca_vitulina[[1]] < 50
+count_unlikely <- sum(values(unlikely_mask), na.rm = TRUE)
+count_unlikely / sydlige_nordso_phoca_vitulina * 100
+probable_mask <- phoca_vitulina[[1]] >= 50 & phoca_vitulina[[1]] <= 75
+count_probable <- sum(values(probable_mask), na.rm = TRUE)
+count_probable / sydlige_nordso_phoca_vitulina * 100
+core_mask <- phoca_vitulina > 75
+count_core <- sum(values(core_mask), na.rm = TRUE)
+count_core / sydlige_nordso_phoca_vitulina * 100
+
+phocoena_phocoena <- terra::rast(x = "data/b_intermediate_data/species/cetaceans/taxonid_137117_maxent_scen_current.grd") %>%
+  # crop species raster
+  terra::crop(x = .,
+              # boundary box
+              y = sydlige_nordso,
+              # mask the data
+              mask = T)
+mapview::mapview(phocoena_phocoena[[1]])
+terra::minmax(phocoena_phocoena[[1]])
+hist(phocoena_phocoena[[1]])
+sydlige_nordso_phocoena_phocoena <- sum(!is.na(values(phocoena_phocoena[[1]])))
+unlikely_mask <- phocoena_phocoena[[1]] < 50
+count_unlikely <- sum(values(unlikely_mask), na.rm = TRUE)
+count_unlikely / sydlige_nordso_phocoena_phocoena * 100
+probable_mask <- phocoena_phocoena[[1]] >= 50 & phocoena_phocoena[[1]] <= 75
+count_probable <- sum(values(probable_mask), na.rm = TRUE)
+count_probable / sydlige_nordso_phocoena_phocoena * 100
+core_mask <- phocoena_phocoena > 75
+count_core <- sum(values(core_mask), na.rm = TRUE)
+count_core / sydlige_nordso_phocoena_phocoena * 100
 
 gavia_arctica <- terra::rast(x = "data/b_intermediate_data/species/seabirds/taxonid_137186_maxent_scen_current.grd") %>%
   # crop species raster
   terra::crop(x = .,
               # boundary box
-              y = protected_areas,
+              y = sydlige_nordso,
               # mask the data
               mask = T)
-plot(gavia_arctica)
+mapview::mapview(gavia_arctica)
+terra::minmax(gavia_arctica)
+hist(gavia_arctica)
+sydlige_nordso_gavia_arctica <- sum(!is.na(values(gavia_arctica)))
+unlikely_mask <- gavia_arctica < 50
+count_unlikely <- sum(values(unlikely_mask), na.rm = TRUE)
+count_unlikely / sydlige_nordso_gavia_arctica * 100
+probable_mask <- gavia_arctica >= 50 & gavia_arctica <= 75
+count_probable <- sum(values(probable_mask), na.rm = TRUE)
+count_probable / sydlige_nordso_gavia_arctica * 100
+core_mask <- gavia_arctica > 75
+count_core <- sum(values(core_mask), na.rm = TRUE)
+count_core / sydlige_nordso_gavia_arctica * 100
 
 gavia_stellata <- terra::rast(x = "data/b_intermediate_data/species/seabirds/taxonid_137188_maxent_scen_current.grd") %>%
   # crop species raster
   terra::crop(x = .,
               # boundary box
-              y = protected_areas,
+              y = sydlige_nordso,
               # mask the data
               mask = T)
-plot(gavia_stellata)
+mapview::mapview(gavia_stellata)
+terra::minmax(gavia_stellata)
+hist(gavia_stellata)
+sydlige_nordso_gavia_stellata <- sum(!is.na(values(gavia_stellata)))
+unlikely_mask <- gavia_stellata < 50
+count_unlikely <- sum(values(unlikely_mask), na.rm = TRUE)
+count_unlikely / sydlige_nordso_gavia_stellata * 100
+probable_mask <- gavia_stellata >= 50 & gavia_stellata <= 75
+count_probable <- sum(values(probable_mask), na.rm = TRUE)
+count_probable / sydlige_nordso_gavia_stellata * 100
+core_mask <- gavia_stellata > 75
+count_core <- sum(values(core_mask), na.rm = TRUE)
+count_core / sydlige_nordso_gavia_stellata * 100
 
 hydrocoloeus_minutus <- terra::rast(x = "data/b_intermediate_data/species/seabirds/taxonid_567449_maxent_scen_current.grd") %>%
   # crop species raster
   terra::crop(x = .,
               # boundary box
-              y = protected_areas,
+              y = sydlige_nordso,
               # mask the data
               mask = T)
-plot(hydrocoloeus_minutus)
+mapview::mapview(hydrocoloeus_minutus)
+terra::minmax(hydrocoloeus_minutus)
+hist(hydrocoloeus_minutus)
+sydlige_nordso_hydrocoloeus_minutus <- sum(!is.na(values(hydrocoloeus_minutus)))
+unlikely_mask <- hydrocoloeus_minutus < 50
+count_unlikely <- sum(values(unlikely_mask), na.rm = TRUE)
+count_unlikely / sydlige_nordso_hydrocoloeus_minutus * 100
+probable_mask <- hydrocoloeus_minutus >= 50 & hydrocoloeus_minutus <= 75
+count_probable <- sum(values(probable_mask), na.rm = TRUE)
+count_probable / sydlige_nordso_hydrocoloeus_minutus * 100
+core_mask <- hydrocoloeus_minutus > 75
+count_core <- sum(values(core_mask), na.rm = TRUE)
+count_core / sydlige_nordso_hydrocoloeus_minutus * 100
 
 melanitta_nigra <- terra::rast(x = "data/b_intermediate_data/species/seabirds/taxonid_137073_maxent_scen_current.grd") %>%
   # crop species raster
   terra::crop(x = .,
               # boundary box
-              y = protected_areas,
+              y = sydlige_nordso,
               # mask the data
               mask = T)
-plot(melanitta_nigra)
+mapview::mapview(melanitta_nigra)
+terra::minmax(melanitta_nigra)
+hist(melanitta_nigra)
+sydlige_nordso_melanitta_nigra <- sum(!is.na(values(melanitta_nigra)))
+unlikely_mask <- melanitta_nigra < 50
+count_unlikely <- sum(values(unlikely_mask), na.rm = TRUE)
+count_unlikely / sydlige_nordso_melanitta_nigra * 100
+probable_mask <- melanitta_nigra >= 50 & melanitta_nigra <= 75
+count_probable <- sum(values(probable_mask), na.rm = TRUE)
+count_probable / sydlige_nordso_melanitta_nigra * 100
+core_mask <- melanitta_nigra > 75
+count_core <- sum(values(core_mask), na.rm = TRUE)
+count_core / sydlige_nordso_melanitta_nigra * 100

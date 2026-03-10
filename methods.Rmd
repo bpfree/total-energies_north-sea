@@ -6,6 +6,7 @@ output:
 Habitat sensitivity assessment in North Sea
 
 **Points of contact**
+
 * **Analysis:** [Brian Free](mailto:brian.free@oceandata.earth)
 * **Ocean Data Platform:** [Max Romagnoli](mailto:max.romagnoli@oceandata.earth)
 * **Project lead:** [Laurence Janssens](mailto:laurence.janssens@oceandata.earth)
@@ -15,27 +16,6 @@ Habitat sensitivity assessment in North Sea
 * **Total GIS analyst:** [Ilaria Valentini](mailto:ilaria.valentini@totalenergies.com)
 
 ### **Repository Structure**
-
-```text
-├── README.md               : Description of this repository
-├── LICENSE                 : Repository license
-├── north-sea-analysi.Rproj : RStudio project file
-├── .gitignore              : Files and directories to be ignored by git
-│
-├── data
-│   ├── raw                 : Source data obtained from repositories and authors
-│   ├── intermediate        : Transformed data
-│   ├── model               : Final model data
-│
-├── code                    : Scripts for cleaning, processing, and analyzing data
-│
-├── figure                  : All figures
-│
-├── methodology             : Detailed methodologies for the data and analysis
-│
-└── literature              : Helpful literature for the project
-```
-
 -   **data**
     -   **raw_data:** the raw data integrated in the analysis (**Note:** original data name and structure were kept except when either name was not descriptive or similar data were put in same directory to simplify input directories)
     -   **intermediate_data:** disaggregated processed data
@@ -47,7 +27,8 @@ Please contact Brian Free ([brian.free@oceandata.earth](mailto:brian.free@oceand
 
 ## **Overview**
 ### **Study region**
-The study defined a boundary box for the Greater North Sea with points of: 
+The study defined a boundary box for the Greater North Sea with points of:
+
 * southwest: -4.4454, 50.9954
 * northwest: -4.4454 61.0170
 * northeast: 12.0059, 61.0170

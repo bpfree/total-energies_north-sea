@@ -24,7 +24,7 @@ Habitat sensitivity assessment in North Sea
 * **Total GIS analyst:** [Katrina Povidisa-Delefosse](mailto:katrina.povidisa-delefosse@totalenergies.com)
 * **Total GIS analyst:** [Ilaria Valentini](mailto:ilaria.valentini@totalenergies.com)
 
-### **Repository Structure**
+### Repository Structure
 -   **data**
     -   **raw_data:** the raw data integrated in the analysis (**Note:** original data name and structure were kept except when either name was not descriptive or similar data were put in same directory to simplify input directories)
     -   **intermediate_data:** disaggregated processed data
@@ -52,7 +52,7 @@ the [Greater North Sea](https://www.marineregions.org/gazetteer.php?p=details&id
 North Sea (as defined by [ICES](http://gis.ices.dk/geonetwork/srv/eng/catalog.search#/metadata/4745e824-a612-4a1f-bc56-b540772166eb)) in the final analysis.
 
 ## **Data sources**
-### Generic Data
+### Generic data
 | Layer | Data Source | Data Name | Metadata  | Notes |
 |---------------|---------------|---------------|---------------|---------------|
 | Study area | [mregions2](https://docs.ropensci.org/mregions2/) | [Marine Regions](https://marineregions.org/gazetteer.php) | [Greater North Sea](https://www.marineregions.org/gazetteer.php?p=details&id=36317) | Defined by [ICES Ecoregions](http://gis.ices.dk/geonetwork/srv/eng/catalog.search#/metadata/4745e824-a612-4a1f-bc56-b540772166eb) |
@@ -64,7 +64,7 @@ North Sea (as defined by [ICES](http://gis.ices.dk/geonetwork/srv/eng/catalog.se
 | Species list | [Natura 2000](https://natura2000.eea.europa.eu) | [Sandbanker ud for Thyborøn](https://biodiversity.europa.eu/sites/natura2000/DK00VA340) | | 2 habitats, 1 species |
 | Species list | [Natura 2000](https://natura2000.eea.europa.eu) | [Sylter Aussenriff](https://biodiversity.europa.eu/sites/natura2000/DE1209301) | | 2 habitat, 17 species |
 
-### Nature Data
+### Nature data
 | Layer | Data Source | Data Name | Metadata  | Notes |
 |---------------|---------------|---------------|---------------|---------------|
 | Fish | [Cesc Gordó-Vilaseca](https://www.nature.com/articles/s41467-024-49911-9) | Fish species richness | [GitHub repository](https://github.com/CescGV/JSDM-Barents-Norwegian-North/tree/main) |
@@ -94,13 +94,15 @@ approach that reflected a precautionary principle (read [here](https://www.ospar
 represent the best case scenario for nature.
 
 ### Habitats
-#### Cold water corals
+_Cold water corals_
+
 The cold water corals data set contained values that range between 0 and 1000 for 10 species. Suitability classifications on coral presence are separated by steps of 200: very low (<200),
 low (200 - 400), moderate (400 - 600), high (600 - 800), and very high (800). This study only considered if a cold water coral was present, not the overall species richness. To determine
 if a cold water coral reef was present, the maximum score across the 10 species was returned and only values above 600 were kept.
 
 ### Species
-#### Cetaceans and seabirds
+_Cetaceans_
+
 Cetaceans considered in the analysis either had at least one observation in the [Joint Cetacean Database Programme](https://cetaceans.ices.dk/beta/Inventory?selecteddataset=JCDP&selecteddataset=ESAS) (for more information
 about the [JCDP](https://jncc.gov.uk/our-work/joint-cetacean-data-programme) and [ICES statistical surveys](https://www.ices.dk/data/data-portals/Pages/Cetaceans.aspx)) or included in the [Waggitt et al. (2020)](https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/1365-2664.13525).
 The only species from Waggitt et al. (2020) that did not have at least one observation in the ICES statistical survey was _Physeter macrocephalus_.
@@ -120,6 +122,8 @@ These species included:
 - _Physeter macrocephalus_
 - _Stenella coeruleoalba_
 - _Tursiops truncatus_
+
+_Seabirds_
 
 Species compiled for seabirds came from Waggitt et al. (2020), ICES's [European Seasbirds at Seas](https://esas.ices.dk/inventory), and a list provided by Total Energies. Species from
 the top 50 in ICES's ESAS supplemented the species already included in Waggitt et al. (2020) and the list provided by Total. The species included in the the lists are:
@@ -179,7 +183,8 @@ the top 50 in ICES's ESAS supplemented the species already included in Waggitt e
 - _Uria aalge_
 - _Xema sabini_
 
-##### Species distribution models
+_Species distribution models_
+
 Species distribution models for the interested species came from the [MPA Europe](https://shiny.obis.org/distmaps/) project on modeling ocean biodiversity. The study used species
 distribution model data from MPA Europe given they were produced at 5km resolution; comparatively, Waggitt et al. (2020) modeled their species at 10km. To maintain comparability
 between species, only species with modeled data by MPA Europe got included. Species were matched by their WoRMS [Aphia identification](https://www.marinespecies.org/about.php#what_is_aphia).
@@ -192,7 +197,8 @@ Energies. The three species were:
 
 MPA Europe did not posses a species distribution model for a species on the Total Energies list (_Hydrobates leucorhous_). The study thus did not include _Hydrobates leucorhous_ in the final analysis.
 
-##### Habitat designation
+_Habitat designation_
+
 MPA Europe's species distribution models relied on presence-only data. The [best modeled outputs](https://iobis.github.io/mpaeu_docs/methods-testing.html#overview-and-chosen-approach) were LASSO and maxent (maximum entropy).
 LASSO results were not available for download, so the priority were maxent along with ensemble outputs when the maxent models did not exist for a particular species. Most species have the maxent models, but five had ensemble
 models:
@@ -215,19 +221,16 @@ occurred in locations with values over 75 and they received a value of 1.
 | SDM value | Classification | Score |
 |---------------|---------------|---------------|
 | 0 - 50 | Unlikely habitat | 0.3 |
-| 50 - 75 | Unlikely habitat | 0.6 |
-| 75+ | Unlikely habitat | 1.0 |
+| 50 - 75 | Probable habitat | 0.6 |
+| 75+ | Core habitat | 1.0 |
 
-#### Normalization
 A summarized total species richness layer were created for each cetaceans and seabirds by combining all species values for each. The linear normalization was run on the summarized data
 products and any instance where multiple values existed for the same hex, the maximum normalized value was selected.
 
-### Fishes
-A summarized fish species data layer came from a paper by [Gordó-Vilaseca et al. (2024)](https://www.nature.com/articles/s41467-024-49911-9) that examined biomass distributions for a
-variety of species across the North Sea and Barents Sea. The data shared by Gordó-Vilaseca are the present day species richness data (as seen in the paper's Figure 2(A)).
+_Fishes_
 
-#### Normalization
-The Greater North Sea boundary limited the data to the study region before applying a linear normalization and rescaling the minimum species richness.
+A summarized fish species data layer came from a paper by [Gordó-Vilaseca et al. (2024)](https://www.nature.com/articles/s41467-024-49911-9) that examined biomass distributions for a
+variety of species across the North Sea and Barents Sea. The data shared by Gordó-Vilaseca are the present day species richness data (as seen in the paper's Figure 2(A)). The Greater North Sea boundary limited the data to the study region before applying a linear normalization and rescaling the minimum species richness.
 
 ### Scores
 | Layer | Score | Consideration |

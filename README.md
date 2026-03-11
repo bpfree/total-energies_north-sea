@@ -214,8 +214,8 @@ occurred in locations with values over 75 and they received a value of 1.
 | SDM value | Classification | Score |
 |---------------|---------------|---------------|
 | 0 - 50 | Unlikely habitat | 0.3 |
-| 50 - 75 | Unlikely habitat | 0.6 |
-| 75+ | Unlikely habitat | 1.0 |
+| 50 - 75 | Probable habitat | 0.6 |
+| 75+ | Core habitat | 1.0 |
 
 #### Normalization
 A summarized total species richness layer were created for each cetaceans and seabirds by combining all species values for each. The linear normalization was run on the summarized data

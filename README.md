@@ -300,6 +300,6 @@ models got scored, as potential distribution needed to get differentiated from "
 time, the analysis could undertake more nuance to define unlikely habitat, probable habitat, and core habitat.
 
 ### Future
-Explore how species interact with areas that are defined for protected areas in the North Sea -- though should be aware of hos the areas might get designation for a particular species due to nesting
+Explore how species interact with areas that are defined for protected areas in the North Sea -- though should be aware of how the areas might get designation for a particular species due to nesting
 or another part of the life cycle that limits the time spent in that specific geography.
 

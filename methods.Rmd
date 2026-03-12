@@ -1,16 +1,34 @@
 ---
 output:
   pdf_document:
-    toc: true
+    # toc: true
     toc_depth: 3
+    # number_sections: true
+theme: united
 urlcolor: blue
+linkcolor: black
 ---
 
-# ***Executive Summary***
-Add summary here
+\pagenumbering{gobble}
+```{r, echo=FALSE, out.width="97%"}
+knitr::include_graphics("figure/title_page.jpeg")
+```
+
+\tableofcontents
 
 \newpage
+\pagenumbering{arabic}
 
+# ***Executive Summary***
+## Partnership highlights
+Total Energies seeks to extend its position in operating in the marine and coastal environments to share ocean data. The company understands that its industry and operations have impacts on the ecosystem where it operates. In an effort to improve upon the environmental impact assessments undertaken by the company before commencing on projects, the company desires to gain insights on a seascape beyond the areas identified for particular projects. To demonstrate this commitment, Total Energies shares its environmental data on its [North Sea Environmental Portal](https://www.northseaenvironmentportal.eu). With an ambition to further drive industry change and accelerate environmental data disclosures, Total Energies collaborated with HUB Ocean to create a nature index for the Greater North Sea.
+
+## Proof of concept and analytical approach
+The partnership aimed to provide context on the ecological and biological composition in the Greater North Sea so Total Energies's environmental risk assessments can better reflect real conditions. To 
+
+## Conclusions
+
+\newpage
 # Advancing nature and biodiversity insights in the North Sea
 Habitat sensitivity assessment in North Sea
 

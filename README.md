@@ -58,7 +58,7 @@ North Sea (as defined by [ICES](http://gis.ices.dk/geonetwork/srv/eng/catalog.se
 | Layer | Data Source | Data Name | Metadata  | Notes |
 |---------------|---------------|---------------|---------------|---------------|
 | Study area | [mregions2](https://docs.ropensci.org/mregions2/) | [Marine Regions](https://marineregions.org/gazetteer.php) | [Greater North Sea](https://www.marineregions.org/gazetteer.php?p=details&id=36317) | Defined by [ICES Ecoregions](http://gis.ices.dk/geonetwork/srv/eng/catalog.search#/metadata/4745e824-a612-4a1f-bc56-b540772166eb) |
-| Platforms | Total Energies | | | |
+| Platforms | TotalEnergies | | | |
 | Species list | [Natura 2000](https://natura2000.eea.europa.eu) | [Doggerbank](https://biodiversity.europa.eu/sites/natura2000/DE1003301) | | 1 habitat, 7 species |
 | Species list | [Natura 2000](https://natura2000.eea.europa.eu) | [Sydlige Nordsø](https://biodiversity.europa.eu/sites/natura2000/DK00VD374) | | 0 habitats, 0 species |
 | Species list | [Natura 2000](https://natura2000.eea.europa.eu) | [Sydlige Nordsø](https://biodiversity.europa.eu/sites/natura2000/DK00VD375) | | 1 habitat, 3 species |
@@ -122,7 +122,7 @@ These species included:
 - _Stenella coeruleoalba_
 - _Tursiops truncatus_
 
-Species compiled for seabirds came from Waggitt et al. (2020), ICES's [European Seasbirds at Seas](https://esas.ices.dk/inventory), and a list provided by Total Energies. Species from
+Species compiled for seabirds came from Waggitt et al. (2020), ICES's [European Seasbirds at Seas](https://esas.ices.dk/inventory), and a list provided by TotalEnergies. Species from
 the top 50 in ICES's ESAS supplemented the species already included in Waggitt et al. (2020) and the list provided by Total. The species included in the the lists are:
 
 - _Alca torda_
@@ -191,7 +191,7 @@ Energies. The three species were:
 - _Larus melanocephalus_ [(137147)](https://www.marinespecies.org/aphia.php?p=taxdetails&id=137147) -- accepted name is _Ichthyaetus melanocephalus_ [(1584284)](https://www.marinespecies.org/aphia.php?p=taxdetails&id=1584284)
 - _Thalasseus sandvicensis_ [(413044)](https://www.marinespecies.org/aphia.php?p=taxdetails&id=413044) -- accepted name is _Sterna sandvicensis_ [(137166)](https://www.marinespecies.org/aphia.php?p=taxdetails&id=137166)
 
-MPA Europe did not posses a species distribution model for a species on the Total Energies list (_Hydrobates leucorhous_). The study thus did not include _Hydrobates leucorhous_ in the final analysis.
+MPA Europe did not posses a species distribution model for a species on the TotalEnergies list (_Hydrobates leucorhous_). The study thus did not include _Hydrobates leucorhous_ in the final analysis.
 
 ##### Habitat designation
 MPA Europe's species distribution models relied on presence-only data. The [best modeled outputs](https://iobis.github.io/mpaeu_docs/methods-testing.html#overview-and-chosen-approach) were LASSO and maxent (maximum entropy).
@@ -232,8 +232,8 @@ The Greater North Sea boundary limited the data to the study region before apply
 | Layer | Score | Consideration |
 |---------------|---------------|---------------|
 | Fish | 0 - 1 | Linear normalization with 0.01 added to minimum |
-| Cetaceans | 0 - 1 | Species list compiled from list provided by Total Energies, [Waggitt et al. (2020)](https://besjournals.onlinelibrary.wiley.com/doi/pdf/10.1111/1365-2664.13525), along  with cetaceans that have at least one observation in the [ICES statistical surveys](https://cetaceans.ices.dk/inventory) for the North Sea |
-| Seabirds | 0 - 1 | Species list compiled from list provided by Total Energies, [Waggitt et al. (2020)](https://besjournals.onlinelibrary.wiley.com/doi/pdf/10.1111/1365-2664.13525), along  with data from [European Seabirds at Seas](https://esas.ices.dk/inventory) and [MPA EU](https://shiny.obis.org/distmaps/) |
+| Cetaceans | 0 - 1 | Species list compiled from list provided by TotalEnergies, [Waggitt et al. (2020)](https://besjournals.onlinelibrary.wiley.com/doi/pdf/10.1111/1365-2664.13525), along  with cetaceans that have at least one observation in the [ICES statistical surveys](https://cetaceans.ices.dk/inventory) for the North Sea |
+| Seabirds | 0 - 1 | Species list compiled from list provided by TotalEnergies, [Waggitt et al. (2020)](https://besjournals.onlinelibrary.wiley.com/doi/pdf/10.1111/1365-2664.13525), along  with data from [European Seabirds at Seas](https://esas.ices.dk/inventory) and [MPA EU](https://shiny.obis.org/distmaps/) |
 | Protected areas | 0, 1 | Absence, Presence |
 | Cold water corals | 0, 1 | Absence, Presence |
 | Important Marine Mammal Areas | 0, 1 | Absence, Presence |

@@ -218,7 +218,7 @@ occurred in locations with values over 75 and they received a value of 1.
 | 75+ | Core habitat | 1.0 |
 
 #### Normalization
-A summarized total species richness layer were created for each cetaceans and seabirds by combining all species values for each. The linear normalization was run on the summarized data
+A summarized total species richness layer was created for each cetaceans and seabirds by combining all species values for each. The linear normalization was run on the summarized data
 products and any instance where multiple values existed for the same hex, the maximum normalized value was selected.
 
 ### Fishes

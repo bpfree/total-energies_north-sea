@@ -37,7 +37,7 @@ To investigate TotalEnergies's risk assessment for EIAs, HUB Ocean intended to c
 
 The biological data layer was comprised by three different species biodiversity indicators. A fish species biodiversity summary product already existed for the North Sea. For cetaceans and seabirds biodiversity indicators, the study relied on species distribution models produced for a list of species given to and created by HUB Ocean. In total, species distribution models 13 cetacean species and 53 seabird species created the biodiversity indicators for the cetacean group and seabird group. These three biodiversity indicators combined to create a submodel for the final nature index.
 
-The other submodel, which received 55% of the total final model score, included ecological and management data layers. 
+The other submodel, which received 55% of the total final model score, included four ecological and management data layers. Cold water corals and seagrass data sets provided key habitat indicators for the nature index. Management indicators were represented by important marine mammal areas and marine protected areas.   
 
 ## Conclusions
 

@@ -37,9 +37,12 @@ To investigate TotalEnergies's risk assessment for EIAs, HUB Ocean intended to c
 
 The biological data layer was comprised by three different species biodiversity indicators. A fish species biodiversity summary product already existed for the North Sea. For cetaceans and seabirds biodiversity indicators, the study relied on species distribution models produced for a list of species given to and created by HUB Ocean. In total, species distribution models 13 cetacean species and 53 seabird species created the biodiversity indicators for the cetacean group and seabird group. These three biodiversity indicators combined to create a submodel for the final nature index.
 
-The other submodel, which received 55% of the total final model score, included four ecological and management data layers. Cold water corals and seagrass data sets provided key habitat indicators for the nature index. Management indicators were represented by important marine mammal areas and marine protected areas.   
+The other submodel, which received 55% of the total final model score, included four ecological and management data layers. Cold water corals and seagrass data sets provided key habitat indicators for the nature index, while management indicators were represented by important marine mammal areas and marine protected areas.
+
+In adapting the analysis to the realities of data availability and quality, the study also altered the questions that it investigated. Protected areas in the North Sea get designations for European Union protected habitats and species. Thus, the study examined the protected areas's species habitat classification (unlikely habitat, probable habitat, and core habitat) for each of the species that receives protection.
 
 ## Conclusions
+
 
 \newpage
 # Advancing nature and biodiversity insights in the North Sea
@@ -255,7 +258,7 @@ occurred in locations with values over 75 and they received a value of 1.
 | 50 - 75 | Probable habitat | 0.6 |
 | 75+ | Core habitat | 1.0 |
 
-A summarized total species richness layer were created for each cetaceans and seabirds by combining all species values for each. The linear normalization was run on the summarized data
+A summarized total species richness layer was created for each cetaceans and seabirds by combining all species values for each. The linear normalization was run on the summarized data
 products and any instance where multiple values existed for the same hex, the maximum normalized value was selected.
 
 _Fishes_

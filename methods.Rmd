@@ -21,10 +21,23 @@ knitr::include_graphics("figure/title_page.jpeg")
 
 # ***Executive Summary***
 ## Partnership highlights
-Total Energies seeks to extend its position in operating in the marine and coastal environments to share ocean data. The company understands that its industry and operations have impacts on the ecosystem where it operates. In an effort to improve upon the environmental impact assessments undertaken by the company before commencing on projects, the company desires to gain insights on a seascape beyond the areas identified for particular projects. To demonstrate this commitment, Total Energies shares its environmental data on its [North Sea Environmental Portal](https://www.northseaenvironmentportal.eu). With an ambition to further drive industry change and accelerate environmental data disclosures, Total Energies collaborated with HUB Ocean to create a nature index for the Greater North Sea.
+TotalEnergies seeks to extend its position in operating in the marine and coastal environments to share ocean data. The company understands that its industry and operations have impacts on the ecosystem where it operates. In an effort to improve upon the environmental impact assessments (EIAs) undertaken by the company before commencing on projects, the company desires to gain insights on a seascape beyond the areas identified for particular projects. To demonstrate this commitment, TotalEnergies shares its environmental data on its [North Sea Environmental Portal](https://www.northseaenvironmentportal.eu). With an ambition to further drive industry change and accelerate environmental data disclosures, TotalEnergies collaborated with HUB Ocean to create a nature index for the Greater North Sea.
 
-## Proof of concept and analytical approach
-The partnership aimed to provide context on the ecological and biological composition in the Greater North Sea so Total Energies's environmental risk assessments can better reflect real conditions. To 
+The partnership aimed to provide context on the ecological and biological composition in the Greater North Sea so TotalEnergies's environmental risk assessments can better reflect real conditions. In motivation to gain these insights, HUB Ocean's team was originally tasked to answer 6 main questions:
+
+1. What is required for the confidence score in HUB Ocean's analysis to serve as a reliable out-of the-box indicator of nature data in the context of TotalEnergies's risk assessments for EIAs?
+2. How can the nature layers of the analysis meet TotalEnergies' need for non-survey based insights into biodiversity and habitats?
+3. Can the “weighted nature presence” insights from the the analysis be a sufficient and trusted index for TotalEnergies to assess and quantify nature presence in areas of interest for EIAs?
+4. How can the integration of high-resolution and up-to-date nature data layers improve the accuracy and effectiveness of TotalEnergies’ EIAs?
+5. What is required to ensure that the data product is scientifically robust and practically applicable?
+6. Can the project improve the value and utilization of TotalEnergies' North Sea Environmental Portal by integrating industry-shared data from the portal into the analysis data product?
+
+## Analytical approach and proof of concept
+To investigate TotalEnergies's risk assessment for EIAs, HUB Ocean intended to create a layer that would summarise ocean sensitivity. A ocean sensitivity layer was to get compiled from many ecological and biological data that reflect present conditions in the Greater North Sea. A robust study that would accurately characterize the seascape relies on a broad range of ecological and biological indicators. Additionally, producing high quality data sets for these indicators take years. This study took an approach that leveraged already existing data. To build the overall data set, however, required data that had permissions for commercial use, which limited what could get used.
+
+The biological data layer was comprised by three different species biodiversity indicators. A fish species biodiversity summary product already existed for the North Sea. For cetaceans and seabirds biodiversity indicators, the study relied on species distribution models produced for a list of species given to and created by HUB Ocean. In total, species distribution models 13 cetacean species and 53 seabird species created the biodiversity indicators for the cetacean group and seabird group. These three biodiversity indicators combined to create a submodel for the final nature index.
+
+The other submodel, which received 55% of the total final model score, included ecological and management data layers. 
 
 ## Conclusions
 
@@ -74,7 +87,7 @@ North Sea (as defined by [ICES](http://gis.ices.dk/geonetwork/srv/eng/catalog.se
 | Layer | Data Source | Data Name | Metadata  | Notes |
 |---------------|---------------|---------------|---------------|---------------|
 | Study area | [mregions2](https://docs.ropensci.org/mregions2/) | [Marine Regions](https://marineregions.org/gazetteer.php) | [Greater North Sea](https://www.marineregions.org/gazetteer.php?p=details&id=36317) | Defined by [ICES Ecoregions](http://gis.ices.dk/geonetwork/srv/eng/catalog.search#/metadata/4745e824-a612-4a1f-bc56-b540772166eb) |
-| Platforms | Total Energies | | | |
+| Platforms | TotalEnergies | | | |
 | Species list | [Natura 2000](https://natura2000.eea.europa.eu) | [Doggerbank](https://biodiversity.europa.eu/sites/natura2000/DE1003301) | | 1 habitat, 7 species |
 | Species list | [Natura 2000](https://natura2000.eea.europa.eu) | [Sydlige Nordsø](https://biodiversity.europa.eu/sites/natura2000/DK00VD374) | | 0 habitats, 0 species |
 | Species list | [Natura 2000](https://natura2000.eea.europa.eu) | [Sydlige Nordsø](https://biodiversity.europa.eu/sites/natura2000/DK00VD375) | | 1 habitat, 3 species |
@@ -143,7 +156,7 @@ These species included:
 
 _Seabirds_
 
-Species compiled for seabirds came from Waggitt et al. (2020), ICES's [European Seasbirds at Seas](https://esas.ices.dk/inventory), and a list provided by Total Energies. Species from
+Species compiled for seabirds came from Waggitt et al. (2020), ICES's [European Seasbirds at Seas](https://esas.ices.dk/inventory), and a list provided by TotalEnergies. Species from
 the top 50 in ICES's ESAS supplemented the species already included in Waggitt et al. (2020) and the list provided by Total. The species included in the the lists are:
 
 - _Alca torda_
@@ -213,7 +226,7 @@ Energies. The three species were:
 - _Larus melanocephalus_ [(137147)](https://www.marinespecies.org/aphia.php?p=taxdetails&id=137147) -- accepted name is _Ichthyaetus melanocephalus_ [(1584284)](https://www.marinespecies.org/aphia.php?p=taxdetails&id=1584284)
 - _Thalasseus sandvicensis_ [(413044)](https://www.marinespecies.org/aphia.php?p=taxdetails&id=413044) -- accepted name is _Sterna sandvicensis_ [(137166)](https://www.marinespecies.org/aphia.php?p=taxdetails&id=137166)
 
-MPA Europe did not posses a species distribution model for a species on the Total Energies list (_Hydrobates leucorhous_). The study thus did not include _Hydrobates leucorhous_ in the final analysis.
+MPA Europe did not posses a species distribution model for a species on the TotalEnergies list (_Hydrobates leucorhous_). The study thus did not include _Hydrobates leucorhous_ in the final analysis.
 
 _Habitat designation_
 
@@ -254,8 +267,8 @@ variety of species across the North Sea and Barents Sea. The data shared by Gord
 | Layer | Score | Consideration |
 |---------------|---------------|---------------|
 | Fish | 0 - 1 | Linear normalization with 0.01 added to minimum |
-| Cetaceans | 0 - 1 | Species list compiled from list provided by Total Energies, [Waggitt et al. (2020)](https://besjournals.onlinelibrary.wiley.com/doi/pdf/10.1111/1365-2664.13525), along  with cetaceans that have at least one observation in the [ICES statistical surveys](https://cetaceans.ices.dk/inventory) for the North Sea |
-| Seabirds | 0 - 1 | Species list compiled from list provided by Total Energies, [Waggitt et al. (2020)](https://besjournals.onlinelibrary.wiley.com/doi/pdf/10.1111/1365-2664.13525), along  with data from [European Seabirds at Seas](https://esas.ices.dk/inventory) and [MPA EU](https://shiny.obis.org/distmaps/) |
+| Cetaceans | 0 - 1 | Species list compiled from list provided by TotalEnergies, [Waggitt et al. (2020)](https://besjournals.onlinelibrary.wiley.com/doi/pdf/10.1111/1365-2664.13525), along  with cetaceans that have at least one observation in the [ICES statistical surveys](https://cetaceans.ices.dk/inventory) for the North Sea |
+| Seabirds | 0 - 1 | Species list compiled from list provided by TotalEnergies, [Waggitt et al. (2020)](https://besjournals.onlinelibrary.wiley.com/doi/pdf/10.1111/1365-2664.13525), along  with data from [European Seabirds at Seas](https://esas.ices.dk/inventory) and [MPA EU](https://shiny.obis.org/distmaps/) |
 | Protected areas | 0, 1 | Absence, Presence |
 | Cold water corals | 0, 1 | Absence, Presence |
 | Important Marine Mammal Areas | 0, 1 | Absence, Presence |

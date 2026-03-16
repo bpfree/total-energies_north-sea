@@ -8,6 +8,7 @@ rm(list = ls())
 # load packages
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(dplyr,
+               flextable,
                fs,
                ggplot2,
                h3,
@@ -20,6 +21,7 @@ pacman::p_load(dplyr,
                readr,
                rmapshaper,
                sf,
+               skimr,
                stringr,
                terra,
                tidyr)

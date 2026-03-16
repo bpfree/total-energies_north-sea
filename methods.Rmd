@@ -1,9 +1,10 @@
 ---
 output:
   pdf_document:
-    # toc: true
     toc_depth: 3
-    # number_sections: true
+  html_document:
+    toc_depth: '3'
+    df_print: paged
 theme: united
 urlcolor: blue
 linkcolor: black
@@ -35,14 +36,16 @@ The partnership aimed to provide context on the ecological and biological compos
 ## Analytical approach and proof of concept
 To investigate TotalEnergies's risk assessment for EIAs, HUB Ocean intended to create a layer that would summarise ocean sensitivity. A ocean sensitivity layer was to get compiled from many ecological and biological data that reflect present conditions in the Greater North Sea. A robust study that would accurately characterize the seascape relies on a broad range of ecological and biological indicators. Additionally, producing high quality data sets for these indicators take years. This study took an approach that leveraged already existing data. To build the overall data set, however, required data that had permissions for commercial use, which limited what could get used.
 
-The biological data layer was comprised by three different species biodiversity indicators. A fish species biodiversity summary product already existed for the North Sea. For cetaceans and seabirds biodiversity indicators, the study relied on species distribution models produced for a list of species given to and created by HUB Ocean. In total, species distribution models 13 cetacean species and 53 seabird species created the biodiversity indicators for the cetacean group and seabird group. These three biodiversity indicators combined to create a submodel for the final nature index.
+The biological data layer was comprised by three different species biodiversity indicators. A fish species biodiversity summary product already existed for the North Sea. For cetaceans and seabirds biodiversity indicators, the study relied on species distribution models produced for a list of species given to and created by HUB Ocean. Not completely exhaustive, species distribution models for 13 cetacean species and 53 seabird species created the biodiversity indicators for the cetacean and seabird groups. These three biodiversity indicators combined to create a submodel for the final nature index.
 
 The other submodel, which received 55% of the total final model score, included four ecological and management data layers. Cold water corals and seagrass data sets provided key habitat indicators for the nature index, while management indicators were represented by important marine mammal areas and marine protected areas.
 
-In adapting the analysis to the realities of data availability and quality, the study also altered the questions that it investigated. Protected areas in the North Sea get designations for European Union protected habitats and species. Thus, the study examined the protected areas's species habitat classification (unlikely habitat, probable habitat, and core habitat) for each of the species that receives protection.
+In adapting the analysis to the realities of data availability and quality, the study also altered the questions that it investigated. Protected areas in the North Sea get designations for European Union protected habitats and species. Thus, the study examined the protected areas's species habitat classification (unlikely habitat, probable habitat, and core habitat) for each of the species that receives protection. 
 
 ## Conclusions
+The analysis shifted priorities and produced 
 
+Nature index scores were generally higher closer to shore than offshore in the Greater North Sea. Scores were expected to 
 
 \newpage
 # Advancing nature and biodiversity insights in the North Sea
@@ -119,8 +122,7 @@ a discrete value for presence and absence (1 or 0).
 
 The linear normalized function is: (value - minimum) / (maximum - minimum) = normalized score.
 
-To avoid returning a zero for the normalized score (when the value is equal to the minimum), when the linear function returns 0.00, then a value of 0.01 got added. By adding value to the minimum value, it ensures that any species
-richness never would get treated as absence.
+To avoid returning a zero for the normalized score (when the value is equal to the minimum), when the linear function returns 0.00, then a value of 0.01 got added. By adding value to the minimum value, it ensures that any species richness never would get treated as absence.
 
 ### Overlapping features
 When a hex grid received more than one value from a linear normalization, due to the shape incongruity, then the maximum value was kept. Selecting the maximum value ensured the study pursued an 
@@ -293,6 +295,43 @@ Below are the three main equations for calculating submodel and final model scor
 [3] final_model_score = mobile_submodel_score * 0.45 + sessile_submodel_score * 0.55
 
 ## **Results**
+
+```{r, echo=FALSE, out.width="100%"}
+knitr::include_graphics("figure/summary_statistics_table.png")
+```
+
+```{r, echo=FALSE, out.width="100%"}
+knitr::include_graphics("figure/histograms.png")
+```
+
+```{r, echo=FALSE, out.width="70%"}
+knitr::include_graphics("figure/cetacean_table.png")
+```
+
+```{r, echo=FALSE, out.width="50%"}
+knitr::include_graphics("figure/seabird_table.png")
+```
+
+```{r, echo=FALSE, out.width="50%"}
+knitr::include_graphics("figure/fish_table.png")
+```
+
+```{r, echo=FALSE, out.width="50%"}
+knitr::include_graphics("figure/coral_table.png")
+```
+
+```{r, echo=FALSE, out.width="50%"}
+knitr::include_graphics("figure/seagrass_table.png")
+```
+
+```{r, echo=FALSE, out.width="50%"}
+knitr::include_graphics("figure/imma_table.png")
+```
+
+```{r, echo=FALSE, out.width="50%"}
+knitr::include_graphics("figure/protected_area_table.png")
+```
+
 | Protected area | Species | Unlikely | Probable | Core |
 |----------------|---------|----------|----------|------|
 | Doggerbank | _Fulmarus glacialis_ | 0% | 100% | 0% |
@@ -309,6 +348,8 @@ Below are the three main equations for calculating submodel and final model scor
 | Sydlige Nordsø | _Gavia stellata_ | 1.26% | 46.54% | 52.20% |
 | Sydlige Nordsø | _Hydrocoloeus minutus_ | 0% | 55.35% | 44.65% |
 | Sydlige Nordsø | _Melanitta nigra_ | 5.66% | 43.71% | 50.63% |
+
+No minimum values for seabird species -- all the locations where those exist must be overlapping an area with a
 
 ## **Considerations / Limitations / Assumptions**
 ### Data components

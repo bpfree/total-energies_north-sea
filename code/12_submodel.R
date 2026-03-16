@@ -8,6 +8,7 @@ rm(list = ls())
 # load packages
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(dplyr,
+               flextable,
                fs,
                ggplot2,
                h3,
@@ -20,6 +21,7 @@ pacman::p_load(dplyr,
                readr,
                rmapshaper,
                sf,
+               skimr,
                stringr,
                terra,
                tidyr)
@@ -202,13 +204,23 @@ model_hex <- hex_mobile %>%
   dplyr::mutate(nature_index = mobile_sum * submodel1 + sessile_sum * submodel2) %>%
   # relocate nature index field
   dplyr::relocate(nature_index, .before = geom)
+View(model_hex)
 
-# create a CSV version of data
-model_hex_csv <- model_hex %>%
-  # change geometry to appropriate format
-  dplyr::mutate(geometry = sf::st_as_text(geom)) %>%
-  # drop other geometry field
-  sf::st_drop_geometry()
+# create summary statistics for the data
+table <- model_hex %>%
+  sf::st_drop_geometry() %>%
+  dplyr::rename("Cetacean" = "ceta_rich",
+                "Seabird" = "bird_rich",
+                "Fish" = "fish_rich",
+                "Mobile submodel" = "mobile_sum",
+                "Coral" = "c_val",
+                "Seagrass" = "s_val",
+                "Protected area" = "pa_val",
+                "IMMA" = "i_val",
+                "Sessile submodel" = "sessile_sum",
+                "Nature index" = "nature_index")
+names(table)
+  
 
 # inspect data
 mapview::mapview(model_hex,
@@ -216,6 +228,13 @@ mapview::mapview(model_hex,
                  zcol = "nature_index",
                  # show legend
                  legend = TRUE)
+
+# create a CSV version of data
+model_hex_csv <- model_hex %>%
+  # change geometry to appropriate format
+  dplyr::mutate(geometry = sf::st_as_text(geom)) %>%
+  # drop other geometry field
+  sf::st_drop_geometry()
 
 #####################################
 #####################################
@@ -228,7 +247,6 @@ sf::st_write(obj = model_hex,
              layer = "north_sea_model_4555_mobilesessile",
              # appending
              append = F)
-
 
 #####################################
 
@@ -261,6 +279,14 @@ table$create(model_hex_odp)
 readr::write_csv(x = model_hex_csv,
                  # file
                  file = "data/d_final_data/model_hex.csv",
+                 # appending
+                 append = TRUE,
+                 # column names
+                 col_names = TRUE)
+
+readr::write_csv(x = table,
+                 # file
+                 file = "figure/table/model_table.csv",
                  # appending
                  append = TRUE,
                  # column names

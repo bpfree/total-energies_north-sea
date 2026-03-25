@@ -110,9 +110,9 @@ figure_clean <- function(data) {
 #                     strip.text=element_text(size=7),
 #                     plot.title=element_blank(),
 #                     plot.tag=element_text(size=10, face="bold"),
-#                     panel.grid.major = element_blank(), 
+#                     panel.grid.major = element_blank(),
 #                     panel.grid.minor = element_blank(),
-#                     panel.background = element_blank(), 
+#                     panel.background = element_blank(),
 #                     axis.line = element_line(colour = "black"),
 #                     legend.background = element_rect(fill=alpha('blue', 0)))
 # 

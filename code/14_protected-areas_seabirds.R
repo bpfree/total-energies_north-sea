@@ -52,7 +52,7 @@ client <- odp::odp_client(api_key = odp_api_key)
 #####################################
 #####################################
 
-# load in dataset (see https://app.hubocean.earth/) -- ICES cetaceans surveys
+# load in dataset (see https://app.hubocean.earth/) -- protected areas
 dataset <- client$dataset(odp_data)
 
 # generate table (defaults to the first table in the dataset)

@@ -90,8 +90,8 @@ protected_areas <- df %>%
                       # clip object
                       clip = ns)
 
-ggplot2::ggplot(data = protected_areas) +
-  ggplot2::geom_sf()
+# ggplot2::ggplot(data = protected_areas) +
+#   ggplot2::geom_sf()
 
 doggerbank <- protected_areas %>%
   dplyr::filter(grepl(pattern = "Doggerbank",
@@ -149,53 +149,66 @@ p <- ggplot2::ggplot() +
                                 breaks = seq(0, 2.5, 0.5),
                                 # legend labels
                                 labels = c("0", "0.5", "1.0", "1.5", "2.0", "2.5")) +
+  guides(fill = guide_colourbar(title.position = "top",
+                                ticks.colour = "black",
+                                frame.colour = "black",
+                                title.hjust = 0.5)) +
   theme_bw() +
-  theme(axis.text=element_text(size=6),
-        axis.title=element_text(size=8),
-        axis.text.y = element_text(angle = 90, hjust = 0.5),
-        legend.text=element_text(size=6),
-        legend.title=element_text(size=8),
-        strip.text=element_text(size=8),
+  theme(axis.text = element_text(size=6),
+        axis.title = element_text(size=8),
+        axis.text.y = element_text(angle = 90,
+                                   hjust = 0.5),
+        strip.text = element_text(size = 8),
         # Gridlines
         panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
         panel.background = element_blank(), 
         axis.line = element_line(colour = "black"),
         # Legend
-        legend.position="bottom")
+        legend.text = element_text(size = 6),
+        legend.title = element_text(size = 8),
+        legend.position = c(0.2, 0.95),
+        legend.key.size = unit(0.5, "cm"),
+        legend.direction = "horizontal",
+        legend.background = element_rect(fill = NA,
+                                         color = NA,
+                                         linewidth = 0.5))
 p
 
-# clean data
-data <- df %>%
-  # clean column names
-  janitor::clean_names() %>%
-  # convert the WKB geometry field to a more user friendly geometry field
-  dplyr::mutate(geometry = sf::st_as_sfc(structure(as.list(geometry), class = "WKB"))) %>%
-  # set CRS to WGS84
-  sf::st_as_sf(crs = 4326) %>%
-  # obtain only protected areas in the study area
-  rmapshaper::ms_clip(target = .,
-                      # clip object
-                      clip = ns)
+ggplot2::ggsave(p, filename = file.path("figure/nature-index_map.png"),
+                width = 2048, height = 1736, units = "px", dpi = 300)
 
-mapview::mapview(data)
+# # clean data
+# data <- df %>%
+#   # clean column names
+#   janitor::clean_names() %>%
+#   # convert the WKB geometry field to a more user friendly geometry field
+#   dplyr::mutate(geometry = sf::st_as_sfc(structure(as.list(geometry), class = "WKB"))) %>%
+#   # set CRS to WGS84
+#   sf::st_as_sf(crs = 4326) %>%
+#   # obtain only protected areas in the study area
+#   rmapshaper::ms_clip(target = .,
+#                       # clip object
+#                       clip = ns)
+# 
+# mapview::mapview(data)
 
-ns <- mregions2::gaz_search(36317) %>%
-  # return geometry
-  mregions2::gaz_geometry() %>%
-  sf::st_make_valid()
-
-map <- mapview::mapView(x = data, col.regions = "#F34F16") + 
-  mapview::mapView(x = ns, col.regions = "#78BDD8") +
-  mapview::mapView(x = europe, col.regions = "#D4D7DA")
-
-cntr_crds <- c(mean(sf::st_coordinates(ns)[, 1]),
-               mean(sf::st_coordinates(ns)[, 2]))
-
-map <- map@map %>%
-  leaflet::setView(map = .,
-                   lng = cntr_crds[1],
-                   lat = cntr_crds[2],
-                   zoom = 5)
-map  
+# ns <- mregions2::gaz_search(36317) %>%
+#   # return geometry
+#   mregions2::gaz_geometry() %>%
+#   sf::st_make_valid()
+# 
+# map <- mapview::mapView(x = data, col.regions = "#F34F16") + 
+#   mapview::mapView(x = ns, col.regions = "#78BDD8") +
+#   mapview::mapView(x = europe, col.regions = "#D4D7DA")
+# 
+# cntr_crds <- c(mean(sf::st_coordinates(ns)[, 1]),
+#                mean(sf::st_coordinates(ns)[, 2]))
+# 
+# map <- map@map %>%
+#   leaflet::setView(map = .,
+#                    lng = cntr_crds[1],
+#                    lat = cntr_crds[2],
+#                    zoom = 5)
+# map  
   

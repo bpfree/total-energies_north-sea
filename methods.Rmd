@@ -34,16 +34,42 @@ The partnership aimed to provide context on the ecological and biological compos
 6. Can the project improve the value and utilization of TotalEnergies' North Sea Environmental Portal by integrating industry-shared data from the portal into the analysis data product?
 
 ## Analytical approach and proof of concept
-To investigate TotalEnergies's risk assessment for EIAs, HUB Ocean intended to create a layer that would summarise ocean sensitivity. A ocean sensitivity layer was to get compiled from many ecological and biological data that reflect present conditions in the Greater North Sea. A robust study that would accurately characterize the seascape relies on a broad range of ecological and biological indicators. Additionally, producing high quality data sets for these indicators take years. This study took an approach that leveraged already existing data. To build the overall data set, however, required data that had permissions for commercial use, which limited what could get used.
+To investigate TotalEnergies's risk assessment for EIAs, HUB Ocean intended to create a layer that would summarise ocean sensitivity. A ocean sensitivity layer was to get compiled from many ecological and biological data that reflect present conditions in the Greater North Sea. A robust study that would accurately characterize the seascape relies on a broad range of ecological and biological indicators. Additionally, producing high quality datasets for these indicators take years. This study took an approach that leveraged already existing data. To build the overall dataset, however, required data that had permissions for commercial use, which limited what could get used.
 
 The biological data layer was comprised by three different species biodiversity indicators. A fish species biodiversity summary product already existed for the North Sea. For cetaceans and seabirds biodiversity indicators, the study relied on species distribution models produced for a list of species given to and created by HUB Ocean. Not completely exhaustive, species distribution models for 13 cetacean species and 53 seabird species created the biodiversity indicators for the cetacean and seabird groups. These three biodiversity indicators combined to create a submodel for the final nature index.
 
-The other submodel, which received 55% of the total final model score, included four ecological and management data layers. Cold water corals and seagrass data sets provided key habitat indicators for the nature index, while management indicators were represented by important marine mammal areas and marine protected areas.
+The other submodel, which received 55% of the total final model score, included four ecological and management data layers. Cold water corals and seagrass datasets provided key habitat indicators for the nature index, while management indicators were represented by important marine mammal areas and marine protected areas.
 
 In adapting the analysis to the realities of data availability and quality, the study also altered the questions that it investigated. Protected areas in the North Sea get designations for European Union protected habitats and species. Thus, the study examined the protected areas's species habitat classification (unlikely habitat, probable habitat, and core habitat) for each of the species that receives protection. 
 
 ## Conclusions
-The analysis shifted priorities and produced 
+The analysis shifted priorities and produced results that marginally answered the originally proposed questions at the project's beginning. Due to data limitations and time constraints, the first question never got answered. A major data limitation involving the data centered on the licenses. Constructing a composite index that includes datasets that accurately reflect nature is challenging. More datasets were identified to improve the accuracy of reflecting existing nature, licenses did not permit their use for commercial application. More data would have provided the analysis an ability a better answer regarding the confidence of the nature index data product.
+
+1. Can comment on certain aspects of the confidence:
+* modeled data
+* 
+
+2. How can the nature layers of the analysis meet TotalEnergies' need for non-survey based insights into biodiversity and habitats?
+*
+* 
+
+3. Can the “weighted nature presence” insights from the the analysis be a sufficient and trusted index for TotalEnergies to assess and quantify nature presence in areas of interest for EIAs?
+* 
+* 
+* 
+4. How can the integration of high-resolution and up-to-date nature data layers improve the accuracy and effectiveness of TotalEnergies’ EIAs?
+* 
+* 
+*
+
+5. What is required to ensure that the data product is scientifically robust and practically applicable?
+* 
+* 
+*
+
+6. Can the project improve the value and utilization of TotalEnergies' North Sea Environmental Portal by integrating industry-shared data from the portal into the analysis data product?
+* Not investigated
+
 
 Nature index scores were generally higher closer to shore than offshore in the Greater North Sea. Scores were expected to 
 
@@ -108,16 +134,16 @@ North Sea (as defined by [ICES](http://gis.ices.dk/geonetwork/srv/eng/catalog.se
 | Cetaceans | [MPA EU](https://mpa-europe.eu) and provided by Silas C. Principe | Cetaceans species distribution models | | [GitHub](https://github.com/iobis/mpaeu_sdm/tree/main), [Shiny OBIS](https://shiny.obis.org/distmaps/) |
 | Seabirds | [MPA EU](https://mpa-europe.eu) and provided by Silas C. Principe | Seabirds species distribution models | | [GitHub](https://github.com/iobis/mpaeu_sdm/tree/main), [Shiny OBIS](https://shiny.obis.org/distmaps/) |
 | Conservation areas | [Marine Mammals Protected Areas Task Force](https://www.marinemammalhabitat.org) | Important Marine Mammal Areas | | Need to [request download](https://www.marinemammalhabitat.org/immas/imma-spatial-layer-download/) |
-| Protected areas | [Protected Seas](https://protectedseas.net) | Marine protected areas | [Ocean Data Platform](https://app.hubocean.earth/catalog/dataset/a608f54b-75c7-4df9-a3a8-cedbfa391873/protectedseas-navigator-v2-focused-area-based-protections) | Used the focused data set |
+| Protected areas | [Protected Seas](https://protectedseas.net) | Marine protected areas | [Ocean Data Platform](https://app.hubocean.earth/catalog/dataset/a608f54b-75c7-4df9-a3a8-cedbfa391873/protectedseas-navigator-v2-focused-area-based-protections) | Used the focused dataset |
 | Corals | [Tong et al. (2023)](https://www.frontiersin.org/journals/marine-science/articles/10.3389/fmars.2023.1217851/full) | Cold water corals | | [Direct data download](https://zenodo.org/records/7896310) |
 | Seagrass | [WCMC](https://data-gis.unep-wcmc.org/portal/home/item.html?id=aaa46cd3d3d640b2916b8f0a0ffe07cb) | Seagrass | [ISO](https://data-gis.unep-wcmc.org/portal/sharing/rest/content/items/aaa46cd3d3d640b2916b8f0a0ffe07cb/info/metadata/metadata.xml?format=default&output=html) | [Ocean Data Platform](https://app.hubocean.earth/catalog/dataset/7199f9bc-96ae-49d1-a814-df8c4bcc7552/unep-wcmc-global-distribution-of-seagrasses-polygons), [WCMC direct data download](https://wcmc.io/WCMC_013_014) |
 
 ## **Methods**
 ### Geographic constraint
-Each nature data set got limited to the [Greater North Sea](https://www.marineregions.org/gazetteer.php?p=details&id=36317) boundary before performing any further data transformations.
+Each nature dataset got limited to the [Greater North Sea](https://www.marineregions.org/gazetteer.php?p=details&id=36317) boundary before performing any further data transformations.
 
 ### Linear normalization
-A linear function normalized species richness values for fish, cetaceans, and seabirds. Normalizing the minimum and maximum species richness to be between 0 and 1 allowed these data to get compared to the data sets that receive
+A linear function normalized species richness values for fish, cetaceans, and seabirds. Normalizing the minimum and maximum species richness to be between 0 and 1 allowed these data to get compared to the datasets that receive
 a discrete value for presence and absence (1 or 0).
 
 The linear normalized function is: (value - minimum) / (maximum - minimum) = normalized score.
@@ -125,14 +151,12 @@ The linear normalized function is: (value - minimum) / (maximum - minimum) = nor
 To avoid returning a zero for the normalized score (when the value is equal to the minimum), when the linear function returns 0.00, then a value of 0.01 got added. By adding value to the minimum value, it ensures that any species richness never would get treated as absence.
 
 ### Overlapping features
-When a hex grid received more than one value from a linear normalization, due to the shape incongruity, then the maximum value was kept. Selecting the maximum value ensured the study pursued an 
-approach that reflected a precautionary principle (read [here](https://www.ospar.org/convention/principles/precautionary-principle) for further context on the principle) since the nature index would 
-represent the best case scenario for nature.
+When a hex grid received more than one value from a linear normalization, due to the shape incongruity, then the maximum value was kept. Selecting the maximum value ensured the study pursued an approach that reflected a precautionary principle (read [here](https://www.ospar.org/convention/principles/precautionary-principle) for further context on the principle) since the nature index wouldrepresent the best case scenario for nature.
 
 ### Habitats
 _Cold water corals_
 
-The cold water corals data set contained values that range between 0 and 1000 for 10 species. Suitability classifications on coral presence are separated by steps of 200: very low (<200),
+The cold water corals dataset contained values that range between 0 and 1000 for 10 species. Suitability classifications on coral presence are separated by steps of 200: very low (<200),
 low (200 - 400), moderate (400 - 600), high (600 - 800), and very high (800). This study only considered if a cold water coral was present, not the overall species richness. To determine
 if a cold water coral reef was present, the maximum score across the 10 species was returned and only values above 600 were kept.
 
@@ -281,9 +305,9 @@ variety of species across the North Sea and Barents Sea. The data shared by Gord
 
 ### Submodel
 Two submodels comprised the final nature score index. The fish, cetacean, and seabird data products were summarized in the mobile species submodel. The sessile submodel comprised
-of the other four datasets: protected areas, important marine mammal areas, cold water corals, and seagrass. Any "NA" data for a data set got reclassified as a 0 before calculating
+of the other four datasets: protected areas, important marine mammal areas, cold water corals, and seagrass. Any "NA" data for a dataset got reclassified as a 0 before calculating
 submodel scores. These two submodels then were combined to produce a final nature score. More weight was allotted to the sessile submodel since at least two of the layers are immovable,
-making them more reliably known. The analysis weighted the sessile submodel with 55% of the score. It did not receive greater share of weight as the seagrass and coral reef data sets
+making them more reliably known. The analysis weighted the sessile submodel with 55% of the score. It did not receive greater share of weight as the seagrass and coral reef datasets
 remain to have a level of uncertainty concerning their verified locations.
 
 Below are the three main equations for calculating submodel and final model scores:
@@ -349,20 +373,20 @@ knitr::include_graphics("figure/protected_area_table.png")
 | Sydlige Nordsø | _Hydrocoloeus minutus_ | 0% | 55.35% | 44.65% |
 | Sydlige Nordsø | _Melanitta nigra_ | 5.66% | 43.71% | 50.63% |
 
-No minimum values for seabird species -- all the locations where those exist must be overlapping an area with a
+No minimum values for cetaceans and seabird species -- all the locations where those exist must be overlapping an area with a higher value to supercede the lower ones
 
 ## **Considerations / Limitations / Assumptions**
 ### Data components
-A major limitation of the study was the inability to integrate more data sets for the nature index. The analysis desired to include more data sets and alternatives to the ones that got ingested, but had barriers for inclusion. For instance, while the UNEP-WCMC seagrass is an imperfect data set given that it was created as a global data set, and cannot accurately represent localized, high resolution areas, it was the best alternative available. A [seagrass layer](https://emodnet.ec.europa.eu/geonetwork/srv/eng/catalog.search#/metadata/39746d9c-4220-425c-bc26-7cb3056c36a5) exists that has 250m resolution for the North Sea ([report](https://emodnet.ec.europa.eu/sites/emodnet.ec.europa.eu/files/public/c20190514_generating_eovs.pdf)). The data were only for non-commercial
+A major limitation of the study was the inability to integrate more datasets for the nature index. The analysis desired to include more datasets and alternatives to the ones that got ingested, but had barriers for inclusion. For instance, while the UNEP-WCMC seagrass is an imperfect dataset given that it was created as a global dataset, and cannot accurately represent localized, high resolution areas, it was the best alternative available. A [seagrass layer](https://emodnet.ec.europa.eu/geonetwork/srv/eng/catalog.search#/metadata/39746d9c-4220-425c-bc26-7cb3056c36a5) exists that has 250m resolution for the North Sea ([report](https://emodnet.ec.europa.eu/sites/emodnet.ec.europa.eu/files/public/c20190514_generating_eovs.pdf)). The data were only for non-commercial
 use.
 
 Accessibility section here
 Danish data portal
 
-Two other data sets that would contribute to understanding bird species in the North Sea were limited by the inability to use them for commercial uses. [BirdLife](https://datazone.birdlife.org/search) and [SeaTrack](https://experience.arcgis.com/experience/c6704d258685414cb020e1de136f6695) contain species data with North Sea coverage. Along with these seabird data, if the analysis could expand build its own species distribution models, ICES's [European Seas at Sea](https://www.ices.dk/data/data-portals/Pages/European-Seabirds-at-sea.aspx) and its [Joint Cetacean Data Programme](https://www.ices.dk/data/data-portals/Pages/Cetaceans.aspx) data would provide years of presence data. Without building a separate species distribution models, an faster step to create a more comprehensive model is to include more species already modeled by the MPA Europe project. As of August 2025, the project produced species distribution models for 12,039 species (explore [main results](https://iobis.github.io/mpaeu_docs/results.html)). If an alternative were found, the most appealing data product would be a species distribution model that integrated absence data. Presence-only models, while easier to generate, have more accurate outputs.
+Two other datasets that would contribute to understanding bird species in the North Sea were limited by the inability to use them for commercial uses. [BirdLife](https://datazone.birdlife.org/search) and [SeaTrack](https://experience.arcgis.com/experience/c6704d258685414cb020e1de136f6695) contain species data with North Sea coverage. Along with these seabird data, if the analysis could expand build its own species distribution models, ICES's [European Seas at Sea](https://www.ices.dk/data/data-portals/Pages/European-Seabirds-at-sea.aspx) and its [Joint Cetacean Data Programme](https://www.ices.dk/data/data-portals/Pages/Cetaceans.aspx) data would provide years of presence data. Without building a separate species distribution models, an faster step to create a more comprehensive model is to include more species already modeled by the MPA Europe project. As of August 2025, the project produced species distribution models for 12,039 species (explore [main results](https://iobis.github.io/mpaeu_docs/results.html)). If an alternative were found, the most appealing data product would be a species distribution model that integrated absence data. Presence-only models, while easier to generate, have more accurate outputs.
 
-Finding alternative data to those included in the analysis could help address a major limitation with the analysis -- the spatial resolution for the fish, cetacean, and seabird data layers. Downscaling the fish data set from 10km and the cetacean and seabird data sets from 5km generates numerous issues that generate inherent issues with evaluating the nature score with significant confidence. To
-improve the model outputs, data sets should have more aligned resolutions and ones that are closer to the desired output (in the case of this study, 500m). Additionally it is more preferable to not have a summarized data product for species richness that had to get used for the fish data layer. In a more ideal scenario, the species richness would get create in a more similar process to how this analysis generated the summarized data product for cetaceans and seabirds.
+Finding alternative data to those included in the analysis could help address a major limitation with the analysis -- the spatial resolution for the fish, cetacean, and seabird data layers. Downscaling the fish dataset from 10km and the cetacean and seabird datasets from 5km generates numerous issues that generate inherent issues with evaluating the nature score with significant confidence. To
+improve the model outputs, datasets should have more aligned resolutions and ones that are closer to the desired output (in the case of this study, 500m). Additionally it is more preferable to not have a summarized data product for species richness that had to get used for the fish data layer. In a more ideal scenario, the species richness would get create in a more similar process to how this analysis generated the summarized data product for cetaceans and seabirds.
 
 ### Analysis components
 An assumption was made that the maximum score would get kept to reflect a higher nature score. Another major assumption was the inclusion of species even if it only had a single observation in the study region. Although the inclusion does allow for a more precautionary approach for representing nature, it may not allow for the most accurate reflection. This complicated how the species distribution models got scored, as potential distribution needed to get differentiated from "real" distribution. Species distribution model outputs of 1 should not get evaluated the same as one with 99. With more time, the analysis could undertake more nuance to define unlikely habitat, probable habitat, and core habitat.

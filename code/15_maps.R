@@ -7,7 +7,8 @@ rm(list = ls())
 
 # load packages
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(dplyr,
+pacman::p_load(cowplot,
+               dplyr,
                fs,
                ggplot2,
                h3,
@@ -53,19 +54,8 @@ client <- odp::odp_client(api_key = odp_api_key)
 #####################################
 #####################################
 
-# load in dataset (see https://app.hubocean.earth/) -- protected areas
-dataset <- client$dataset(odp_data)
-
-# generate table (defaults to the first table in the dataset)
-table <- dataset$table
-schema <- table$schema()
-
-# query -- by boundary box
-## returns a cursor that streams rows lazily
-cursor <- table$select(filter = bbox)
-
-# fetch table into a dataframe that you can use for analysis
-df <- cursor$dataframe()
+# protected seas dataset
+df <- client$dataset(odp_data)$table$select(filter = bbox)$dataframe()
 
 #####################################
 
@@ -116,9 +106,11 @@ nature <- sf::st_read(dsn = data_dir <- "data/d_final_data/north_sea_nature_inde
 #                  zcol = "nature_index")
 
 p <- ggplot2::ggplot() +
+  # nature index
   ggplot2::geom_sf(data = nature,
                    aes(fill = nature_index),
                    color = NA) +
+  # Greater North Sea
   ggplot2::geom_sf(data = ns,
                    fill = NA,
                    color = "grey80",
@@ -172,43 +164,263 @@ p <- ggplot2::ggplot() +
         legend.direction = "horizontal",
         legend.background = element_rect(fill = NA,
                                          color = NA,
-                                         linewidth = 0.5))
+                                         linewidth = 0.5),
+        # plot
+        plot.margin=grid::unit(c(0,0,0,0), "mm"))
 p
 
 ggplot2::ggsave(p, filename = file.path("figure/nature-index_map.png"),
                 width = 2048, height = 1736, units = "px", dpi = 300)
 
-# # clean data
-# data <- df %>%
-#   # clean column names
-#   janitor::clean_names() %>%
-#   # convert the WKB geometry field to a more user friendly geometry field
-#   dplyr::mutate(geometry = sf::st_as_sfc(structure(as.list(geometry), class = "WKB"))) %>%
-#   # set CRS to WGS84
-#   sf::st_as_sf(crs = 4326) %>%
-#   # obtain only protected areas in the study area
-#   rmapshaper::ms_clip(target = .,
-#                       # clip object
-#                       clip = ns)
-# 
-# mapview::mapview(data)
 
-# ns <- mregions2::gaz_search(36317) %>%
-#   # return geometry
-#   mregions2::gaz_geometry() %>%
-#   sf::st_make_valid()
-# 
-# map <- mapview::mapView(x = data, col.regions = "#F34F16") + 
-#   mapview::mapView(x = ns, col.regions = "#78BDD8") +
-#   mapview::mapView(x = europe, col.regions = "#D4D7DA")
-# 
-# cntr_crds <- c(mean(sf::st_coordinates(ns)[, 1]),
-#                mean(sf::st_coordinates(ns)[, 2]))
-# 
-# map <- map@map %>%
-#   leaflet::setView(map = .,
-#                    lng = cntr_crds[1],
-#                    lat = cntr_crds[2],
-#                    zoom = 5)
-# map  
-  
+
+
+
+inset <- ggplot2::ggplot() +
+  # Greater North Sea
+  ggplot2::geom_sf(data = ns,
+                   fill = NA,
+                   color = "grey20",
+                   linetype = "dotted",
+                   lwd=0.2) +
+  # Europe
+  ggplot2::geom_sf(data = europe,
+                   fill = "grey90",
+                   color = "black",
+                   alpha = 0.9) +
+  # protected areas
+  ggplot2::geom_sf(data = protected_areas,
+                   fill = NA,
+                   color = "grey10",
+                   linetype = "dashed",
+                   lwd = 0.2) +
+  # Doggerbank
+  ggplot2::geom_sf(data = doggerbank,
+                   fill = NA,
+                   color = "#E6FE44",
+                   linetype = "solid",
+                   lwd = 0.5) +
+  # Sydlige Nordso
+  ggplot2::geom_sf(data = sydlige_nordso,
+                   fill = NA,
+                   color = "#D943EE",
+                   linetype = "solid",
+                   lwd = 0.5) +
+  # x-axis limit (focus on the North Sea)
+  ggplot2::xlim(-6, 12) +
+  # y-axis limit (focus on the North Sea)
+  ggplot2::ylim(50, 62) +
+  theme_bw() +
+  theme(axis.text = element_blank(),
+        axis.title = element_blank(),
+        axis.text.y = element_blank(),
+        strip.text = element_blank(),
+        axis.ticks = element_blank(),
+        # Gridlines
+        panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_rect(fill = 'lightblue'), 
+        axis.line = element_line(colour = "black"),
+        # Legend
+        # legend.text = element_text(size = 6),
+        # legend.title = element_text(size = 8),
+        # legend.position = c(0.2, 0.95),
+        # legend.key.size = unit(0.5, "cm"),
+        # legend.direction = "horizontal",
+        # legend.background = element_rect(fill = NA,
+        #                                  color = NA,
+        #                                  linewidth = 0.5),
+        # plot
+        plot.margin=grid::unit(c(0,0,0,0), "mm"))
+inset
+
+
+
+
+# get the limits
+xlim_dogger <- c(xmin = st_bbox(doggerbank)$xmin - 0.3, xmax = st_bbox(doggerbank)$xmax + 0.3)
+ylim_dogger <- c(xmin = st_bbox(doggerbank)$ymin - 0.3, xmax = st_bbox(doggerbank)$ymax + 0.3)
+
+sf::st_crs(doggerbank, parameters = TRUE)$units_gdal
+dogger_bb = sf::st_as_sfc(st_bbox(doggerbank)) %>%
+  sf::st_buffer(., dist = 0.05)
+
+# mapview::mapView(doggerbank) +
+#   mapview::mapView(dogger_bb)
+
+d <- ggplot2::ggplot() +
+  # nature index
+  ggplot2::geom_sf(data = nature,
+                   aes(fill = nature_index),
+                   color = NA) +
+  # ggplot2::geom_sf(data = ns,
+  #                  fill = NA,
+  #                  color = "grey80",
+  #                  lwd=0.2) +
+  # # Europe
+  # ggplot2::geom_sf(data = europe,
+  #                  fill = "grey90",
+  #                  color = "black") +
+  # protected areas
+  ggplot2::geom_sf(data = protected_areas,
+                   fill = NA,
+                   color = "grey10",
+                   linetype = "dashed",
+                   lwd = 0.8) +
+  # Doggerbank
+  ggplot2::geom_sf(data = doggerbank,
+                   fill = NA,
+                   color = "#E6FE44",
+                   linetype = "solid",
+                   lwd = 1) +
+  # coordinates to focus plot
+  ggplot2::coord_sf(xlim = xlim_dogger,
+                    ylim = ylim_dogger) +
+  # Legend
+  ggplot2::scale_fill_gradientn(name = "Nature Index",
+                                # color ramp
+                                colors = RColorBrewer::brewer.pal(n=9,
+                                                                  name="Blues"),
+                                # NA values
+                                na.value = "grey70",
+                                limits = c(0, 2.5),
+                                # legend breaks
+                                breaks = seq(0, 2.5, 0.5),
+                                # legend labels
+                                labels = c("0", "0.5", "1.0", "1.5", "2.0", "2.5")) +
+  guides(fill = guide_colourbar(title.position = "top",
+                                ticks.colour = "black",
+                                frame.colour = "black",
+                                title.hjust = 0.5)) +
+  theme_bw() +
+  theme(axis.text = element_text(size=6),
+        axis.title = element_text(size=8),
+        axis.text.y = element_text(angle = 90,
+                                   hjust = 0.5),
+        strip.text = element_text(size = 8),
+        # Gridlines
+        panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour = "black"),
+        # Legend
+        legend.text = element_text(size = 6),
+        legend.title = element_text(size = 8),
+        legend.position = c(0.2, 0.95),
+        legend.key.size = unit(0.5, "cm"),
+        legend.direction = "horizontal",
+        legend.background = element_rect(fill = NA,
+                                         color = NA,
+                                         linewidth = 0.5),
+        # plot
+        plot.margin=grid::unit(c(0,0,0,0), "mm"))
+d
+
+ggplot2::ggsave(d, filename = file.path("figure/nature-index_doggerbank.png"),
+                width = 6, height = 6, units = "in", dpi = 600)
+
+dogger_inset <- cowplot::ggdraw() +
+  cowplot::draw_plot(d) +
+  draw_plot(inset,
+            x = 0.75,
+            y = 0.75,
+            width = 0.2,
+            height = 0.2)
+dogger_inset
+
+ggplot2::ggsave(dogger_inset, filename = file.path("figure/nature-index_doggerbank-inset.png"),
+                width = 6, height = 6, units = "in", dpi = 600)
+
+############################
+
+# get the limits
+xlim_sydlige <- c(xmin = st_bbox(sydlige_nordso)$xmin - 0.3, xmax = st_bbox(sydlige_nordso)$xmax + 0.3)
+ylim_sydlige <- c(xmin = st_bbox(sydlige_nordso)$ymin - 0.3, xmax = st_bbox(sydlige_nordso)$ymax + 0.3)
+
+sf::st_crs(sydlige_nordso, parameters = TRUE)$units_gdal
+sydlige_bb = sf::st_as_sfc(st_bbox(sydlige_nordso)) %>%
+  sf::st_buffer(., dist = 0.05)
+
+# Sydlige Nordso
+s <- ggplot2::ggplot() +
+  # nature index
+  ggplot2::geom_sf(data = nature,
+                   aes(fill = nature_index),
+                   color = NA) +
+  # ggplot2::geom_sf(data = ns,
+  #                  fill = NA,
+  #                  color = "grey80",
+  #                  lwd=0.2) +
+  # Europe
+  ggplot2::geom_sf(data = europe,
+                   fill = "grey90",
+                   color = "black") +
+  # protected areas
+  ggplot2::geom_sf(data = protected_areas,
+                   fill = NA,
+                   color = "grey10",
+                   linetype = "dashed",
+                   lwd = 0.8) +
+  # Sydlige Nordso
+  ggplot2::geom_sf(data = sydlige_nordso,
+                   fill = NA,
+                   color = "#D943EE",
+                   linetype = "solid",
+                   lwd = 1) +
+  # coordinates to focus plot
+  ggplot2::coord_sf(xlim = xlim_sydlige,
+                    ylim = ylim_sydlige) +
+  # Legend
+  ggplot2::scale_fill_gradientn(name = "Nature Index",
+                                # color ramp
+                                colors = RColorBrewer::brewer.pal(n=9,
+                                                                  name="Blues"),
+                                # NA values
+                                na.value = "grey70",
+                                limits = c(0, 2.5),
+                                # legend breaks
+                                breaks = seq(0, 2.5, 0.5),
+                                # legend labels
+                                labels = c("0", "0.5", "1.0", "1.5", "2.0", "2.5")) +
+  guides(fill = guide_colourbar(title.position = "top",
+                                ticks.colour = "black",
+                                frame.colour = "black",
+                                title.hjust = 0.5)) +
+  theme_bw() +
+  theme(axis.text = element_text(size=6),
+        axis.title = element_text(size=8),
+        axis.text.y = element_text(angle = 90,
+                                   hjust = 0.5),
+        strip.text = element_text(size = 8),
+        # Gridlines
+        panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(), 
+        axis.line = element_line(colour = "black"),
+        # Legend
+        legend.text = element_text(size = 6),
+        legend.title = element_text(size = 8),
+        legend.position = c(0.2, 0.95),
+        legend.key.size = unit(0.5, "cm"),
+        legend.direction = "horizontal",
+        legend.background = element_rect(fill = NA,
+                                         color = NA,
+                                         linewidth = 0.5),
+        # plot
+        plot.margin=grid::unit(c(0,0,0,0), "mm"))
+s
+
+ggplot2::ggsave(s, filename = file.path("figure/nature-index_sydlige-nordso.png"),
+                width = 6, height = 6, units = "in", dpi = 600)
+
+sydlige_inset <- cowplot::ggdraw() +
+  cowplot::draw_plot(s) +
+  draw_plot(inset,
+            x = 0.75,
+            y = 0.75,
+            width = 0.2,
+            height = 0.2)
+sydlige_inset
+
+ggplot2::ggsave(sydlige_inset, filename = file.path("figure/nature-index_sydlige-nordso_inset.png"),
+                width = 6, height = 6, units = "in", dpi = 600)

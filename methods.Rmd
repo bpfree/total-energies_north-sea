@@ -73,6 +73,18 @@ The analysis shifted priorities and produced results that marginally answered th
 
 Nature index scores were generally higher closer to shore than offshore in the Greater North Sea. Scores were expected to 
 
+```{r, echo = FALSE, fig.align = "center", out.width = "8in", out.height = "9in", fig.cap = "Nature index across the Greater North Sea"}
+knitr::include_graphics("figure/nature-index_map.png")
+```
+
+```{r, echo = FALSE, fig.align = "left", out.width = "6in", out.height = "6in", fig.cap = "Nature index in and around the Doggerbank special conservation interest"}
+knitr::include_graphics("figure/nature-index_doggerbank-inset.png")
+```
+
+```{r, echo = FALSE, fig.align = "left", out.width = "6in", out.height = "6in", fig.cap = "Nature index in and around the Sydlige Nordsø special conservation intest and Sydlige Nordsø special protection areas"}
+knitr::include_graphics("figure/nature-index_sydlige-nordso_inset.png")
+```
+
 \newpage
 # Advancing nature and biodiversity insights in the North Sea
 Habitat sensitivity assessment in North Sea

@@ -109,8 +109,6 @@ sydlige_nordso <- data %>%
 mapview::mapview(doggerbank)
 mapview::mapview(sydlige_nordso)
 
-
-
 #####################################
 
 # Doggerbank

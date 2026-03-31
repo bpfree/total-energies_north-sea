@@ -1,11 +1,13 @@
 ---
 output:
-  pdf_document:
-    toc_depth: 3
-    extra_dependencies: ["multicol"]
+  word_document:
+    toc_depth: '3'
   html_document:
     toc_depth: '3'
     df_print: paged
+  pdf_document:
+    toc_depth: 3
+    extra_dependencies: multicol
 theme: united
 urlcolor: blue
 linkcolor: black
@@ -80,9 +82,9 @@ Habitat sensitivity assessment in North Sea
 * **Ocean Data Platform:** [Max Romagnoli](mailto:max.romagnoli@oceandata.earth)
 * **Project lead:** [Laurence Janssens](mailto:laurence.janssens@oceandata.earth)
 
-* **Total adviser:** [Phil Wemyss](mailto:phil.wemyss@external.totalenergies.com)
-* **Total GIS analyst:** [Katrina Povidisa-Delefosse](mailto:katrina.povidisa-delefosse@totalenergies.com)
-* **Total GIS analyst:** [Ilaria Valentini](mailto:ilaria.valentini@totalenergies.com)
+* **TotalEnergies adviser:** [Phil Wemyss](mailto:phil.wemyss@external.totalenergies.com)
+* **TotalEnergies GIS analyst:** [Katrina Povidisa-Delefosse](mailto:katrina.povidisa-delefosse@totalenergies.com)
+* **TotalEnergies GIS analyst:** [Ilaria Valentini](mailto:ilaria.valentini@totalenergies.com)
 
 ### Repository Structure
 -   **data**
@@ -332,7 +334,7 @@ Nature index scores were generally higher closer to shore than offshore in the G
 
 Within the biological submodel, no minimum values existed for cetaceans and seabird species. Any minimum value must overlap with an area with a higher value that supercedes the minimum.
 
-Table 1: Nature index summary statistics across Greater North Sea
+Table 1: HUB Ocean created composite nature index summary statistics across Greater North Sea
 ```{r, echo=FALSE, out.width="100%"}
 # temp.df = data.frame(image="![](figure/summary_statistics_table.png)")
 # temp.mat <- as.matrix(temp.df)
@@ -341,7 +343,7 @@ Table 1: Nature index summary statistics across Greater North Sea
 knitr::include_graphics("figure/summary_statistics_table.png")
 ```
 
-```{r, echo=FALSE, out.width="100%", fig.cap = "Data score histograms comprising nature index in Greater North Sea"}
+```{r, echo=FALSE, out.width="100%", fig.cap = "Data score histograms comprising HUB Ocean created composite nature index in Greater North Sea"}
 # temp.df = data.frame(image="![](figure/histograms.png)")
 # temp.mat <- as.matrix(temp.df)
 # colnames(temp.mat) <- NULL
@@ -350,7 +352,7 @@ knitr::include_graphics("figure/summary_statistics_table.png")
 knitr::include_graphics("figure/histograms.png")
 ```
 
-Table 2: Cetacean normalized score counts and percentage across the Greater North Sea
+Table 2: Cetacean normalized HUB Ocean created composite nature index score counts and percentage across the Greater North Sea
 ```{r, echo=FALSE, out.width="70%"}
 # temp.df = data.frame(image="![](figure/cetacean_table.png)")
 # temp.mat <- as.matrix(temp.df)
@@ -360,7 +362,8 @@ Table 2: Cetacean normalized score counts and percentage across the Greater Nort
 knitr::include_graphics("figure/cetacean_table.png")
 ```
 
-Table 3: Seabird normalized score counts and percentage across the Greater North Sea
+\newpage
+Table 3: Seabird normalized HUB Ocean created composite nature index score counts and percentage across the Greater North Sea
 ```{r, echo=FALSE, out.width="40%"}
 # temp.df = data.frame(image="![](figure/seabird_table.png)")
 # temp.mat <- as.matrix(temp.df)
@@ -370,7 +373,8 @@ Table 3: Seabird normalized score counts and percentage across the Greater North
 knitr::include_graphics("figure/seabird_table.png")
 ```
 
-Table 4: Fish normalized score counts and percentage across the Greater North Sea
+\newpage
+Table 4: Fish normalized HUB Ocean created composite nature index score counts and percentage across the Greater North Sea
 ```{r, echo=FALSE, out.width="50%"}
 knitr::include_graphics("figure/fish_table.png")
 ```
@@ -380,7 +384,8 @@ Table 5: Cold-water coral normalized score counts and percentage across the Grea
 knitr::include_graphics("figure/coral_table.png")
 ```
 
-Table 6: Seagrass normalized score counts and percentage across the Greater North Sea
+\newpage
+Table 6: Seagrass normalized HUB Ocean created composite nature index score counts and percentage across the Greater North Sea
 ```{r, echo=FALSE, out.width="50%"}
 # temp.df = data.frame(image="![](figure/seagrass_table.png)")
 # temp.mat <- as.matrix(temp.df)
@@ -390,7 +395,7 @@ Table 6: Seagrass normalized score counts and percentage across the Greater Nort
 knitr::include_graphics("figure/seagrass_table.png")
 ```
 
-Table 7: Important marine mammal areas normalized score counts and percentage across the Greater North Sea
+Table 7: Important marine mammal areas normalized HUB Ocean created composite nature index score counts and percentage across the Greater North Sea
 ```{r, echo=FALSE, out.width="50%"}
 # temp.df = data.frame(image="![](figure/imma_table.png)")
 # temp.mat <- as.matrix(temp.df)
@@ -400,7 +405,7 @@ Table 7: Important marine mammal areas normalized score counts and percentage ac
 knitr::include_graphics("figure/imma_table.png")
 ```
 
-Table 8: Protected area normalized score counts and percentage across the Greater North Sea
+Table 8: Protected area normalized HUB Ocean created composite nature index score counts and percentage across the Greater North Sea
 ```{r, echo=FALSE, out.width="50%"}
 # temp.df = data.frame(image="![](figure/protected_area_table.png)")
 # temp.mat <- as.matrix(temp.df)
@@ -431,15 +436,13 @@ Table 9: Habitat classification for species designated under EU Habitats and Bir
 
 ## **Considerations / Limitations / Assumptions**
 ### Data components
-A major limitation of the study was the inability to integrate more datasets for the nature index. The analysis desired to include more datasets and alternatives to the ones that got ingested, but had barriers for inclusion. For instance, while the UNEP-WCMC seagrass is an imperfect dataset given that it was created as a global dataset, and cannot accurately represent localized, high resolution areas, it was the best alternative available. A [seagrass layer](https://emodnet.ec.europa.eu/geonetwork/srv/eng/catalog.search#/metadata/39746d9c-4220-425c-bc26-7cb3056c36a5) exists that has 250m resolution for the North Sea ([report](https://emodnet.ec.europa.eu/sites/emodnet.ec.europa.eu/files/public/c20190514_generating_eovs.pdf)). The data were only for non-commercial
-use.
+A major limitation of the study was the inability to integrate more datasets for the nature index. The analysis desired to include more datasets and alternatives to the ones that got ingested, but had barriers for inclusion. A major limitation regarded data licensing and permissions. For instance, while the UNEP-WCMC seagrass is an imperfect dataset given that it was created as a global dataset, and cannot accurately represent localized, high resolution areas, it was the best alternative available. A [seagrass layer](https://emodnet.ec.europa.eu/geonetwork/srv/eng/catalog.search#/metadata/39746d9c-4220-425c-bc26-7cb3056c36a5) exists that has 250m resolution for the North Sea ([report](https://emodnet.ec.europa.eu/sites/emodnet.ec.europa.eu/files/public/c20190514_generating_eovs.pdf)). The data were only for non-commercial use.
 
-Accessibility section here
-Danish data portal
+The [Danmarks Miljøportal](https://miljoeportal.dk/en) (Danish Environmental Portal) and the [Arealdata](https://arealdata.miljoeportal.dk) host sixteen environmental data related to the [coast and ocean](https://arealdata.miljoeportal.dk/?tags=marin&tags=marine_naturtyper-kortlægning) for Denmark. Datasets on the portals did not get integrated due to access issues, licensing, or geographic scope. Changes to the data and the portal in the future may remove or lower these limitations.
 
 Two other datasets that would contribute to understanding bird species in the North Sea were limited by the inability to use them for commercial uses. [BirdLife](https://datazone.birdlife.org/search) and [SeaTrack](https://experience.arcgis.com/experience/c6704d258685414cb020e1de136f6695) contain species data with North Sea coverage. Along with these seabird data, if the analysis could expand build its own species distribution models, ICES's [European Seas at Sea](https://www.ices.dk/data/data-portals/Pages/European-Seabirds-at-sea.aspx) and its [Joint Cetacean Data Programme](https://www.ices.dk/data/data-portals/Pages/Cetaceans.aspx) data would provide years of presence data. Without building a separate species distribution models, an faster step to create a more comprehensive model is to include more species already modeled by the MPA Europe project. As of August 2025, the project produced species distribution models for 12,039 species (explore [main results](https://iobis.github.io/mpaeu_docs/results.html)). If an alternative were found, the most appealing data product would be a species distribution model that integrated absence data. Presence-only models, while easier to generate, have more accurate outputs.
 
-Finding alternative data to those included in the analysis could help address a major limitation with the analysis -- the spatial resolution for the fish, cetacean, and seabird data layers. Downscaling the fish dataset from 10km and the cetacean and seabird datasets from 5km generates numerous issues that generate inherent issues with evaluating the nature score with significant confidence. To
+Finding alternative data to those included in the analysis could help address a major limitation with the analysis -- the spatial resolution for the fish, cetacean, and seabird data layers. Downscaling the fish dataset from 0.25° and the cetacean and seabird datasets from 5km generates numerous issues that generate inherent issues with evaluating the nature score with significant confidence. To
 improve the model outputs, datasets should have more aligned resolutions and ones that are closer to the desired output (in the case of this study, 500m). Additionally it is more preferable to not have a summarized data product for species richness that had to get used for the fish data layer. In a more ideal scenario, the species richness would get create in a more similar process to how this analysis generated the summarized data product for cetaceans and seabirds.
 
 ### Analysis components

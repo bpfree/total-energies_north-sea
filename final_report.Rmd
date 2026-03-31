@@ -96,7 +96,7 @@ Please contact Brian Free ([brian.free@oceandata.earth](mailto:brian.free@oceand
 
 ## **Overview**
 ### Scope
-The partnership aimed to provide context on the ecological and biological composition in the Greater North Sea so TotalEnergies's environmental risk assessments can better reflect real conditions. In motivation to gain these insights, HUB Ocean's team was originally tasked to answer 6 main questions:
+A partnership between TotalEnergies and HUB Ocean sought to highlight insights on the ecological and biological composition in the Greater North Sea to help TotalEnergies's better reflect real conditions in its environmental risk assessments. TotalEnergies tasked HUB Ocean's team to answer 6 questions:
 
 1. What is required for the confidence score in HUB Ocean's analysis to serve as a reliable out-of the-box indicator of nature data in the context of TotalEnergies's risk assessments for EIAs?
 2. How can the nature layers of the analysis meet TotalEnergies' need for non-survey based insights into biodiversity and habitats?
@@ -105,11 +105,9 @@ The partnership aimed to provide context on the ecological and biological compos
 5. What is required to ensure that the data product is scientifically robust and practically applicable?
 6. Can the project improve the value and utilization of TotalEnergies' North Sea Environmental Portal by integrating industry-shared data from the portal into the analysis data product?
 
-To investigate TotalEnergies's risk assessment for EIAs, HUB Ocean partnered with TotalEnergies to create a layer that would summarise ocean sensitivity. An accurate characterization of the seascape relies on a broad range of ecological and biological indicators. This ocean sensitivity layer would integrate ecological and biological data that best reflect present conditions in the Greater North Sea in 500 meter hexagons. Producing high quality datasets for these indicators take years, so this study leveraged already existing data. To build the overall dataset, however, required data that had permissions for commercial use, which limited what could get used. Seven datasets built two submodels within the composite nature index.
+To investigate TotalEnergies's risk assessment for EIAs, HUB Ocean summarised ecological and biological data from publicly available datasets to create a composite index. This study leveraged already existing data as producing high quality datasets for these indicators take years. No limit existed on the number of datasets, but the data needed to provide ecological and biological metrics for the Greater North Sea that best reflect present conditions. To build the overall dataset, however, required data that had permissions for commercial use, which limited what could get used. Seven datasets built two submodels within the composite nature index.
 
-The biological submodel integrated three different species biodiversity indicators. A fish species biodiversity summary product already existed for the North Sea. For cetaceans and seabirds biodiversity indicators, the study relied on species distribution models produced for a list of species given to and created by HUB Ocean. Not completely exhaustive, species distribution models for 13 cetacean species and 53 seabird species created the biodiversity indicators for the cetacean and seabird groups. These three biodiversity indicators provided equal influence on the summed submodel score. All of the layers had resolutions higher than the desired 500 meters. The fish dataset had a resolution of 0.25° (approximately 25 kilometers) due to two variables used in its model, while the cetaceans and seabirds had a higher resolution at 5 kilometers.
-
-The other submodel, which received 55% of the total final model score, included four ecological and management data layers. Cold water corals and seagrass datasets provided key habitat indicators for the nature index, while management indicators were represented by important marine mammal areas and marine protected areas.
+The biological submodel integrated three different species biodiversity indicators: fish species diversity, cetacean species diversity, and seabird species diversity. The other submodel, which received 55% of the total final model score, included four ecological and management data layers. Cold water corals and seagrass datasets provided key habitat indicators for the nature index, while management indicators were represented by important marine mammal areas and marine protected areas.
 
 The analysis adapted its scope to the realities of data availability and quality. It did not answer many of the questions and investigated slightly different ones. Beyond creating a composite nature index, the study examined species habitat classification (unlikely habitat, probable habitat, and core habitat) within two North Sea protected areas for the species those protected areas had directives to protect. The European Union designated particular protected areas under the European Union [Birds Directive](https://environment.ec.europa.eu/topics/nature-and-biodiversity/birds-directive_en) and [Habitat Directive](https://environment.ec.europa.eu/topics/nature-and-biodiversity/habitats-directive_en). TotalEnergies identified two protected areas identified for the investigation: Doggerbank and Sydlige Nordsø. 
 
@@ -278,8 +276,7 @@ MPA Europe did not posses a species distribution model for a species on the Tota
 
 _Habitat designation_
 
-MPA Europe's species distribution models relied on presence-only data. The [best modeled outputs](https://iobis.github.io/mpaeu_docs/methods-testing.html#overview-and-chosen-approach) were LASSO and maxent (maximum entropy).
-LASSO results were not available for download, so the priority were maxent along with ensemble outputs when the maxent models did not exist for a particular species. Most species have the maxent models, but five had ensemble
+MPA Europe's species distribution models relied on presence-only data. These species distribution models had a resolution at 5 kilometers. The [best modeled outputs](https://iobis.github.io/mpaeu_docs/methods-testing.html#overview-and-chosen-approach) were LASSO and maxent (maximum entropy). LASSO results were not available for download, so the priority were maxent along with ensemble outputs when the maxent models did not exist for a particular species.  Most species have the maxent models, but five had ensemble
 models:
 
 Cetaceans
@@ -308,7 +305,7 @@ A summarized total species richness layer was created for each cetaceans and sea
 _Fishes_
 
 A summarized fish species data layer came from a paper by [Gordó-Vilaseca et al. (2024)](https://www.nature.com/articles/s41467-024-49911-9) that examined biomass distributions for a
-variety of species across the North Sea and Barents Sea. The data shared by Gordó-Vilaseca are the present day species richness data (as seen in the paper's Figure 2(A)). The Greater North Sea boundary limited the data to the study region before applying a linear normalization and rescaling the minimum species richness.
+variety of species across the North Sea and Barents Sea. The data shared by Gordó-Vilaseca are the present day species richness data (as seen in the paper's Figure 2(A)). The Greater North Sea boundary limited the data to the study region before applying a linear normalization and rescaling the minimum species richness. The fish dataset had a resolution of 0.25° (approximately 25 kilometers) due to two variables used in its model.
 
 ### Scores
 | Layer | Score | Consideration |

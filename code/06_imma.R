@@ -172,7 +172,7 @@ mapview::mapview(region_data_hex)
 
 # export data
 sf::st_write(obj = imma_clean,
-             # destination as a parquet file
+             # destination
              dsn = fs::path(output_dir,
                             stringr::str_glue("ns_{layer}.gpkg")),
              # define layer name

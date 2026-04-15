@@ -208,13 +208,13 @@ Seabirds
 - _Rissa tridactyla_ [(137156)](https://www.marinespecies.org/aphia.php?p=taxdetails&id=137156)
 
 Species distribution model (SDM) results were scored to reflect the match to likely habitat. Any location with a species distribution model value under 50 (quantitatively more probable than not)
-was classified as unlikely habitat and given a score 0.3. Species distribution model values between 50 and 75 got a score of 0.6 to reflect that these areas are probable habitat. Core habitat
+was classified as unlikely habitat and given a score 0.3. Species distribution model values between 51 and 75 got a score of 0.6 to reflect that these areas are probable habitat. Core habitat
 occurred in locations with values over 75 and they received a value of 1.
 
 | SDM value | Classification | Score |
 |---------------|---------------|---------------|
 | 0 - 50 | Unlikely habitat | 0.3 |
-| 50 - 75 | Probable habitat | 0.6 |
+| 51 - 75 | Probable habitat | 0.6 |
 | 75+ | Core habitat | 1.0 |
 
 #### Normalization

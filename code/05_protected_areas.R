@@ -114,6 +114,7 @@ data <- df %>%
   # set CRS to WGS84
   sf::st_as_sf(crs = 4326)
 
+# interactive view of data
 mapview::mapview(data)
 
 #####################################
